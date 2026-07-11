@@ -39,6 +39,9 @@ Formato inspirado em Keep a Changelog.
 - Mocks e tipos específicos do Dashboard.
 - Componentes ChartCard e ErrorState no Design System.
 - Testes de renderização, estado vazio e estado de erro do Dashboard.
+- Documentação de engenharia: TECH_DEBT, QUALITY_SCORE, QA_CHECKLIST, ENGINEERING_PLAYBOOK, CTO_REPORT_TEMPLATE, RELEASE_CHECKLIST, PROJECT_METRICS e CODE_REVIEW_CHECKLIST.
+- TASK_QUEUE para priorização de tarefas técnicas e próximas sprints.
+- CODEOWNERS e workflow básico de CI para lint, build e testes.
 
 ### Changed
 
@@ -48,6 +51,8 @@ Formato inspirado em Keep a Changelog.
 - Tailwind passou a consumir tokens centralizados.
 - Componentes antigos de UI passaram a usar a biblioteca oficial do Design System.
 - Rota do Dashboard passou a usar a estrutura `pages/dashboard`.
+- Templates de issue e pull request revisados para padronizar evidências, escopo e critérios de aceite.
+- README atualizado com links de engenharia e qualidade.
 
 ## [0.1.0] - 2026-07-11
 

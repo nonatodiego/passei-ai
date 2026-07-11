@@ -82,6 +82,18 @@ npm run test
 - [CONTRIBUTING](docs/CONTRIBUTING.md)
 - [CHANGELOG](docs/CHANGELOG.md)
 
+## Engenharia e qualidade
+
+- [ENGINEERING PLAYBOOK](docs/ENGINEERING_PLAYBOOK.md)
+- [QA CHECKLIST](docs/QA_CHECKLIST.md)
+- [CODE REVIEW CHECKLIST](docs/CODE_REVIEW_CHECKLIST.md)
+- [RELEASE CHECKLIST](docs/RELEASE_CHECKLIST.md)
+- [TECH DEBT](docs/TECH_DEBT.md)
+- [QUALITY SCORE](docs/QUALITY_SCORE.md)
+- [PROJECT METRICS](docs/PROJECT_METRICS.md)
+- [CTO REPORT TEMPLATE](docs/CTO_REPORT_TEMPLATE.md)
+- [TASK QUEUE](TASK_QUEUE.md)
+
 ## Status
 
 Projeto em fase **Foundation**. Esta entrega não implementa autenticação, backend ou persistência de dados.

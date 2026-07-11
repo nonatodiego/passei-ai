@@ -1,0 +1,8 @@
+# Code owners for Passei AI.
+# Replace with the definitive GitHub handle or team when the repository is published.
+
+* @Pichau
+
+/docs/ @Pichau
+/frontend/ @Pichau
+/.github/ @Pichau

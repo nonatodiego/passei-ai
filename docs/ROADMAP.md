@@ -85,6 +85,21 @@
 - [x] Adicionar teste de estado vazio.
 - [x] Adicionar teste de estado de erro.
 
+## Engineering Foundation
+
+- [x] TECH_DEBT.
+- [x] QUALITY_SCORE.
+- [x] QA_CHECKLIST.
+- [x] ENGINEERING_PLAYBOOK.
+- [x] CTO_REPORT_TEMPLATE.
+- [x] RELEASE_CHECKLIST.
+- [x] TASK_QUEUE.
+- [x] PROJECT_METRICS.
+- [x] CODE_REVIEW_CHECKLIST.
+- [x] CODEOWNERS.
+- [x] Workflow básico de CI.
+- [x] Revisão dos templates de issues e pull request.
+
 ## Sprint 4 — Cronograma
 
 - [x] Lista inicial.
