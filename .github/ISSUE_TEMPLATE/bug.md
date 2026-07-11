@@ -32,7 +32,29 @@ Explique o problema observado.
 
 ## Impacto
 
-- [ ] Bloqueia uso
-- [ ] Afeta fluxo principal
-- [ ] Afeta fluxo secundário
-- [ ] Visual/cosmético
+- [ ] Bloqueia uso.
+- [ ] Afeta fluxo principal.
+- [ ] Afeta fluxo secundário.
+- [ ] Visual/cosmético.
+
+## Riscos
+
+- 
+
+## Critérios de aceite
+
+- [ ] Causa raiz identificada.
+- [ ] Correção implementada com menor impacto possível.
+- [ ] Teste de regressão adicionado quando aplicável.
+- [ ] Lint, build e testes executados.
+- [ ] CHANGELOG atualizado.
+
+## QA visual
+
+- [ ] Necessário.
+- [ ] Não aplicável.
+
+## Dívida técnica
+
+- [ ] Não gera dívida nova.
+- [ ] Dívida registrada em `docs/TECH_DEBT.md`.

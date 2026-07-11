@@ -1,18 +1,20 @@
 # DEVELOPMENT_FLOW.md
 
-## 1. Fluxo
+## 1. Fluxo oficial
 
 ```text
-Ideia
+Backlog
 → Refinamento
-→ Critérios de aceite
-→ Branch
-→ Implementação
-→ Testes
-→ Revisão
-→ Documentação
+→ Definition of Ready
+→ Desenvolvimento
+→ Validação técnica
+→ QA visual
+→ CTO Review
+→ Definition of Done
+→ Release
+→ Commit
 → Pull Request
-→ Merge
+→ Merge manual
 ```
 
 ## 2. Branches
@@ -25,28 +27,53 @@ Ideia
 - `docs/*`: documentação.
 - `refactor/*`: refatorações.
 
-## 3. Feature
+## 3. Estados no TASK_QUEUE
 
-Antes de implementar:
+- `Backlog`: item identificado, ainda não refinado.
+- `Refinement`: item em detalhamento.
+- `Ready`: Definition of Ready atendida.
+- `In Progress`: implementação em andamento.
+- `Visual Review`: aguardando validação visual do Product Owner.
+- `CTO Review`: aguardando revisão técnica profunda.
+- `Release Ready`: pronto para commit/release após DoD.
+- `Completed`: Sprint concluída.
+- `Blocked`: impedimento crítico.
 
-1. Ler documentação.
-2. Inspecionar código.
-3. Definir objetivo.
-4. Definir critérios de aceite.
-5. Criar branch.
-6. Alterar apenas o necessário.
+## 4. Definition of Ready
 
-## 4. Validação
+Antes de implementar, validar `docs/DEFINITION_OF_READY.md`.
+
+Nenhuma Sprint deve sair de `Ready` para `In Progress` sem:
+
+- objetivo claro;
+- escopo e fora do escopo;
+- critérios de aceite;
+- riscos e dependências;
+- branch definida;
+- documentação obrigatória lida.
+
+## 5. Desenvolvimento
+
+Regras:
+
+- preservar funcionalidades existentes;
+- implementar apenas o escopo;
+- usar o Design System;
+- evitar refatorações amplas sem necessidade;
+- manter TypeScript estrito;
+- evitar `any` desnecessário.
+
+## 6. Validação técnica
 
 Frontend:
 
 ```bash
-npm run lint
-npm run build
-npm run test
+npm.cmd run lint
+npm.cmd run build
+npm.cmd run test
 ```
 
-Backend:
+Backend futuro:
 
 ```bash
 dotnet restore
@@ -54,17 +81,50 @@ dotnet build
 dotnet test
 ```
 
-## 5. Finalização
+## 7. QA visual
+
+Rodar:
+
+```bash
+npm run dev
+```
+
+Regras:
+
+- manter o servidor ativo;
+- informar URL local;
+- aguardar aprovação visual do Product Owner;
+- corrigir apenas o que for solicitado;
+- repetir lint, build e testes após ajustes.
+
+## 8. CTO Review
+
+Após aprovação visual:
+
+- entrar em modo CTO;
+- não alterar código durante a análise;
+- seguir `docs/CTO_REPORT_TEMPLATE.md`;
+- avaliar arquitetura, código, UX, performance, acessibilidade, segurança, escalabilidade, testes e dívida técnica.
+
+## 9. Definition of Done
+
+Antes de encerrar, validar `docs/DEFINITION_OF_DONE.md`.
+
+Se algum item estiver pendente, a Sprint não pode ser marcada como `Completed`.
+
+## 10. Finalização
 
 - Atualizar `CHANGELOG.md`.
 - Atualizar `ROADMAP.md`.
-- Atualizar documentação técnica quando necessário.
-- Criar commit descritivo.
-- Abrir PR.
-- Resumir alterações.
-- Informar testes executados.
+- Atualizar `TECH_DEBT.md` quando necessário.
+- Atualizar `QUALITY_SCORE.md`.
+- Atualizar `PROJECT_METRICS.md` quando necessário.
+- Atualizar `TASK_QUEUE.md`.
+- Criar commit convencional.
+- Abrir Pull Request.
+- Fazer merge manual.
 
-## 6. Commits
+## 11. Commits
 
 Conventional Commits:
 
@@ -81,9 +141,11 @@ Exemplos:
 ```text
 feat(dashboard): add performance summary
 fix(schedule): correct overdue calculation
-docs(product): update target audience
+docs(engineering): add sprint governance workflow
 ```
 
-## 7. Regra
+## 12. Regra
 
 Não desenvolver diretamente na `main`.
+Não fazer merge automático.
+Não iniciar a próxima Sprint no encerramento da Sprint atual.

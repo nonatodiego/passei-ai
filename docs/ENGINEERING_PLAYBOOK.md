@@ -10,19 +10,79 @@ Playbook de engenharia do Passei AI.
 - Sem backend ou autenticação até a sprint correspondente.
 - Documentação acompanha a entrega.
 - Nenhuma entrega termina com lint, build ou testes quebrados.
+- Nenhuma Sprint começa sem Definition of Ready.
+- Nenhuma Sprint termina sem Definition of Done, QA visual e aprovação do Product Owner.
 
-## Fluxo padrão
+## Fluxo oficial
 
-1. Ler documentação relevante.
+```text
+Backlog
+→ Refinamento
+→ Definition of Ready
+→ Desenvolvimento
+→ Validação técnica
+→ QA visual
+→ CTO Review
+→ Definition of Done
+→ Release
+→ Commit
+→ Pull Request
+→ Merge manual
+```
+
+## Estados de Sprint
+
+Os estados oficiais ficam em `TASK_QUEUE.md`:
+
+- `Backlog`
+- `Refinement`
+- `Ready`
+- `In Progress`
+- `Visual Review`
+- `CTO Review`
+- `Release Ready`
+- `Completed`
+- `Blocked`
+
+A Sprint só pode mudar de estado quando os critérios da etapa atual estiverem atendidos.
+
+## Definition of Ready
+
+Antes de implementar, validar `docs/DEFINITION_OF_READY.md`.
+
+Se algum item obrigatório estiver pendente:
+
+- não iniciar implementação;
+- registrar bloqueio;
+- solicitar decisão do Product Owner.
+
+## Definition of Done
+
+Antes de encerrar, validar `docs/DEFINITION_OF_DONE.md`.
+
+Se algum item obrigatório estiver pendente:
+
+- não concluir a Sprint;
+- manter o estado apropriado no `TASK_QUEUE.md`;
+- registrar pendências.
+
+## Fluxo padrão da execução
+
+1. Ler documentação obrigatória.
 2. Inspecionar estado do repositório.
-3. Criar branch `feature/*`, `fix/*`, `docs/*` ou `refactor/*`.
-4. Implementar apenas o escopo.
-5. Adicionar ou atualizar testes.
-6. Executar lint, build e testes.
-7. Atualizar ROADMAP, CHANGELOG e docs afetadas.
-8. Registrar dívida técnica quando necessário.
-9. Fazer commit convencional.
-10. Preparar PR com evidências.
+3. Validar Definition of Ready.
+4. Criar branch `feature/*`, `fix/*`, `docs/*` ou `refactor/*`.
+5. Planejar escopo, riscos, dependências e estratégia de testes.
+6. Implementar apenas o escopo.
+7. Executar lint, build e testes.
+8. Rodar `npm run dev` e aguardar QA visual do Product Owner.
+9. Executar CTO Review após aprovação visual.
+10. Validar Definition of Done.
+11. Atualizar documentação e métricas.
+12. Atualizar `TASK_QUEUE.md`.
+13. Criar commit convencional.
+14. Abrir Pull Request.
+15. Fazer merge manual somente após aprovação.
 
 ## Branches
 
@@ -41,16 +101,6 @@ Usar Conventional Commits:
 - `test(scope): summary`
 - `refactor(scope): summary`
 - `chore(scope): summary`
-
-## Critérios de pronto
-
-- Critérios de aceite atendidos.
-- Testes relevantes existem.
-- Lint, build e testes passam.
-- Documentação atualizada.
-- Sem arquivos temporários.
-- Sem segredos.
-- Dívidas conhecidas registradas.
 
 ## Política de dependências
 

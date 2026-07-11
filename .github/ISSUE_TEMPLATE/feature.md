@@ -8,7 +8,10 @@ labels: enhancement
 ## Objetivo
 
 
-## Contexto
+## Problema resolvido
+
+
+## Valor para o usuário
 
 
 ## Escopo
@@ -23,6 +26,27 @@ labels: enhancement
 
 - [ ] 
 
+## Definition of Ready
+
+- [ ] Objetivo claro.
+- [ ] Problema de negócio descrito.
+- [ ] Escopo definido.
+- [ ] Fora do escopo registrado.
+- [ ] Critérios de aceite definidos.
+- [ ] Riscos identificados.
+- [ ] Dependências disponíveis.
+- [ ] Sem bloqueios críticos.
+- [ ] Branch definida.
+- [ ] Sprint pronta para `Ready`.
+
+## Riscos
+
+- 
+
+## Dependências
+
+- 
+
 ## Design System
 
 - [ ] Usa componentes existentes.
@@ -32,3 +56,13 @@ labels: enhancement
 ## Testes esperados
 
 - 
+
+## QA visual
+
+- [ ] Necessário.
+- [ ] Não aplicável.
+
+## CTO Review
+
+- [ ] Necessário.
+- [ ] Não aplicável.

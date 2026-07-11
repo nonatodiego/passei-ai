@@ -100,6 +100,18 @@
 - [x] Workflow básico de CI.
 - [x] Revisão dos templates de issues e pull request.
 
+## Sprint Governance
+
+- [x] Definition of Ready.
+- [x] Definition of Done.
+- [x] Prompt mestre de início de Sprint.
+- [x] Prompt de encerramento de Sprint.
+- [x] Template de especificação de Sprint.
+- [x] QA visual obrigatório.
+- [x] CTO Review obrigatório.
+- [x] Estados oficiais no TASK_QUEUE.
+- [x] Regras claras de aprovação e encerramento.
+
 ## Sprint 4 — Cronograma
 
 - [x] Lista inicial.

@@ -42,6 +42,10 @@ Formato inspirado em Keep a Changelog.
 - Documentação de engenharia: TECH_DEBT, QUALITY_SCORE, QA_CHECKLIST, ENGINEERING_PLAYBOOK, CTO_REPORT_TEMPLATE, RELEASE_CHECKLIST, PROJECT_METRICS e CODE_REVIEW_CHECKLIST.
 - TASK_QUEUE para priorização de tarefas técnicas e próximas sprints.
 - CODEOWNERS e workflow básico de CI para lint, build e testes.
+- Definition of Ready e Definition of Done oficiais.
+- Prompt mestre `START_SPRINT` e prompt `END_SPRINT`.
+- Template de especificação de Sprint.
+- Estados oficiais da fila de tarefas: Backlog, Refinement, Ready, In Progress, Visual Review, CTO Review, Release Ready, Completed e Blocked.
 
 ### Changed
 
@@ -53,6 +57,8 @@ Formato inspirado em Keep a Changelog.
 - Rota do Dashboard passou a usar a estrutura `pages/dashboard`.
 - Templates de issue e pull request revisados para padronizar evidências, escopo e critérios de aceite.
 - README atualizado com links de engenharia e qualidade.
+- Playbook, fluxo de desenvolvimento, checklists e contributing atualizados com QA visual, CTO Review, DoR e DoD.
+- TASK_QUEUE reorganizado para suportar governança de início e encerramento de Sprints.
 
 ## [0.1.0] - 2026-07-11
 
