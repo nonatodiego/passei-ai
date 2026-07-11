@@ -26,11 +26,20 @@ Formato inspirado em Keep a Changelog.
 - Dashboard com dados mockados, KPIs, evolução e plano de hoje.
 - Tipos TypeScript, mocks centralizados e serviço base para futura API REST.
 - Testes iniciais com Vitest.
+- Design Tokens centralizados para cores, tipografia, espaçamento, bordas, sombras, breakpoints e z-index.
+- Biblioteca oficial de componentes do Design System em `frontend/src/design-system`.
+- Componentes Button, Input, Select, Badge, Card, KPICard, Modal, Drawer, Tooltip, Toast, Tabs, Progress, Skeleton, EmptyState, LoadingState e DataTable.
+- Componentes de layout PageContainer, Section e Content.
+- Estrutura preparada para Storybook futuro.
+- Testes básicos dos tokens e componentes principais do Design System.
 
 ### Changed
 
 - README atualizado com visão oficial do produto, stack, execução e verificações.
 - ROADMAP atualizado com o status da fundação do frontend.
+- DESIGN_SYSTEM atualizado com organização, tokens, componentes e pendências.
+- Tailwind passou a consumir tokens centralizados.
+- Componentes antigos de UI passaram a usar a biblioteca oficial do Design System.
 
 ## [0.1.0] - 2026-07-11
 

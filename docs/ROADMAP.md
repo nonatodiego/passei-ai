@@ -15,21 +15,41 @@
 
 ## Sprint 1 — Design System
 
-- [x] Tokens de cor iniciais.
-- [x] Tipografia base.
-- [x] Espaçamentos base.
-- [ ] Botões.
-- [ ] Inputs.
-- [ ] Selects.
+- [x] Tokens de cor.
+- [x] Tipografia.
+- [x] Espaçamentos.
+- [x] Bordas.
+- [x] Sombras.
+- [x] Breakpoints.
+- [x] Z-index.
+- [x] Botões.
+- [x] Inputs.
+- [x] Selects.
 - [x] Cards.
 - [x] Badges.
 - [x] Tabelas.
-- [ ] Modais.
-- [ ] Toasts.
-- [ ] Skeletons.
-- [x] Gráficos.
+- [x] Modais.
+- [x] Drawers.
+- [x] Tooltips.
+- [x] Toasts.
+- [x] Tabs.
+- [x] Progress.
+- [x] Skeletons.
+- [x] EmptyState.
+- [x] LoadingState.
+- [x] Gráficos existentes preservados.
 - [x] Sidebar.
 - [x] Header.
+- [x] PageContainer, Section e Content.
+- [ ] IconButton.
+- [ ] Textarea.
+- [ ] Checkbox.
+- [ ] Radio.
+- [ ] Switch.
+- [ ] DatePicker.
+- [ ] ErrorState.
+- [ ] ChartCard.
+- [ ] Storybook.
 
 ## Sprint 2 — Frontend Foundation
 
@@ -52,6 +72,10 @@
 - [x] Plano de hoje.
 - [x] Revisões pendentes.
 - [x] Pontos fortes e fracos.
+- [ ] Aplicar componentes oficiais do Design System em toda a página.
+- [ ] Adicionar estados vazios e carregamento.
+- [ ] Refinar responsividade mobile.
+- [ ] Adicionar testes de renderização do Dashboard.
 
 ## Sprint 4 — Cronograma
 

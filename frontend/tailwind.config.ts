@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { breakpoints, colors, radii, shadows, typography, zIndex } from './src/design-system/tokens';
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
@@ -6,24 +7,38 @@ export default {
     extend: {
       colors: {
         app: {
-          background: '#F8FAFC',
-          card: '#FFFFFF',
-          primary: '#1D4ED8',
-          primarySoft: '#DBEAFE',
-          secondary: '#3B82F6',
-          text: '#0F172A',
-          muted: '#64748B',
-          border: '#E2E8F0',
-          success: '#16A34A',
-          warning: '#F59E0B',
-          danger: '#DC2626',
-          ink: '#111827',
-          teal: '#0F766E',
+          background: colors.background,
+          card: colors.surface,
+          surfaceMuted: colors.surfaceMuted,
+          primary: colors.primary,
+          primarySoft: colors.primarySoft,
+          secondary: colors.secondary,
+          info: colors.info,
+          text: colors.text,
+          muted: colors.textMuted,
+          border: colors.border,
+          success: colors.success,
+          warning: colors.warning,
+          danger: colors.danger,
+          focus: colors.focus,
+          teal: colors.teal,
         },
       },
+      borderRadius: radii,
       boxShadow: {
-        panel: '0 16px 40px -30px rgba(15, 23, 42, 0.38)',
+        ...shadows,
       },
+      fontFamily: {
+        sans: [typography.fontFamily],
+      },
+      fontSize: typography.sizes,
+      screens: {
+        mobile: breakpoints.mobile,
+        tablet: breakpoints.tablet,
+        desktop: breakpoints.desktop,
+        wide: breakpoints.wide,
+      },
+      zIndex,
     },
   },
   plugins: [],

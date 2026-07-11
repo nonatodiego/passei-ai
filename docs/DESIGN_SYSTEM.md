@@ -14,47 +14,54 @@
 - Alta legibilidade.
 - Pouco ruído visual.
 - Uso consistente de espaço.
+- Componentes reutilizáveis e acessíveis por padrão.
 
-## 3. Paleta
+## 3. Organização
 
-### Primárias
+O Design System oficial fica em `frontend/src/design-system`.
+
+A organização adotada é inspirada em Atomic Design:
+
+- `tokens`: decisões primitivas de interface.
+- `atoms`: componentes básicos, como Button, Input, Select, Badge, Progress, Skeleton e Tooltip.
+- `molecules`: composições pequenas, como Card, KPICard, Tabs, Toast, EmptyState e LoadingState.
+- `organisms`: componentes mais estruturados, como Modal, Drawer e DataTable.
+- `layout`: componentes estruturais, como Sidebar, Header, PageContainer, Section e Content.
+
+Essa abordagem foi escolhida porque preserva componentes simples, facilita testes unitários e prepara a base para Storybook sem acoplar o Design System às páginas de produto.
+
+## 4. Tokens
+
+Os tokens ficam centralizados em `frontend/src/design-system/tokens.ts` e são consumidos pelo Tailwind.
+
+### Cores
+
+- Fundo: `#F8FAFC`
+- Superfície: `#FFFFFF`
+- Superfície neutra: `#F1F5F9`
 - Azul principal: `#2563EB`
 - Azul secundário: `#3B82F6`
-
-### Semânticas
+- Primária suave: `#DBEAFE`
 - Sucesso: `#16A34A`
 - Atenção: `#F59E0B`
 - Erro: `#DC2626`
 - Informação: `#0EA5E9`
-
-### Neutras
-- Fundo: `#F8FAFC`
-- Card: `#FFFFFF`
 - Texto principal: `#0F172A`
 - Texto secundário: `#64748B`
 - Borda: `#E2E8F0`
+- Foco: `#93C5FD`
 
-## 4. Tipografia
+### Tipografia
 
-Preferência:
+- Fonte: Inter.
+- Fallback: system-ui, sans-serif.
+- Escala: display, h1, h2, h3, body, small e caption.
 
-- Inter;
-- fallback: system-ui, sans-serif.
+### Espaçamento
 
-Hierarquia:
+Escala baseada em 4 px:
 
-- Display.
-- H1.
-- H2.
-- H3.
-- Body.
-- Small.
-- Caption.
-
-## 5. Espaçamento
-
-Escala base de 4 px:
-
+- 0
 - 4
 - 8
 - 12
@@ -64,77 +71,93 @@ Escala base de 4 px:
 - 48
 - 64
 
-## 6. Bordas
+### Bordas
 
 - Radius pequeno: 6 px.
 - Radius padrão: 10 px.
 - Radius grande: 16 px.
+- Radius full: 9999 px.
 
-## 7. Sombra
+### Sombras
 
-Sutil e funcional.
+- `sm`: sombra mínima.
+- `panel`: cards e painéis.
+- `floating`: overlays, drawers e toasts.
 
-Evitar sombras excessivas.
+### Breakpoints
 
-## 8. Componentes obrigatórios
+- Mobile: `320px`
+- Tablet: `768px`
+- Desktop: `1024px`
+- Wide: `1280px`
+
+### Z-index
+
+- Base: `0`
+- Dropdown: `20`
+- Sticky: `30`
+- Drawer: `40`
+- Modal: `50`
+- Toast: `60`
+
+## 5. Componentes disponíveis
+
+### Layout
+
+- Sidebar.
+- Header.
+- PageContainer.
+- Section.
+- Content.
+
+### UI
 
 - Button.
-- IconButton.
 - Input.
-- Textarea.
 - Select.
-- Checkbox.
-- Radio.
-- Switch.
-- DatePicker.
+- Badge.
 - Card.
 - KPICard.
-- Badge.
-- Table.
 - Modal.
 - Drawer.
-- Toast.
 - Tooltip.
+- Toast.
+- Tabs.
+- Progress.
 - Skeleton.
 - EmptyState.
-- ErrorState.
 - LoadingState.
-- ChartCard.
+- DataTable.
 
-## 9. Sidebar
+## 6. Acessibilidade
 
-Desktop:
-- fixa;
-- recolhível;
-- ícone + texto.
+- Controles com foco visível.
+- Inputs e selects com labels e estados de erro.
+- Progress com `role="progressbar"` e valores ARIA.
+- Modal com `role="dialog"` e `aria-modal`.
+- Toast e LoadingState com `role="status"`.
+- Tabela com cabeçalhos semânticos.
+- Componentes não dependem apenas de cor para comunicar estado.
 
-Mobile:
-- drawer;
-- acesso por botão.
+## 7. Responsividade
 
-## 10. Acessibilidade
+- Sidebar fixa em desktop e drawer no mobile.
+- PageContainer com largura máxima e padding responsivo.
+- DataTable com rolagem horizontal.
+- Cards e composições compatíveis com grids responsivos.
 
-- contraste adequado;
-- foco visível;
-- labels;
-- navegação por teclado;
-- não depender apenas de cor;
-- ícones com texto alternativo quando necessário.
+## 8. Storybook futuro
 
-## 11. Responsividade
+A estrutura já está preparada para Storybook:
 
-Breakpoints sugeridos:
+- cada componente está isolado em arquivo próprio;
+- exports públicos ficam em `frontend/src/design-system/index.ts`;
+- tokens e componentes não dependem de páginas específicas;
+- testes básicos cobrem renderização e semântica dos componentes principais.
 
-- mobile;
-- tablet;
-- desktop;
-- wide.
+## 9. Pendências conhecidas
 
-## 12. Uso da marca
-
-- Logo horizontal no header e documentação.
-- Ícone reduzido na sidebar recolhida.
-- Favicon no navegador.
-- Versão monocromática em contextos limitados.
-
-Os arquivos finais da logo devem ser adicionados em `assets/brand/`.
+- Criar arquivos oficiais de marca em `assets/brand/`.
+- Adicionar stories quando o Storybook for instalado.
+- Implementar componentes adicionais do catálogo expandido: IconButton, Textarea, Checkbox, Radio, Switch, DatePicker, ErrorState e ChartCard.
+- Evoluir testes para interações no navegador quando a suíte usar Testing Library ou Playwright.

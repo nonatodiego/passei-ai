@@ -1,6 +1,7 @@
+import type { BadgeTone } from '@/design-system/atoms/Badge';
 import type { Priority, Status } from '@/types';
 
-export type BadgeTone = 'blue' | 'green' | 'amber' | 'red' | 'slate';
+export type { BadgeTone };
 
 export function statusTone(status: Status): BadgeTone {
   const tones: Record<Status, BadgeTone> = {

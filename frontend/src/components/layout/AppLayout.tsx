@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { routes } from '@/constants/routes';
+import { PageContainer } from '@/design-system/layout/PageContainer';
 
 export function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -24,9 +25,9 @@ export function AppLayout() {
           currentRoute={currentRoute}
           onMenuClick={() => setIsSidebarOpen(true)}
         />
-        <main className="mx-auto max-w-7xl px-4 py-6 md:px-6">
+        <PageContainer>
           <Outlet />
-        </main>
+        </PageContainer>
       </div>
     </div>
   );
