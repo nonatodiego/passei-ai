@@ -6,6 +6,7 @@ Playbook de engenharia do Passei AI.
 
 - Produto simples, código claro.
 - TypeScript estrito.
+- Arquitetura modular antes de crescimento por pastas globais.
 - Design System antes de variações locais.
 - Sem backend ou autenticação até a sprint correspondente.
 - Documentação acompanha a entrega.
@@ -108,3 +109,26 @@ Usar Conventional Commits:
 - Justificar bibliotecas novas no PR.
 - Preferir APIs nativas e padrões já existentes.
 - Registrar impacto de bundle quando dependência afetar o frontend.
+
+## Arquitetura modular
+
+Novas funcionalidades devem nascer no modulo correspondente em `frontend/src/<module>/`.
+
+Modulos de produto devem conter:
+
+- `components/`
+- `hooks/`
+- `services/`
+- `types/`
+- `mocks/`
+- `pages/`
+- `README.md`
+
+Regras:
+
+- `core/` e responsavel por infraestrutura da aplicacao.
+- `shared/` concentra codigo transversal e nao depende de modulos.
+- `study-engine/` concentra decisao de estudos.
+- Modulos de produto nao devem duplicar Design System.
+- Imports entre modulos devem preferir contratos publicos.
+- Consultar `docs/MODULE_GUIDE.md` antes de criar novo modulo.

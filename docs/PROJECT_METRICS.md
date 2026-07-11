@@ -7,12 +7,13 @@ Métricas de acompanhamento do Passei AI.
 | Métrica | Valor | Observação |
 | --- | ---: | --- |
 | Sprints funcionais concluídas | 3 | Foundation, Design System e Dashboard |
-| Test files | 6 | Vitest |
-| Testes | 14 | Última execução local |
+| Test files | 7 | Vitest |
+| Testes | 17 | Última execução local |
 | Frontend build | Verde | Com aviso de chunk grande |
 | Lint | Verde | Última execução local |
-| Bundle JS principal | ~682 kB | Após Sprint Dashboard |
+| Bundle JS principal | ~698 kB | Após Engineering Phase 2 |
 | Documentos de engenharia | 9 | Criados nesta sprint |
+| Modulos oficiais frontend | 12 | Core, Shared, Study Engine e modulos de produto |
 
 ## Métricas-alvo
 

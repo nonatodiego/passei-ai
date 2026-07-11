@@ -46,6 +46,9 @@ Formato inspirado em Keep a Changelog.
 - Prompt mestre `START_SPRINT` e prompt `END_SPRINT`.
 - Template de especificação de Sprint.
 - Estados oficiais da fila de tarefas: Backlog, Refinement, Ready, In Progress, Visual Review, CTO Review, Release Ready, Completed e Blocked.
+- Arquitetura modular inicial com `core/`, `shared/` e modulos oficiais de produto.
+- Guia `docs/MODULE_GUIDE.md` para criacao e manutencao de modulos.
+- ADR-006 registrando a Arquitetura Modular do Passei AI.
 
 ### Changed
 
@@ -59,6 +62,7 @@ Formato inspirado em Keep a Changelog.
 - README atualizado com links de engenharia e qualidade.
 - Playbook, fluxo de desenvolvimento, checklists e contributing atualizados com QA visual, CTO Review, DoR e DoD.
 - TASK_QUEUE reorganizado para suportar governança de início e encerramento de Sprints.
+- ARCHITECTURE e ENGINEERING_PLAYBOOK atualizados com camadas Core, Shared e modulos de produto.
 
 ## [0.1.0] - 2026-07-11
 

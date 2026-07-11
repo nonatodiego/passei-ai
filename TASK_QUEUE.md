@@ -29,7 +29,7 @@ Fila de tarefas técnicas e de produto do Passei AI.
 
 | ID | Tipo | Título | Origem | Estado |
 | --- | --- | --- | --- | --- |
-| TQ-006 | Docs | Padronizar início e encerramento de Sprints | Engineering Governance | In Progress |
+|  |  |  |  |  |
 
 ## Ready
 
@@ -45,6 +45,8 @@ Fila de tarefas técnicas e de produto do Passei AI.
 | TQ-003 | Performance | Avaliar code splitting para Recharts | TD-001 | Backlog |
 | TQ-004 | Refactor | Remover wrappers legados após migração das páginas | TD-002 | Backlog |
 | TQ-005 | Dashboard | Separar ícones dos mocks do Dashboard | TD-003 | Backlog |
+| TQ-010 | Arquitetura | Migrar arquivos globais legados para modulos oficiais | TD-006 | Backlog |
+| TQ-011 | Arquitetura | Automatizar fronteiras entre modulos | TD-007 | Backlog |
 | TQ-008 | Produto | Sprint 5 — Estudos e Questões | ROADMAP | Backlog |
 | TQ-009 | Produto | Sprint 6 — Banco de Erros e Revisões | ROADMAP | Backlog |
 
@@ -53,6 +55,8 @@ Fila de tarefas técnicas e de produto do Passei AI.
 | ID | Tipo | Título | Origem | Estado |
 | --- | --- | --- | --- | --- |
 | TQ-002 | Engenharia | Configurar CI no GitHub Actions | Engineering Sprint | Completed |
+| TQ-006 | Docs | Padronizar início e encerramento de Sprints | Engineering Governance | Completed |
+| TQ-012 | Arquitetura | Engineering Phase 2 — Modular Platform | Architecture Review | Completed |
 
 ## Blocked
 

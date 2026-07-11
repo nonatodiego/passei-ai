@@ -112,6 +112,16 @@
 - [x] Estados oficiais no TASK_QUEUE.
 - [x] Regras claras de aprovação e encerramento.
 
+## Engineering Phase 2 — Modular Platform
+
+- [x] Criar `core/`.
+- [x] Criar `shared/`.
+- [x] Padronizar modulos de produto.
+- [x] Documentar guia de modulos.
+- [x] Registrar ADR da arquitetura modular.
+- [ ] Migrar arquivos globais legados para modulos definitivos.
+- [ ] Definir regras automatizadas de fronteira entre modulos.
+
 ## Sprint 4 — Cronograma
 
 - [x] Lista inicial.

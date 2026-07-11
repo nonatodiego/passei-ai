@@ -66,7 +66,33 @@ frontend/src/
 └── index.css
 ```
 
-## 4. Backend
+## 4. Arquitetura modular do frontend
+
+O frontend adota uma arquitetura modular incremental.
+
+Camadas oficiais:
+
+- `core/`: infraestrutura da aplicacao, incluindo providers, router, navigation, theme, permissions futuras, feature flags futuras, app context, config e error boundary.
+- `shared/`: codigo transversal sem dominio especifico, incluindo constants, types, utils, hooks, services, config e providers.
+- `study-engine/`: fonte oficial de decisao de estudos, prioridades, recomendacoes, revisoes, metas e plano diario.
+- `dashboard/`, `schedule/`, `study/`, `questions/`, `reviews/`, `mock-exams/`, `goals/`, `analytics/` e `settings/`: modulos de produto.
+
+Cada modulo de produto segue:
+
+```text
+module/
+├── components/
+├── hooks/
+├── services/
+├── types/
+├── mocks/
+├── pages/
+└── README.md
+```
+
+A migracao dos arquivos globais existentes deve ser incremental para preservar funcionalidades.
+
+## 5. Backend
 
 ### Stack
 - ASP.NET Core.

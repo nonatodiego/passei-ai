@@ -1,5 +1,10 @@
 import { AppRoutes } from '@/routes/AppRoutes';
+import { AppProviders } from '@/core';
 
 export function App() {
-  return <AppRoutes />;
+  return (
+    <AppProviders>
+      <AppRoutes />
+    </AppProviders>
+  );
 }

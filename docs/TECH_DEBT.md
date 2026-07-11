@@ -24,6 +24,9 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-004 | Acessibilidade | Gráficos ainda não possuem alternativa textual/tabular completa | Leitura por tecnologia assistiva limitada | Alta | Aberto |
 | TD-005 | Git hygiene | Servidor local gerava `.dev-server/` não ignorado | Risco de lixo local em commits | Baixa | Mitigado |
 
+| TD-006 | Arquitetura modular | Pastas globais legadas ainda coexistem com modulos oficiais | Pode confundir fronteiras ate a migracao incremental terminar | Media | Aberto |
+| TD-007 | Arquitetura modular | Fronteiras entre modulos ainda nao sao validadas automaticamente | Imports cruzados indevidos podem surgir conforme o produto cresce | Media | Aberto |
+
 ## Regras
 
 - Toda dívida técnica relevante deve ter ID.

@@ -27,6 +27,8 @@ Nota de 0 a 10, calculada por revisão técnica ao final de cada sprint.
 | Design System | 8.2 | Tokens e componentes oficiais criados |
 | Dashboard | 8.4 | Boa composição e estados; dívida em gráficos e bundle |
 
+| Engineering Phase 2 | 8.6 | Plataforma modular criada com Core, Shared, modulos oficiais e docs; migracao dos arquivos globais segue como divida controlada |
+
 ## Regras de corte
 
 - Abaixo de 7.0: não avançar sem plano de correção.
