@@ -24,7 +24,7 @@ A organização adotada é inspirada em Atomic Design:
 
 - `tokens`: decisões primitivas de interface.
 - `atoms`: componentes básicos, como Button, Input, Select, Badge, Progress, Skeleton e Tooltip.
-- `molecules`: composições pequenas, como Card, KPICard, Tabs, Toast, EmptyState e LoadingState.
+- `molecules`: composições pequenas, como Card, KPICard, ChartCard, Tabs, Toast, EmptyState, ErrorState e LoadingState.
 - `organisms`: componentes mais estruturados, como Modal, Drawer e DataTable.
 - `layout`: componentes estruturais, como Sidebar, Header, PageContainer, Section e Content.
 
@@ -117,6 +117,7 @@ Escala baseada em 4 px:
 - Select.
 - Badge.
 - Card.
+- ChartCard.
 - KPICard.
 - Modal.
 - Drawer.
@@ -126,6 +127,7 @@ Escala baseada em 4 px:
 - Progress.
 - Skeleton.
 - EmptyState.
+- ErrorState.
 - LoadingState.
 - DataTable.
 
@@ -136,6 +138,7 @@ Escala baseada em 4 px:
 - Progress com `role="progressbar"` e valores ARIA.
 - Modal com `role="dialog"` e `aria-modal`.
 - Toast e LoadingState com `role="status"`.
+- ErrorState com `role="alert"`.
 - Tabela com cabeçalhos semânticos.
 - Componentes não dependem apenas de cor para comunicar estado.
 
@@ -159,5 +162,5 @@ A estrutura já está preparada para Storybook:
 
 - Criar arquivos oficiais de marca em `assets/brand/`.
 - Adicionar stories quando o Storybook for instalado.
-- Implementar componentes adicionais do catálogo expandido: IconButton, Textarea, Checkbox, Radio, Switch, DatePicker, ErrorState e ChartCard.
+- Implementar componentes adicionais do catálogo expandido: IconButton, Textarea, Checkbox, Radio, Switch, DatePicker e ChartCard com variações avançadas.
 - Evoluir testes para interações no navegador quando a suíte usar Testing Library ou Playwright.

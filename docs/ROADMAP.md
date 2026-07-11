@@ -47,8 +47,8 @@
 - [ ] Radio.
 - [ ] Switch.
 - [ ] DatePicker.
-- [ ] ErrorState.
-- [ ] ChartCard.
+- [x] ErrorState.
+- [x] ChartCard.
 - [ ] Storybook.
 
 ## Sprint 2 — Frontend Foundation
@@ -72,10 +72,18 @@
 - [x] Plano de hoje.
 - [x] Revisões pendentes.
 - [x] Pontos fortes e fracos.
-- [ ] Aplicar componentes oficiais do Design System em toda a página.
-- [ ] Adicionar estados vazios e carregamento.
-- [ ] Refinar responsividade mobile.
-- [ ] Adicionar testes de renderização do Dashboard.
+- [x] Aplicar componentes oficiais do Design System em toda a página.
+- [x] Adicionar estados vazios e carregamento.
+- [x] Adicionar estado de erro.
+- [x] Adicionar estado de sucesso.
+- [x] Criar mocks tipados do Dashboard.
+- [x] Criar tipos específicos do Dashboard.
+- [x] Criar ranking de disciplinas.
+- [x] Criar atividades recentes.
+- [x] Refinar responsividade mobile.
+- [x] Adicionar testes de renderização do Dashboard.
+- [x] Adicionar teste de estado vazio.
+- [x] Adicionar teste de estado de erro.
 
 ## Sprint 4 — Cronograma
 

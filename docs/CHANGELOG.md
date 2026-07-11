@@ -32,6 +32,13 @@ Formato inspirado em Keep a Changelog.
 - Componentes de layout PageContainer, Section e Content.
 - Estrutura preparada para Storybook futuro.
 - Testes básicos dos tokens e componentes principais do Design System.
+- Dashboard executivo usando exclusivamente o Design System oficial.
+- KPIs de dias até a prova, índice de preparação, horas estudadas, questões, acertos, simulados, revisões e progresso.
+- Plano de Hoje, gráfico de evolução semanal, ranking de disciplinas e atividades recentes.
+- Estados de loading, empty, error e success para o Dashboard.
+- Mocks e tipos específicos do Dashboard.
+- Componentes ChartCard e ErrorState no Design System.
+- Testes de renderização, estado vazio e estado de erro do Dashboard.
 
 ### Changed
 
@@ -40,6 +47,7 @@ Formato inspirado em Keep a Changelog.
 - DESIGN_SYSTEM atualizado com organização, tokens, componentes e pendências.
 - Tailwind passou a consumir tokens centralizados.
 - Componentes antigos de UI passaram a usar a biblioteca oficial do Design System.
+- Rota do Dashboard passou a usar a estrutura `pages/dashboard`.
 
 ## [0.1.0] - 2026-07-11
 

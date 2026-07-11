@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { AppLayout } from '@/components/layout/AppLayout';
-import { DashboardPage } from '@/pages/DashboardPage';
+import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { ErrorBankPage } from '@/pages/ErrorBankPage';
 import { GoalsPage } from '@/pages/GoalsPage';
 import { MockExamsPage } from '@/pages/MockExamsPage';

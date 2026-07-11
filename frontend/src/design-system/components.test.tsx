@@ -3,7 +3,14 @@ import { BookOpen } from 'lucide-react';
 import { describe, expect, it } from 'vitest';
 
 import { Badge, Button, Input, Progress } from '@/design-system/atoms';
-import { EmptyState, KPICard, LoadingState, Toast } from '@/design-system/molecules';
+import {
+  ChartCard,
+  EmptyState,
+  ErrorState,
+  KPICard,
+  LoadingState,
+  Toast,
+} from '@/design-system/molecules';
 import { DataTable } from '@/design-system/organisms';
 
 describe('design system components', () => {
@@ -29,6 +36,8 @@ describe('design system components', () => {
         <KPICard icon={BookOpen} label="Horas" value="15h" />
         <Toast title="Salvo">Alterações registradas.</Toast>
         <EmptyState description="Ainda não há dados." title="Sem registros" />
+        <ErrorState description="Tente novamente." />
+        <ChartCard title="Evolução">Conteúdo do gráfico</ChartCard>
         <LoadingState />
       </div>,
     );
@@ -36,6 +45,8 @@ describe('design system components', () => {
     expect(html).toContain('Horas');
     expect(html).toContain('Salvo');
     expect(html).toContain('Sem registros');
+    expect(html).toContain('Não foi possível carregar os dados');
+    expect(html).toContain('Evolução');
     expect(html).toContain('Carregando dados');
   });
 
