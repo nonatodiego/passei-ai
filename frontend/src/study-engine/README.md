@@ -1,5 +1,9 @@
 # Study Engine
 
+## Papel no Decision Engine
+
+O Study Engine passa a ser oficialmente um submodulo do Decision Engine documentado em `docs/DECISION_ENGINE.md`. Ele e responsavel pela decisao de estudo e nao deve ser replicado em componentes de UI. Nesta fase, sua implementacao mockada permanece inalterada.
+
 O Study Engine e o modulo que concentra a decisao de estudo do Passei AI.
 
 ## Objetivo

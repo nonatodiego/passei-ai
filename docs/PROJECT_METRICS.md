@@ -15,6 +15,7 @@ Metricas de acompanhamento do Passei AI.
 | Product Experience Gate | Aprovado | Dashboard aprovado visualmente pelo Product Owner |
 | Documentos de engenharia | 9 | Criados e mantidos no fluxo de governanca |
 | Modulos oficiais frontend | 12 | Core, Shared, Study Engine e modulos de produto |
+| Decision Engine | Documentado | Sem implementacao de backend ou IA nesta fase |
 
 ## Metricas-alvo
 

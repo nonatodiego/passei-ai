@@ -136,3 +136,7 @@ O Passei AI sera orientado pela jornada do usuario, nao por uma colecao de telas
 - Cada modulo deve gerar dados estruturados para recomendacoes futuras.
 
 Consulte `docs/USER_JOURNEY.md` para os fluxos oficiais de produto.
+
+## 15. Decision Engine
+
+Toda prioridade, recomendacao ou risco de meta pertence ao Decision Engine. A UI apresenta a decisao e sua justificativa; ela nao inventa regras de negocio locais.

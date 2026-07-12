@@ -181,3 +181,7 @@ Consultar a pasta `docs/ADR`.
 ## 11. Direcao por jornadas e contratos
 
 Os modulos de produto devem ser compostos para atender jornadas do usuario, especialmente a futura tela **Hoje**, sem concentrar regras de prioridade nas paginas. Cada modulo produz contratos tipados de fatos, eventos ou metricas para consumo futuro pelo Study Engine e Analytics. O Study Engine permanece a fonte oficial de decisao; a IA futura sera uma interface sobre seus contratos e recomendacoes.
+
+## 12. Decision Engine
+
+O Decision Engine e a camada oficial para decisao de produto: Study Engine, Review Engine, Recommendation Engine, Goal Engine e Analytics Engine. Nenhuma regra de negocio relacionada a prioridade pode existir na UI; modulos de produto produzem fatos tipados e consomem resultados do motor. Consulte `docs/DECISION_ENGINE.md`.

@@ -227,3 +227,11 @@
 - [x] Reposicionar Dashboard como Evolucao.
 - [x] Implementar plano diario, alertas, revisao, questoes recomendadas e resumo.
 - [x] Validar estados, responsividade e Product Experience Gate.
+
+## Engineering Evolution - Decision Engine
+
+- [x] Documentar Decision Engine e seus submotores.
+- [x] Definir regra de prioridade exclusiva do Decision Engine.
+- [x] Posicionar Study Engine como submodulo do Decision Engine.
+- [x] Preparar PRD-003-ERROR-BANK com fluxo Error Bank -> Decision Engine -> Today.
+- [ ] Implementar Feature 003 - Banco de Erros somente apos aprovacao desta evolucao.

@@ -33,6 +33,10 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-012 | Today | TodayPage deve ser decomposta antes de novas interacoes | Crescimento da pagina pode reduzir legibilidade e testabilidade | Media | Aberto |
 | TD-013 | Visual QA | Testes visuais automatizados por breakpoint ainda nao existem | Regressao responsiva depende de revisao manual | Media | Aberto |
 | TD-014 | Today UX | Status das atividades pode ganhar maior clareza visual | Pode reduzir leitura rapida do plano em evolucoes futuras | Baixa | Aberto |
+| TD-015 | Decision Engine | Consolidar contratos de fatos em uma porta unica | Integracao entre modulos pode divergir | Media | Aberto |
+| TD-016 | Arquitetura modular | Automatizar fronteiras entre modulos | Imports indevidos podem crescer sem deteccao | Media | Aberto |
+| TD-017 | Mocks | Evitar introducao de regras locais em mocks | Prioridades podem divergir do Decision Engine | Media | Aberto |
+| TD-018 | Backend | Definir contexto de usuario para persistencia e multiusuario | Contratos atuais ainda sao locais ao MVP | Media | Aberto |
 
 ## Regras
 

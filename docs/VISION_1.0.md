@@ -11,3 +11,4 @@ The experience is journey-led: the user should open **Hoje**, understand what ma
 - Evidence before recommendation.
 - Calm, clear and accessible interaction.
 - Progressive evolution from local mocks to API-backed intelligence.
+- Decisions belong to the Decision Engine; interfaces make them understandable and actionable.

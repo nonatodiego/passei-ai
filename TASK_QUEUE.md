@@ -68,6 +68,7 @@ Fila de tarefas tecnicas e de produto do Passei AI.
 | TQ-014 | Dev environment | Reexecutar lint e testes fora do sandbox apos EPERM local | TD-008 | Completed |
 | TQ-015 | Produto | Release 0.3 - Feature 002 - Banco de Questoes | Product Requirements | Completed |
 | TQ-016 | Produto | Feature 002.5 - Today Experience | PRD-0025 | Completed |
+| TQ-024 | Arquitetura | Decision Engine Architecture | Engineering Evolution | Completed |
 
 ## Blocked
 

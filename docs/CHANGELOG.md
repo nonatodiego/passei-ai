@@ -112,3 +112,13 @@ Formato inspirado em Keep a Changelog.
 
 - Rota raiz passou a apresentar Hoje; Dashboard foi preservado em `/evolucao`.
 - Navegacao oficial alinhada a Hoje, Cronograma, Estudos, Questoes, Banco de Erros, Revisoes, Metas, Evolucao e Configuracoes.
+
+## Decision Engine Architecture
+
+### Added
+
+- Modelo documental do Decision Engine, papel de AI Product Engineer e PRD-003 do Banco de Erros.
+
+### Changed
+
+- Study Engine documentado como submodulo do Decision Engine; prioridades passam a pertencer exclusivamente a essa camada.

@@ -132,3 +132,4 @@ Regras:
 - Modulos de produto nao devem duplicar Design System.
 - Imports entre modulos devem preferir contratos publicos.
 - Consultar `docs/MODULE_GUIDE.md` antes de criar novo modulo.
+- Nenhuma regra de prioridade pode existir na UI; documentar dados produzidos, consumidores e impacto no Decision Engine antes de iniciar uma feature.
