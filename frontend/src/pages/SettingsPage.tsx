@@ -1,7 +1,14 @@
+import { useEffect, useState } from 'react';
+import { Button, Card, Toast } from '@/design-system';
+import { getStorageInfo, requestPersistentStorage, type StorageInfo } from '@/core';
 import { contest, disciplines } from '@/mocks/data';
 import { formatDate } from '@/utils/format';
 
 export function SettingsPage() {
+  const [storage, setStorage] = useState<StorageInfo>();
+  const [message, setMessage] = useState<string>();
+  useEffect(() => { void getStorageInfo().then(setStorage); }, []);
+  async function protectStorage() { const result = await requestPersistentStorage(); setMessage(result === true ? 'Protecao de armazenamento concedida.' : result === false ? 'O navegador nao concedeu protecao adicional.' : 'Este navegador nao oferece esta solicitacao.'); setStorage(await getStorageInfo()); }
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
       <form className="rounded-lg border border-app-border bg-white p-5 shadow-panel">
@@ -42,6 +49,14 @@ export function SettingsPage() {
           ))}
         </div>
       </aside>
+      <Card className="xl:col-span-2">
+        <h2 className="font-semibold text-app-text">Dados locais</h2>
+        <p className="mt-2 text-sm leading-6 text-app-muted">Seus dados estao armazenados neste navegador e neste endereco da aplicacao. Eles nao sao compartilhados automaticamente com outros dispositivos ou dominios.</p>
+        {storage ? <div className="mt-4 grid gap-2 text-sm text-app-muted md:grid-cols-2"><span>Ambiente: <strong className="text-app-text">{storage.environment}</strong></span><span>Armazenamento persistente: <strong className="text-app-text">{storage.persisted === null ? 'Nao suportado' : storage.persisted ? 'Concedido' : 'Nao concedido'}</strong></span><span>Uso aproximado: {storage.usage ? `${Math.round(storage.usage / 1024)} KB` : 'Indisponivel'}</span><span>Quota aproximada: {storage.quota ? `${Math.round(storage.quota / 1024 / 1024)} MB` : 'Indisponivel'}</span></div> : null}
+        {storage?.environment === 'preview' ? <p className="mt-3 text-sm text-app-warning">Ambiente de teste: os dados deste endereco sao separados dos dados da versao de producao.</p> : null}
+        <div className="mt-4"><Button onClick={() => void protectStorage()} variant="secondary">Proteger armazenamento local</Button></div>
+        {message ? <div className="mt-4"><Toast title={message} tone="info" /></div> : null}
+      </Card>
     </div>
   );
 }
