@@ -56,6 +56,10 @@ Formato inspirado em Keep a Changelog.
 - Service mockado `StudySessionService`, hook `useStudySessions`, tipos e mocks de sessoes.
 - Funcoes testaveis para validacao, filtros, taxa de acertos, resumo e timer.
 - Contrato `StudyEngineStudyFacts` para integracao futura com o Study Engine.
+- Modulo oficial de Banco de Questoes em `frontend/src/questions`.
+- Lista, filtros, visualizacao, resposta e feedback imediato de questoes mockadas.
+- Contratos tipados para Study Engine, Banco de Erros e Analytics.
+- Testes de renderizacao, filtros, resposta correta, resposta incorreta, estado vazio e estado de erro do Banco de Questoes.
 
 ### Changed
 
@@ -85,3 +89,14 @@ Formato inspirado em Keep a Changelog.
 - Slogan oficial.
 - Visão inicial.
 - Proposta de valor.
+## Product Direction Update - Unreleased
+
+### Added
+
+- Documento `USER_JOURNEY.md` com jornadas, principios de experiencia, mapa de modulos e eventos futuros de produto.
+- PRD `PRD-0025-TODAY-EXPERIENCE.md` para a futura tela inicial operacional Hoje.
+
+### Changed
+
+- Direcao atualizada para jornadas; Hoje sera a futura tela inicial, Dashboard evoluira para Analytics, Study Engine sera o motor de decisao e a IA futura sera sua interface.
+- Banco de Questoes refinado no Product Experience Gate com limpeza de filtros, feedback textual nas alternativas, bloqueio de nova resposta, acao de proxima questao e KPIs de desempenho.

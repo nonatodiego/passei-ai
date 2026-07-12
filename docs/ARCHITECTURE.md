@@ -178,3 +178,6 @@ A arquitetura deve permitir:
 ## 10. Decisões registradas
 
 Consultar a pasta `docs/ADR`.
+## 11. Direcao por jornadas e contratos
+
+Os modulos de produto devem ser compostos para atender jornadas do usuario, especialmente a futura tela **Hoje**, sem concentrar regras de prioridade nas paginas. Cada modulo produz contratos tipados de fatos, eventos ou metricas para consumo futuro pelo Study Engine e Analytics. O Study Engine permanece a fonte oficial de decisao; a IA futura sera uma interface sobre seus contratos e recomendacoes.

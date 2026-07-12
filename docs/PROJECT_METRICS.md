@@ -6,12 +6,12 @@ Metricas de acompanhamento do Passei AI.
 
 | Metrica | Valor | Observacao |
 | --- | ---: | --- |
-| Sprints funcionais concluidas | 4 | Foundation, Design System, Dashboard e Sessoes de Estudo |
-| Test files | 8 | Vitest |
-| Testes | 25 | Ultima execucao local aprovada |
+| Sprints funcionais concluidas | 5 | Foundation, Design System, Dashboard, Sessoes de Estudo e Banco de Questoes |
+| Test files | 9 | Vitest |
+| Testes | 31 | Ultima execucao local aprovada |
 | Frontend build | Verde | Build local aprovado com aviso de chunk grande |
 | Lint | Verde | Executado fora do sandbox para contornar EPERM local |
-| Bundle JS principal | ~711 kB | Apos Product Experience Gate do Dashboard |
+| Bundle JS principal | ~724 kB | Apos os refinamentos de UX da Feature 002 - Banco de Questoes |
 | Product Experience Gate | Aprovado | Dashboard aprovado visualmente pelo Product Owner |
 | Documentos de engenharia | 9 | Criados e mantidos no fluxo de governanca |
 | Modulos oficiais frontend | 12 | Core, Shared, Study Engine e modulos de produto |

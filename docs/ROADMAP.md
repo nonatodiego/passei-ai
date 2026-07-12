@@ -191,3 +191,31 @@
 - [ ] Backup.
 - [ ] Deploy.
 - [ ] CI/CD.
+
+## Release 0.3 - Feature 002 - Banco de Questoes
+
+- [x] Banco de Questoes modular.
+- [x] Lista de questoes mockadas.
+- [x] Filtros por disciplina, assunto, dificuldade e status.
+- [x] Pesquisa por texto.
+- [x] Visualizacao e resposta de questao.
+- [x] Feedback imediato.
+- [x] Contratos para Study Engine, Banco de Erros e Analytics.
+## Product Direction - Jornadas
+
+- [x] Documentar jornadas de usuario e principios de experiencia.
+- [x] Definir Hoje como futura tela inicial operacional.
+- [x] Definir evolucao do Dashboard para Analytics/Painel de Evolucao.
+- [x] Definir Study Engine como motor de decisao e IA como interface futura.
+- [x] Especificar Feature 002.5 - Today Experience.
+
+## Proximas features recomendadas
+
+1. Feature 002.5 - Today Experience.
+2. Feature 003 - Banco de Erros.
+3. Feature 004 - Revisoes.
+4. Feature 005 - Metas.
+5. Feature 006 - Analytics.
+6. Feature 007 - Simulados.
+7. Feature 008 - Study Engine com regras reais.
+8. Feature 009 - Coach AI.

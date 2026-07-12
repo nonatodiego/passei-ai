@@ -2,28 +2,37 @@
 
 ## Objetivo
 
-Registrar e analisar sessoes de questoes.
+Implementar o Banco de Questoes oficial do Passei AI.
 
 ## Responsabilidades
 
-- Questoes resolvidas.
-- Acertos e erros.
-- Fontes de questoes.
-- Estatisticas por disciplina e assunto.
+- Exibir questoes mockadas.
+- Permitir filtros por disciplina, assunto, dificuldade, status e texto.
+- Permitir visualizacao e resposta de questoes.
+- Exibir feedback imediato.
+- Calcular estatisticas basicas.
+- Preparar contratos para Study Engine, Banco de Erros e Analytics.
 
 ## Fluxo
 
-Services e mocks alimentam hooks, pages apresentam dados com Design System.
+`mocks/` fornece questoes tipadas. `services/` filtra dados, calcula estatisticas e cria contratos de integracao. `hooks/` coordena estado local. `pages/` compoe a experiencia usando componentes do Design System.
 
 ## Integracoes
 
-- Study Engine para impacto de prioridade.
-- Reviews e Error Bank futuros via contratos, nao imports diretos.
+- Study Engine: recebe fatos agregados de desempenho e assuntos dificeis.
+- Banco de Erros: recebe candidato estruturado de questao incorreta.
+- Analytics: recebe evento tipado de resposta.
+
+As integracoes sao apenas contratos nesta feature. Nao ha backend, IA ou persistencia real.
 
 ## Dependencias
 
-Nao deve depender diretamente de modulos visuais externos.
+- React.
+- Design System oficial.
+- Lucide React para icones.
 
 ## Exemplo de uso
 
-Expor contratos em `types/` antes de criar UI complexa.
+```tsx
+import { QuestionBankPage } from '@/questions/pages';
+```

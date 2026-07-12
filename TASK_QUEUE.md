@@ -49,6 +49,14 @@ Fila de tarefas tecnicas e de produto do Passei AI.
 | TQ-011 | Arquitetura | Automatizar fronteiras entre modulos | TD-007 | Backlog |
 | TQ-008 | Produto | Sprint 5 - Estudos e Questoes | ROADMAP | Backlog |
 | TQ-009 | Produto | Sprint 6 - Banco de Erros e Revisoes | ROADMAP | Backlog |
+| TQ-016 | Produto | Feature 002.5 - Today Experience | PRD-0025 | Backlog |
+| TQ-017 | Produto | Feature 003 - Banco de Erros | Product Direction | Backlog |
+| TQ-018 | Produto | Feature 004 - Revisoes | Product Direction | Backlog |
+| TQ-019 | Produto | Feature 005 - Metas | Product Direction | Backlog |
+| TQ-020 | Produto | Feature 006 - Analytics | Product Direction | Backlog |
+| TQ-021 | Produto | Feature 007 - Simulados | Product Direction | Backlog |
+| TQ-022 | Produto | Feature 008 - Study Engine com regras reais | Product Direction | Backlog |
+| TQ-023 | Produto | Feature 009 - Coach AI | Product Direction | Backlog |
 
 ## Completed
 
@@ -59,6 +67,7 @@ Fila de tarefas tecnicas e de produto do Passei AI.
 | TQ-012 | Arquitetura | Engineering Phase 2 - Modular Platform | Architecture Review | Completed |
 | TQ-013 | Produto | Sessoes de Estudo | Sprint Study Sessions | Completed |
 | TQ-014 | Dev environment | Reexecutar lint e testes fora do sandbox apos EPERM local | TD-008 | Completed |
+| TQ-015 | Produto | Release 0.3 - Feature 002 - Banco de Questoes | Product Requirements | Completed |
 
 ## Blocked
 

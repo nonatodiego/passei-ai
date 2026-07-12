@@ -125,3 +125,14 @@ A arquitetura deve permitir internacionalização futura.
 - Redução de erros recorrentes.
 - Índice de preparação.
 - Retenção do usuário.
+## 14. Direcao orientada por jornadas
+
+O Passei AI sera orientado pela jornada do usuario, nao por uma colecao de telas. A experiencia deve ajudar o usuario a decidir e executar o proximo passo de estudo.
+
+- A futura tela inicial oficial sera **Hoje**.
+- O Dashboard atual evoluira para Analytics/Painel de Evolucao.
+- O Study Engine sera o motor de decisao, prioridade e recomendacao.
+- A IA futura sera uma interface sobre o Study Engine, e nao um mecanismo paralelo de regras.
+- Cada modulo deve gerar dados estruturados para recomendacoes futuras.
+
+Consulte `docs/USER_JOURNEY.md` para os fluxos oficiais de produto.

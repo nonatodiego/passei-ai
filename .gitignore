@@ -6,3 +6,4 @@ dist/
 *.tsbuildinfo
 frontend/.dev-server/
 .dev-server/
+.dev-server-questions/
