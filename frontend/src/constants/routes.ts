@@ -6,6 +6,7 @@ import {
   Flag,
   Goal,
   HelpCircle,
+  Home,
   RotateCcw,
   Settings,
 } from 'lucide-react';
@@ -13,8 +14,15 @@ import {
 export const routes = [
   {
     path: '/',
-    label: 'Dashboard',
-    title: 'Dashboard',
+    label: 'Hoje',
+    title: 'Hoje',
+    actionLabel: 'Comecar agora',
+    icon: Home,
+  },
+  {
+    path: '/evolucao',
+    label: 'Evolucao',
+    title: 'Evolucao',
     actionLabel: 'Registrar estudo',
     icon: BarChart3,
   },

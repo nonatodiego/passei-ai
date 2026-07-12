@@ -219,3 +219,11 @@
 6. Feature 007 - Simulados.
 7. Feature 008 - Study Engine com regras reais.
 8. Feature 009 - Coach AI.
+
+## Release 0.4 - Feature 002.5 - Today Experience
+
+- [x] Criar modulo `today/` com dados e contratos tipados.
+- [x] Definir Hoje como rota principal.
+- [x] Reposicionar Dashboard como Evolucao.
+- [x] Implementar plano diario, alertas, revisao, questoes recomendadas e resumo.
+- [x] Validar estados, responsividade e Product Experience Gate.

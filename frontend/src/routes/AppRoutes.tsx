@@ -11,13 +11,15 @@ import { ReviewsPage } from '@/pages/ReviewsPage';
 import { SchedulePage } from '@/pages/SchedulePage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { StudySessionsPage } from '@/study/pages';
+import { TodayPage } from '@/today/pages/TodayPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
     children: [
-      { index: true, element: <DashboardPage /> },
+      { index: true, element: <TodayPage /> },
+      { path: 'evolucao', element: <DashboardPage /> },
       { path: 'cronograma', element: <SchedulePage /> },
       { path: 'estudos', element: <StudySessionsPage /> },
       { path: 'questoes', element: <QuestionsPage /> },

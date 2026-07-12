@@ -28,6 +28,11 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-007 | Arquitetura modular | Fronteiras entre modulos ainda nao sao validadas automaticamente | Imports cruzados indevidos podem surgir conforme o produto cresce | Media | Aberto |
 | TD-008 | Dev environment | `npm.cmd run lint` e `npm.cmd run test` podem falhar no sandbox com EPERM em `C:\Users\Pichau` | Contornado com execucao fora do sandbox; manter observacao para futuras sessoes | Baixa | Mitigado |
 | TD-009 | Questions | Testes atuais validam renderizacao estatica e regras puras; fluxos completos no navegador ainda dependem de ambiente DOM | Pode reduzir confianca em interacoes futuras | Media | Aberto |
+| TD-010 | Performance | Bundle principal acima de 500 kB | Pode afetar carregamento inicial | Media | Aberto |
+| TD-011 | Navigation testing | Ausencia de testes DOM para Sidebar, links ativos e navegacao | Regressao de rotas pode passar sem cobertura de integracao | Media | Aberto |
+| TD-012 | Today | TodayPage deve ser decomposta antes de novas interacoes | Crescimento da pagina pode reduzir legibilidade e testabilidade | Media | Aberto |
+| TD-013 | Visual QA | Testes visuais automatizados por breakpoint ainda nao existem | Regressao responsiva depende de revisao manual | Media | Aberto |
+| TD-014 | Today UX | Status das atividades pode ganhar maior clareza visual | Pode reduzir leitura rapida do plano em evolucoes futuras | Baixa | Aberto |
 
 ## Regras
 

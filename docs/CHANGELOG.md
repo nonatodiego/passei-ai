@@ -100,3 +100,15 @@ Formato inspirado em Keep a Changelog.
 
 - Direcao atualizada para jornadas; Hoje sera a futura tela inicial, Dashboard evoluira para Analytics, Study Engine sera o motor de decisao e a IA futura sera sua interface.
 - Banco de Questoes refinado no Product Experience Gate com limpeza de filtros, feedback textual nas alternativas, bloqueio de nova resposta, acao de proxima questao e KPIs de desempenho.
+
+## Release 0.4 - Today Experience
+
+### Added
+
+- Modulo Today com mocks, tipos, service, hook, pagina, estados e testes.
+- Documento de visao `VISION_1.0.md`.
+
+### Changed
+
+- Rota raiz passou a apresentar Hoje; Dashboard foi preservado em `/evolucao`.
+- Navegacao oficial alinhada a Hoje, Cronograma, Estudos, Questoes, Banco de Erros, Revisoes, Metas, Evolucao e Configuracoes.
