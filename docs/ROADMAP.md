@@ -235,3 +235,10 @@
 - [x] Posicionar Study Engine como submodulo do Decision Engine.
 - [x] Preparar PRD-003-ERROR-BANK com fluxo Error Bank -> Decision Engine -> Today.
 - [ ] Implementar Feature 003 - Banco de Erros somente apos aprovacao desta evolucao.
+
+## Release 0.5 - Feature 003 - Banco de Erros
+
+- [x] Criar modulo Error Bank com mocks e contratos tipados.
+- [x] Implementar KPIs, filtros, lista, drawer e estados principais.
+- [x] Preparar fatos para Review, Recommendation, Analytics e Today.
+- [x] Executar validacao tecnica e aprovar Product Experience Gate.

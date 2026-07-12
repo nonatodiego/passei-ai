@@ -37,6 +37,7 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-016 | Arquitetura modular | Automatizar fronteiras entre modulos | Imports indevidos podem crescer sem deteccao | Media | Aberto |
 | TD-017 | Mocks | Evitar introducao de regras locais em mocks | Prioridades podem divergir do Decision Engine | Media | Aberto |
 | TD-018 | Backend | Definir contexto de usuario para persistencia e multiusuario | Contratos atuais ainda sao locais ao MVP | Media | Aberto |
+| TD-019 | Error Bank | Formulario manual, foco e acoes mockadas precisavam de testes DOM | Cobertura adicionada com Testing Library | Media | Resolvido |
 
 ## Regras
 

@@ -122,3 +122,11 @@ Formato inspirado em Keep a Changelog.
 ### Changed
 
 - Study Engine documentado como submodulo do Decision Engine; prioridades passam a pertencer exclusivamente a essa camada.
+
+## Feature 003 - Error Bank
+
+### Added
+
+- Modulo Banco de Erros com registros mockados, filtros, KPIs, detalhes e contratos para o Decision Engine.
+- Cadastro manual completo, validacao acessivel, feedback de acoes e testes DOM de foco e teclado.
+- Product Experience Gate aprovado pelo Product Owner.

@@ -33,6 +33,7 @@ Nota de 0 a 10, calculada por revisão técnica ao final de cada sprint.
 | Banco de Questoes | 8.7 | Modulo tipado, estados e fluxo de resposta claro; bundle e testes de interacao no navegador seguem como melhorias futuras |
 | Today Experience | 8.5 | Centro diario aprovado visualmente, modular e tipado; bundle, testes DOM e decomposicao da pagina permanecem registrados |
 | Decision Engine Architecture | 8.8 | Modelo de decisao documentado e sem regressao funcional; consolidacao de contratos e fronteiras automaticas seguem como evolucao |
+| Banco de Erros | 8.6 | Fluxos mockados, acessibilidade de overlays e testes DOM cobertos; bundle e testes visuais automatizados seguem como divida |
 
 ## Regras de corte
 
