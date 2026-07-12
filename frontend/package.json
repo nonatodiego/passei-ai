@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "import:schedule": "node ../scripts/import-dataprev-schedule.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test": "vitest run",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
+    "dexie": "^4.4.4",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -33,12 +35,14 @@
     "eslint-config-prettier": "latest",
     "eslint-plugin-react-hooks": "latest",
     "eslint-plugin-react-refresh": "latest",
+    "fake-indexeddb": "^6.2.5",
     "globals": "latest",
     "jsdom": "^29.1.1",
     "postcss": "latest",
     "prettier": "latest",
     "tailwindcss": "latest",
     "typescript-eslint": "latest",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "xlsx": "^0.18.5"
   }
 }

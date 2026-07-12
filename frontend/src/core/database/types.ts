@@ -1,0 +1,6 @@
+export interface StoredEntity { id: string; createdAt: string; updatedAt: string; deletedAt?: string; version?: number; }
+export interface ContestProfile extends StoredEntity { name: string; role: string; board: string; examDate: string; targetAccuracy: number; }
+export interface Discipline extends StoredEntity { name: string; contestProfileId: string; }
+export interface ScheduleItem extends StoredEntity { plannedDate: string; disciplineName: string; title: string; activityType: string; status: string; completedAt?: string; actualMinutes?: number; priority?: string; scheduleSituation?: string; importedDelayDays?: number; notes?: string; outsideExamWindow: boolean; }
+export interface AppSetting extends StoredEntity { key: string; value: string; }
+export interface BackupPayload { metadata: { app: 'Passei AI'; schemaVersion: number; exportedAt: string }; appSettings: AppSetting[]; contestProfiles: ContestProfile[]; disciplines: Discipline[]; scheduleItems: ScheduleItem[]; studySessions: StoredEntity[]; questionBlocks: StoredEntity[]; questions: StoredEntity[]; questionAttempts: StoredEntity[]; errorRecords: StoredEntity[]; reviews: StoredEntity[]; mockExams: StoredEntity[]; goals: StoredEntity[]; }
