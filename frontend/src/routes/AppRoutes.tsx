@@ -10,7 +10,7 @@ import { QuestionsPage } from '@/pages/QuestionsPage';
 import { ReviewsPage } from '@/pages/ReviewsPage';
 import { SchedulePage } from '@/pages/SchedulePage';
 import { SettingsPage } from '@/pages/SettingsPage';
-import { StudiesPage } from '@/pages/StudiesPage';
+import { StudySessionsPage } from '@/study/pages';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       { path: 'cronograma', element: <SchedulePage /> },
-      { path: 'estudos', element: <StudiesPage /> },
+      { path: 'estudos', element: <StudySessionsPage /> },
       { path: 'questoes', element: <QuestionsPage /> },
       { path: 'banco-de-erros', element: <ErrorBankPage /> },
       { path: 'revisoes', element: <ReviewsPage /> },

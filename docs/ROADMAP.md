@@ -9,8 +9,8 @@
 - [x] Licença MIT.
 - [x] Modelo freemium.
 - [x] Documentação base.
-- [ ] Adicionar arquivos oficiais da marca.
-- [ ] Validar identidade visual final.
+- [x] Adicionar arquivos oficiais da marca.
+- [x] Validar identidade visual final.
 - [ ] Publicar repositório no GitHub.
 
 ## Sprint 1 — Design System
@@ -84,6 +84,8 @@
 - [x] Adicionar testes de renderização do Dashboard.
 - [x] Adicionar teste de estado vazio.
 - [x] Adicionar teste de estado de erro.
+- [x] Restaurar renderizacao correta do Tailwind CSS v4.
+- [x] Refinar experiencia visual do Dashboard conforme Product Experience Gate aprovado.
 
 ## Engineering Foundation
 
@@ -134,6 +136,12 @@
 ## Sprint 5 — Estudos e Questões
 
 - [x] Sessões de estudo iniciais.
+- [x] Formulário de registro de sessão.
+- [x] Histórico filtrável de sessões.
+- [x] Resumo de desempenho de estudo.
+- [x] Timer local de estudo.
+- [x] Estados loading, empty, error e success.
+- [x] Testes de validação, filtros, cálculos e timer.
 - [x] Registro de questões inicial.
 - [x] Acertos e erros.
 - [x] Histórico inicial.

@@ -5,3 +5,4 @@ dist/
 *.local
 *.tsbuildinfo
 frontend/.dev-server/
+.dev-server/

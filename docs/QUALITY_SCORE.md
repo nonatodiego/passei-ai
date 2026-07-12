@@ -29,6 +29,8 @@ Nota de 0 a 10, calculada por revisão técnica ao final de cada sprint.
 
 | Engineering Phase 2 | 8.6 | Plataforma modular criada com Core, Shared, modulos oficiais e docs; migracao dos arquivos globais segue como divida controlada |
 
+| Study Sessions + Product Experience Gate | 8.8 | Modulo de sessoes entregue, renderizacao Tailwind v4 restaurada, Dashboard aprovado visualmente e validacao final verde |
+
 ## Regras de corte
 
 - Abaixo de 7.0: não avançar sem plano de correção.

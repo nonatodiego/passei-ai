@@ -26,6 +26,7 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 
 | TD-006 | Arquitetura modular | Pastas globais legadas ainda coexistem com modulos oficiais | Pode confundir fronteiras ate a migracao incremental terminar | Media | Aberto |
 | TD-007 | Arquitetura modular | Fronteiras entre modulos ainda nao sao validadas automaticamente | Imports cruzados indevidos podem surgir conforme o produto cresce | Media | Aberto |
+| TD-008 | Dev environment | `npm.cmd run lint` e `npm.cmd run test` podem falhar no sandbox com EPERM em `C:\Users\Pichau` | Contornado com execucao fora do sandbox; manter observacao para futuras sessoes | Baixa | Mitigado |
 
 ## Regras
 

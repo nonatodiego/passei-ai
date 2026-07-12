@@ -1,34 +1,35 @@
 # PROJECT_METRICS.md
 
-Métricas de acompanhamento do Passei AI.
+Metricas de acompanhamento do Passei AI.
 
 ## Snapshot atual
 
-| Métrica | Valor | Observação |
+| Metrica | Valor | Observacao |
 | --- | ---: | --- |
-| Sprints funcionais concluídas | 3 | Foundation, Design System e Dashboard |
-| Test files | 7 | Vitest |
-| Testes | 17 | Última execução local |
-| Frontend build | Verde | Com aviso de chunk grande |
-| Lint | Verde | Última execução local |
-| Bundle JS principal | ~698 kB | Após Engineering Phase 2 |
-| Documentos de engenharia | 9 | Criados nesta sprint |
+| Sprints funcionais concluidas | 4 | Foundation, Design System, Dashboard e Sessoes de Estudo |
+| Test files | 8 | Vitest |
+| Testes | 25 | Ultima execucao local aprovada |
+| Frontend build | Verde | Build local aprovado com aviso de chunk grande |
+| Lint | Verde | Executado fora do sandbox para contornar EPERM local |
+| Bundle JS principal | ~711 kB | Apos Product Experience Gate do Dashboard |
+| Product Experience Gate | Aprovado | Dashboard aprovado visualmente pelo Product Owner |
+| Documentos de engenharia | 9 | Criados e mantidos no fluxo de governanca |
 | Modulos oficiais frontend | 12 | Core, Shared, Study Engine e modulos de produto |
 
-## Métricas-alvo
+## Metricas-alvo
 
-| Área | Meta |
+| Area | Meta |
 | --- | --- |
 | Lint | 100% verde |
 | Build | 100% verde |
-| Testes críticos | 100% verdes |
+| Testes criticos | 100% verdes |
 | Bundle inicial | Monitorar abaixo de 500 kB ou justificar |
-| Acessibilidade | Estados principais com semântica básica |
-| Documentação | ROADMAP e CHANGELOG sempre atualizados |
+| Acessibilidade | Estados principais com semantica basica |
+| Documentacao | ROADMAP e CHANGELOG sempre atualizados |
 
-## Rotina de atualização
+## Rotina de atualizacao
 
 - Atualizar ao final de cada sprint.
 - Registrar avisos relevantes de build.
-- Registrar aumento relevante de dependências ou bundle.
-- Conectar riscos a `TECH_DEBT.md` quando necessário.
+- Registrar aumento relevante de dependencias ou bundle.
+- Conectar riscos a `TECH_DEBT.md` quando necessario.

@@ -8,6 +8,8 @@ Formato inspirado em Keep a Changelog.
 
 ### Added
 
+- Identidade visual oficial do Passei AI como asset de marca do frontend.
+
 - Fundação documental do Passei AI.
 - PRODUCT.
 - MANIFESTO.
@@ -49,8 +51,18 @@ Formato inspirado em Keep a Changelog.
 - Arquitetura modular inicial com `core/`, `shared/` e modulos oficiais de produto.
 - Guia `docs/MODULE_GUIDE.md` para criacao e manutencao de modulos.
 - ADR-006 registrando a Arquitetura Modular do Passei AI.
+- Modulo oficial de Sessoes de Estudo em `frontend/src/study`.
+- Formulario de registro, historico, resumo de desempenho, filtros e timer local de estudo.
+- Service mockado `StudySessionService`, hook `useStudySessions`, tipos e mocks de sessoes.
+- Funcoes testaveis para validacao, filtros, taxa de acertos, resumo e timer.
+- Contrato `StudyEngineStudyFacts` para integracao futura com o Study Engine.
 
 ### Changed
+
+- Dashboard refinado visualmente conforme Product Experience Gate aprovado, com sidebar, header, banner, KPIs, plano do dia, revisao, grafico e secoes inferiores alinhados a referencia visual oficial.
+- Sidebar, Header, PageContainer e KPICard evoluidos para a experiencia visual oficial do Passei AI.
+- Tailwind CSS v4 corrigido para carregar `@import "tailwindcss"` e `@config "../tailwind.config.ts"`, restaurando tokens, utilities e estilos do Design System.
+- Validacao final de lint, build e testes concluida apos diagnostico do EPERM local do sandbox.
 
 - README atualizado com visão oficial do produto, stack, execução e verificações.
 - ROADMAP atualizado com o status da fundação do frontend.
@@ -63,6 +75,7 @@ Formato inspirado em Keep a Changelog.
 - Playbook, fluxo de desenvolvimento, checklists e contributing atualizados com QA visual, CTO Review, DoR e DoD.
 - TASK_QUEUE reorganizado para suportar governança de início e encerramento de Sprints.
 - ARCHITECTURE e ENGINEERING_PLAYBOOK atualizados com camadas Core, Shared e modulos de produto.
+- Rota `/estudos` passou a usar a pagina oficial do modulo `study`.
 
 ## [0.1.0] - 2026-07-11
 

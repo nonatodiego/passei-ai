@@ -7,7 +7,8 @@ export interface DashboardKpi {
   icon: LucideIcon;
   id: string;
   label: string;
-  tone: 'blue' | 'green' | 'amber' | 'red' | 'teal';
+  progress?: number;
+  tone: 'blue' | 'green' | 'amber' | 'red' | 'teal' | 'purple';
   value: string;
 }
 

@@ -18,7 +18,7 @@ export function AppLayout() {
   );
 
   return (
-    <div className="min-h-screen bg-app-background text-app-text lg:flex">
+    <div className="min-h-screen bg-[#F8FAFC] text-app-text lg:flex">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="min-w-0 flex-1">
         <Header

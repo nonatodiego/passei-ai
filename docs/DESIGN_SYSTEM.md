@@ -6,6 +6,14 @@
 
 **Planeje. Estude. Evolua. Passe.**
 
+Asset principal: `frontend/src/assets/brand/passei-ai-horizontal.jpg`.
+
+Uso recomendado:
+
+- Sidebar e superficies institucionais devem usar o logo horizontal.
+- O logo deve manter proporcao original, sem distorcao ou uso como background.
+- A marca deve aparecer sobre fundos claros, preservando contraste e legibilidade.
+
 ## 2. Direção visual
 
 - Tema light.
@@ -131,6 +139,13 @@ Escala baseada em 4 px:
 - LoadingState.
 - DataTable.
 
+### Componentes evoluidos no Product Experience Gate
+
+- Sidebar com logo oficial, navegacao, plano atual e perfil.
+- Header com titulo, data, notificacoes e acao primaria.
+- KPICard com icone circular, valor, helper e progresso opcional.
+- PageContainer com largura ampliada para dashboards responsivos.
+
 ## 6. Acessibilidade
 
 - Controles com foco visível.
@@ -160,7 +175,6 @@ A estrutura já está preparada para Storybook:
 
 ## 9. Pendências conhecidas
 
-- Criar arquivos oficiais de marca em `assets/brand/`.
 - Adicionar stories quando o Storybook for instalado.
 - Implementar componentes adicionais do catálogo expandido: IconButton, Textarea, Checkbox, Radio, Switch, DatePicker e ChartCard com variações avançadas.
 - Evoluir testes para interações no navegador quando a suíte usar Testing Library ou Playwright.

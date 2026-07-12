@@ -9,7 +9,7 @@ export function PageContainer({
   children: ReactNode;
   className?: string;
 }) {
-  return <main className={cn('mx-auto max-w-7xl px-4 py-6 md:px-6', className)}>{children}</main>;
+  return <main className={cn('mx-auto max-w-[1500px] px-4 pb-10 md:px-10', className)}>{children}</main>;
 }
 
 export function Section({
@@ -29,5 +29,5 @@ export function Content({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn('space-y-6', className)}>{children}</div>;
+  return <div className={cn('space-y-8', className)}>{children}</div>;
 }

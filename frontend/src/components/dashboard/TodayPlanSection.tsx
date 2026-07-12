@@ -1,44 +1,51 @@
-import { Badge, Card, CardDescription, CardHeader, CardTitle, Progress } from '@/design-system';
-import type { TodayPlanItem } from '@/types/dashboard';
+import { Check, ChevronRight } from 'lucide-react';
 
-const statusTone: Record<TodayPlanItem['status'], 'blue' | 'green' | 'amber'> = {
-  pendente: 'amber',
-  'em andamento': 'blue',
-  concluído: 'green',
-};
+import { Card } from '@/design-system';
+import type { TodayPlanItem } from '@/types/dashboard';
 
 export function TodayPlanSection({
   items,
-  scheduleProgress,
 }: {
   items: TodayPlanItem[];
   scheduleProgress: number;
 }) {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle>Plano de Hoje</CardTitle>
-        <CardDescription>Prioridades para manter execução e revisão em dia.</CardDescription>
-      </CardHeader>
-      <div className="space-y-3">
-        {items.map((item) => (
-          <div className="rounded-md border border-app-border p-3" key={item.id}>
-            <div className="flex items-start justify-between gap-3">
+    <Card className="h-full p-6">
+      <h2 className="text-xl font-bold text-app-text">Plano de Hoje</h2>
+      <div className="mt-6 space-y-5">
+        {items.map((item, index) => {
+          const isDone = index === 0;
+
+          return (
+            <div className="flex items-start gap-4" key={item.id}>
+              <span
+                className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border ${
+                  isDone
+                    ? 'border-app-success bg-app-success text-white'
+                    : 'border-blue-300 bg-white text-transparent'
+                }`}
+              >
+                <Check aria-hidden="true" className="h-4 w-4" />
+              </span>
               <div>
-                <p className="font-medium text-app-text">{item.title}</p>
-                <p className="mt-1 text-sm text-app-muted">{item.discipline}</p>
-              </div>
-              <div className="flex shrink-0 flex-col items-end gap-2">
-                <span className="rounded-md bg-blue-50 px-2 py-1 text-xs font-semibold text-app-primary">
-                  {item.time}
-                </span>
-                <Badge tone={statusTone[item.status]}>{item.status}</Badge>
+                <p className="font-semibold text-app-text">{item.title}</p>
+                <p className="mt-1 text-sm text-app-muted">
+                  {item.discipline} {item.time ? `• ${item.time}` : ''}
+                </p>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-      <Progress className="mt-5" label="Progresso do cronograma" value={scheduleProgress} />
+      <div className="mt-8 border-t border-app-border pt-5 text-center">
+        <a
+          className="inline-flex items-center gap-2 text-sm font-bold text-app-primary hover:text-blue-700"
+          href="/cronograma"
+        >
+          Ver cronograma completo
+          <ChevronRight aria-hidden="true" className="h-4 w-4" />
+        </a>
+      </div>
     </Card>
   );
 }
