@@ -1,11 +1,13 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
+import 'fake-indexeddb/auto';
 
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { errorBankMocks } from '@/error-bank/mocks';
+import { db } from '@/core/database/database';
 import { ErrorBankPage } from '@/error-bank/pages/ErrorBankPage';
 import {
   ErrorBankService,
@@ -23,6 +25,12 @@ import {
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+});
+
+beforeEach(async () => {
+  await db.delete();
+  await db.open();
+  await db.errorRecords.bulkPut(errorBankMocks);
 });
 
 async function openForm() {
@@ -79,7 +87,7 @@ describe('ErrorBankPage DOM', () => {
   it('opens accessible details, supports actions and returns focus', async () => {
     render(<ErrorBankPage />);
     const user = userEvent.setup();
-    const details = screen.getAllByRole('button', { name: 'Detalhes' })[0]!;
+    const details = (await screen.findAllByRole('button', { name: 'Detalhes' }))[0]!;
     await user.click(details);
     expect(screen.getByRole('dialog', { name: 'Detalhes do erro' })).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Marcar revisado' }));
@@ -93,7 +101,7 @@ describe('ErrorBankPage DOM', () => {
   it('marks an error as mastered and shows service failures', async () => {
     render(<ErrorBankPage />);
     const user = userEvent.setup();
-    await user.click(screen.getAllByRole('button', { name: 'Detalhes' })[0]!);
+    await user.click((await screen.findAllByRole('button', { name: 'Detalhes' }))[0]!);
     await user.click(screen.getByRole('button', { name: 'Marcar dominado' }));
     expect(await screen.findByRole('status')).toHaveTextContent('Assunto marcado como dominado.');
     vi.spyOn(ErrorBankService, 'runAction').mockImplementationOnce(() => {

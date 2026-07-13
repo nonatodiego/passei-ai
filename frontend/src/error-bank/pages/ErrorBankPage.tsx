@@ -41,14 +41,13 @@ export function ErrorBankPage() {
   }, [feedback]);
 
   function handleCreate(input: ErrorRecordInput) {
-    addRecord(input);
-    setFeedback({ message: 'Erro registrado com sucesso.', tone: 'success' });
+    void addRecord(input).then(({ wasDuplicate }) => setFeedback({ message: wasDuplicate ? 'Ocorrencia adicionada ao erro semelhante.' : 'Erro registrado com sucesso.', tone: 'success' })).catch(() => setFeedback({ message: 'Nao foi possivel registrar o erro.', tone: 'danger' }));
   }
 
-  function handleAction(action: ErrorAction) {
+  async function handleAction(action: ErrorAction) {
     if (!selected) return;
     try {
-      const updated = runAction(
+      const updated = await runAction(
         selected.id,
         action,
         action === 'reschedule' ? '2026-07-20' : undefined,
