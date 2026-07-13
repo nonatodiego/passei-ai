@@ -1,33 +1,12 @@
-# Schedule Module
+# Cronograma
 
-## Objetivo
-
-Apresentar o Cronograma Inteligente do Passei AI.
+Este modulo apresenta e atualiza as atividades reais importadas do plano DATAPREV.
+Os dados sao mantidos no IndexedDB e as alteracoes do usuario nunca sobrescrevem o arquivo de importacao.
 
 ## Responsabilidades
 
-- Calendario.
-- Timeline.
-- Lista.
-- Agenda semanal.
-- Agenda diaria.
-- Filtros de visualizacao.
-- Estados loading, empty, error e success.
+- Consultar atividades com filtros e paginação de interface.
+- Atualizar status, observacoes e reagendamentos.
+- Encaminhar uma atividade para o registro de estudo.
 
-## Fluxo
-
-O Schedule consome recomendacoes e prioridades do Study Engine por hooks e services. O modulo apresenta e filtra dados, mas nao decide prioridade.
-
-## Integracoes
-
-- Study Engine para decisoes de estudo.
-- Design System para UI.
-- Shared para utilitarios transversais.
-
-## Dependencias
-
-Pode depender de Study Engine e Shared. Nao deve depender de Dashboard ou outros modulos de produto.
-
-## Exemplo de uso
-
-Usar `useSchedule` para obter dados prontos para apresentacao.
+As prioridades e recomendacoes pertencem ao Decision Engine; este modulo apenas exibe os dados locais.
