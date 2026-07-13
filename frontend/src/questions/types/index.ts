@@ -71,3 +71,25 @@ export interface AnalyticsQuestionEvent {
   questionId: string;
   subject: string;
 }
+
+export interface QuestionBlockInput {
+  annulledAnswers: number;
+  bank: string;
+  date: string;
+  difficulty: QuestionDifficulty;
+  discipline: string;
+  durationMinutes: number;
+  notes: string;
+  platform: string;
+  correctAnswers: number;
+  subject: string;
+  totalQuestions: number;
+  wrongAnswers: number;
+}
+
+export interface QuestionBlock extends QuestionBlockInput {
+  accuracyRate: number;
+  createdAt: string;
+  id: string;
+  updatedAt: string;
+}

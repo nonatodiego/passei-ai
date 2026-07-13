@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 
 import {
   QuestionFilters,
+  QuestionBlockForm,
   QuestionList,
   QuestionStatsCards,
   QuestionViewer,
@@ -125,6 +126,7 @@ export function QuestionBankView({
         </div>
       </Section>
       <QuestionStatsCards stats={stats} />
+      <QuestionBlockForm />
       <Section className="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.05fr)]">
         <Card className="p-0">
           <div className="border-b border-app-border p-5">
