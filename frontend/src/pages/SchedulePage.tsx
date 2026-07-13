@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CalendarDays, Check, Pencil, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ import {
   Toast,
   type TabItem,
 } from '@/design-system';
-import { completeScheduleItem, updateScheduleItem, type ScheduleItemFilters, type ScheduleWindow } from '@/core';
+import { completeScheduleItem, updateScheduleItem, type ScheduleItemFilters, type ScheduleWindow } from '@/core/database/scheduleRepository';
 import { useScheduleItems } from '@/schedule/hooks';
 import type { ScheduleItem } from '@/core/database/types';
 import { useSchedule } from '@/hooks/useSchedule';
@@ -202,12 +202,6 @@ function ScheduleEditModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string>();
 
-  useEffect(() => {
-    setNotes(item?.notes ?? '');
-    setPlannedDate(item?.plannedDate ?? '');
-    setError(undefined);
-  }, [item]);
-
   async function save() {
     if (!item) return;
     setSaving(true);
@@ -243,8 +237,6 @@ export function SchedulePage() {
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
   const visibleItems = items.slice((page - 1) * pageSize, page * pageSize);
 
-  useEffect(() => setPage(1), [filters]);
-
   async function markCompleted(id: string) {
     await completeScheduleItem(id);
   }
@@ -269,14 +261,14 @@ export function SchedulePage() {
         <Button icon={<Play aria-hidden="true" className="h-4 w-4" />} onClick={() => navigate('/estudos')}>Registrar estudo</Button>
       </Section>
       <Section className="grid gap-3 rounded-md border border-app-border bg-white p-4 md:grid-cols-2 xl:grid-cols-5">
-        <Input label="Pesquisa" name="schedule-real-query" onChange={(event) => setFilters((current) => ({ ...current, query: event.target.value }))} placeholder="Disciplina ou conteudo" value={filters.query ?? ''} />
-        <Select label="Visao" name="schedule-window" onChange={(event) => setFilters((current) => ({ ...current, window: event.target.value as ScheduleWindow }))} options={[['all','Todas'],['today','Hoje'],['overdue','Atrasadas'],['upcoming','Proximas'],['completed','Concluidas'],['beforeExam','Ate a prova'],['outsideExam','Fora da janela da prova']].map(([value,label]) => ({ value, label }))} value={filters.window ?? 'all'} />
-        <Select label="Disciplina" name="schedule-real-discipline" onChange={(event) => setFilters((current) => ({ ...current, discipline: event.target.value }))} options={[{ value: 'all', label: 'Todas' }, ...disciplines.map((discipline) => ({ value: discipline, label: discipline }))]} value={filters.discipline ?? 'all'} />
-        <Input label="De" name="schedule-start-date" onChange={(event) => setFilters((current) => ({ ...current, startDate: event.target.value }))} type="date" value={filters.startDate ?? ''} />
-        <Input label="Ate" name="schedule-end-date" onChange={(event) => setFilters((current) => ({ ...current, endDate: event.target.value }))} type="date" value={filters.endDate ?? ''} />
+        <Input label="Pesquisa" name="schedule-real-query" onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, query: event.target.value })); }} placeholder="Disciplina ou conteudo" value={filters.query ?? ''} />
+        <Select label="Visao" name="schedule-window" onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, window: event.target.value as ScheduleWindow })); }} options={[['all','Todas'],['today','Hoje'],['overdue','Atrasadas'],['upcoming','Proximas'],['completed','Concluidas'],['beforeExam','Ate a prova'],['outsideExam','Fora da janela da prova']].map(([value,label]) => ({ value, label }))} value={filters.window ?? 'all'} />
+        <Select label="Disciplina" name="schedule-real-discipline" onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, discipline: event.target.value })); }} options={[{ value: 'all', label: 'Todas' }, ...disciplines.map((discipline) => ({ value: discipline, label: discipline }))]} value={filters.discipline ?? 'all'} />
+        <Input label="De" name="schedule-start-date" onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, startDate: event.target.value })); }} type="date" value={filters.startDate ?? ''} />
+        <Input label="Ate" name="schedule-end-date" onChange={(event) => { setPage(1); setFilters((current) => ({ ...current, endDate: event.target.value })); }} type="date" value={filters.endDate ?? ''} />
       </Section>
       {items.length === 0 ? <EmptyState description="Nao ha atividades para este filtro. Ajuste a pesquisa ou a janela do cronograma." icon={CalendarDays} title="Nenhuma atividade encontrada" /> : <Section className="space-y-4"><DataTable columns={columns} rows={visibleItems} /><div className="flex items-center justify-between text-sm text-app-muted"><span>Mostrando {(page - 1) * pageSize + 1}-{Math.min(page * pageSize, items.length)} de {items.length}</span><div className="flex gap-2"><Button disabled={page === 1} onClick={() => setPage((current) => current - 1)} size="sm" variant="secondary">Anterior</Button><Button disabled={page === totalPages} onClick={() => setPage((current) => current + 1)} size="sm" variant="secondary">Proxima</Button></div></div></Section>}
-      <ScheduleEditModal item={editing} onClose={() => setEditing(undefined)} />
+      <ScheduleEditModal item={editing} key={editing?.id ?? 'schedule-editor'} onClose={() => setEditing(undefined)} />
     </Content>
   );
 }

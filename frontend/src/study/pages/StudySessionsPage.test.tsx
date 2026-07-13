@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import 'fake-indexeddb/auto';
 
 import { defaultStudySessionFilters, defaultStudySessionInput } from '@/study/hooks';
 import { studySessionMocks } from '@/study/mocks';
@@ -41,8 +42,8 @@ describe('StudySessionsPage', () => {
     expect(html).toContain('Timer de estudo');
   });
 
-  it('creates a valid study session through the mock service', () => {
-    const session = StudySessionService.createSession({
+  it('creates a valid persisted study session', async () => {
+    const session = await StudySessionService.createSession({
       ...defaultStudySessionInput,
       correctAnswers: 8,
       disciplineId: 'banco',
@@ -53,7 +54,7 @@ describe('StudySessionsPage', () => {
       wrongAnswers: 2,
     });
 
-    expect(session.id).toContain('study-session-');
+    expect(session.id).toBeTruthy();
     expect(session.subject).toBe('SQL');
     expect(session.correctAnswers).toBe(8);
   });

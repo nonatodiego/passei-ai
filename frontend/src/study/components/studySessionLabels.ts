@@ -4,6 +4,7 @@ import type { StudyDifficulty, StudyMaterialType, StudySessionStatus } from '@/s
 export const materialTypeLabel: Record<StudyMaterialType, string> = {
   law: 'Lei seca',
   mockExam: 'Simulado',
+  reading: 'Leitura',
   other: 'Outro',
   pdf: 'PDF',
   questions: 'Questoes',

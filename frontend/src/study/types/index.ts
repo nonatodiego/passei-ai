@@ -6,6 +6,7 @@ export type StudyMaterialType =
   | 'questions'
   | 'review'
   | 'mockExam'
+  | 'reading'
   | 'other';
 
 export type StudyDifficulty = 'easy' | 'moderate' | 'hard';
@@ -28,6 +29,8 @@ export interface StudySession {
   wrongAnswers: number;
   notes: string;
   source: string;
+  scheduleItemId?: string;
+  startTime?: string;
   status: StudySessionStatus;
   createdAt: string;
   updatedAt: string;
@@ -46,6 +49,8 @@ export interface StudySessionInput {
   wrongAnswers: number;
   notes: string;
   source: string;
+  scheduleItemId?: string;
+  startTime?: string;
   status: StudySessionStatus;
 }
 

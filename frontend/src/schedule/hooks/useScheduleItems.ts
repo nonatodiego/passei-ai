@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getScheduleItems, type ScheduleItemFilters } from '@/core/database/scheduleRepository';
-import { useLocalData } from '@/core/providers/LocalDataProvider';
+import { useLocalData } from '@/core/providers/useLocalData';
 import type { ScheduleItem } from '@/core/database/types';
 
 export function useScheduleItems(filters: ScheduleItemFilters) {
@@ -13,7 +13,6 @@ export function useScheduleItems(filters: ScheduleItemFilters) {
   useEffect(() => {
     if (databaseStatus !== 'ready') return;
     let active = true;
-    setIsLoading(true);
     void getScheduleItems(filters)
       .then((records) => {
         if (active) {

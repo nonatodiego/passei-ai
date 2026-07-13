@@ -12,9 +12,11 @@ function formatElapsed(seconds: number): string {
 
 export function StudySessionTimer({
   dispatch,
+  onFinished,
   timer,
 }: {
   dispatch: (action: StudyTimerAction) => void;
+  onFinished?: (minutes: number) => void;
   timer: StudyTimerState;
 }) {
   const measuredMinutes = timerSecondsToMinutes(timer.elapsedSeconds);
@@ -34,7 +36,7 @@ export function StudySessionTimer({
           <Button onClick={() => dispatch({ type: 'start' })} size="sm">Iniciar</Button>
           <Button onClick={() => dispatch({ type: 'pause' })} size="sm" variant="secondary">Pausar</Button>
           <Button onClick={() => dispatch({ type: 'resume' })} size="sm" variant="secondary">Continuar</Button>
-          <Button onClick={() => dispatch({ type: 'finish' })} size="sm" variant="secondary">Encerrar</Button>
+          <Button onClick={() => { dispatch({ type: 'finish' }); onFinished?.(measuredMinutes); }} size="sm" variant="secondary">Encerrar</Button>
           <Button className="col-span-2" onClick={() => dispatch({ type: 'discard' })} size="sm" variant="ghost">Descartar</Button>
         </div>
         {timer.status === 'finished' ? (

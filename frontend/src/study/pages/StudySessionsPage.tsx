@@ -1,4 +1,6 @@
 import { BookOpen } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import {
   StudySessionFilters,
@@ -8,6 +10,7 @@ import {
   StudySessionTimer,
 } from '@/study/components';
 import { useStudySessions, useStudyTimer } from '@/study/hooks';
+import { db } from '@/core/database/database';
 import type {
   StudySession,
   StudySessionFilters as StudySessionFiltersState,
@@ -39,6 +42,7 @@ export function StudySessionsView({
   status,
   summary,
   timer,
+  studyPrefill,
 }: {
   allSessions: StudySession[];
   dispatchTimer: (action: StudyTimerAction) => void;
@@ -48,6 +52,7 @@ export function StudySessionsView({
   status: StudySessionViewStatus;
   summary: StudySessionSummary;
   timer: StudyTimerState;
+  studyPrefill?: Partial<import('@/study/types').StudySessionInput>;
 }) {
   if (status === 'loading') {
     return (
@@ -72,17 +77,20 @@ export function StudySessionsView({
 
   if (status === 'empty') {
     return (
-      <Content>
-        <StudySessionFilters
-          filters={filters}
-          onChange={onFiltersChange}
-          sessions={allSessions}
-        />
-        <EmptyState
-          description="Registre uma sessao ou ajuste os filtros para acompanhar seu historico."
-          icon={BookOpen}
-          title="Nenhuma sessao de estudo"
-        />
+      <Content className="space-y-6">
+        <Section className="rounded-md border border-app-border bg-white p-6 shadow-panel">
+          <Badge tone="blue">Primeiro registro</Badge>
+          <h1 className="mt-3 text-2xl font-semibold text-app-text">Comece a registrar seus estudos</h1>
+          <p className="mt-2 text-sm text-app-muted">Seu historico e seus indicadores aparecerao aqui apos a primeira sessao salva.</p>
+        </Section>
+        <Section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <EmptyState
+            description="Registre uma sessao para criar seu historico e acompanhar a evolucao com dados reais."
+            icon={BookOpen}
+            title="Nenhuma sessao de estudo"
+          />
+          <StudySessionForm initialInput={studyPrefill} />
+        </Section>
       </Content>
     );
   }
@@ -133,7 +141,7 @@ export function StudySessionsView({
         </div>
         <div className="space-y-4 xl:sticky xl:top-6 xl:self-start">
           <StudySessionTimer dispatch={dispatchTimer} timer={timer} />
-          <StudySessionForm />
+          <StudySessionForm initialInput={studyPrefill} />
         </div>
       </Section>
     </Content>
@@ -143,6 +151,26 @@ export function StudySessionsView({
 export function StudySessionsPage() {
   const { allSessions, filters, sessions, setFilters, status, summary } = useStudySessions();
   const { dispatchTimer, timer } = useStudyTimer();
+  const [searchParams] = useSearchParams();
+  const [studyPrefill, setStudyPrefill] = useState<Partial<import('@/study/types').StudySessionInput>>();
+  const scheduleItemId = searchParams.get('scheduleItemId');
+
+  useEffect(() => {
+    if (!scheduleItemId) return;
+    let active = true;
+    void db.scheduleItems.get(scheduleItemId).then((item) => {
+      if (!item || !active) return;
+      setStudyPrefill({
+        date: item.plannedDate,
+        disciplineId: `dataprev-${item.disciplineName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        disciplineName: item.disciplineName,
+        materialType: item.activityType === 'PDF' ? 'pdf' : item.activityType === 'Revisao' ? 'review' : item.activityType === 'Questoes' ? 'questions' : item.activityType === 'Simulado' ? 'mockExam' : item.activityType === 'Leitura' ? 'reading' : 'video',
+        scheduleItemId: item.id,
+        subject: item.title,
+      });
+    });
+    return () => { active = false; };
+  }, [scheduleItemId]);
 
   return (
     <StudySessionsView
@@ -154,6 +182,7 @@ export function StudySessionsPage() {
       status={status}
       summary={summary}
       timer={timer}
+      studyPrefill={studyPrefill}
     />
   );
 }

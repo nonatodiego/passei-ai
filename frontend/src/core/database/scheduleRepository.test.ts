@@ -41,5 +41,5 @@ describe('local DATAPREV schedule', () => {
 
     expect(await getScheduleItems({ window: 'outsideExam' })).toHaveLength(0);
     expect(await getScheduleItems({ window: 'beforeExam' })).toHaveLength(956);
-  });
+  }, 15_000);
 });

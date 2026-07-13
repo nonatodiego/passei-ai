@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, Card, CardDescription, CardHeader, CardTitle, Input, Select } from '@/design-system';
+import { db } from '@/core/database/database';
 import { StudySessionService, validateStudySessionInput } from '@/study/services';
 import type { StudySessionInput } from '@/study/types';
 
 import { defaultStudySessionInput } from '../hooks';
 import { difficultyLabel, materialTypeLabel, studyStatusLabel } from './studySessionLabels';
 
-const disciplineOptions = [
+const fallbackDisciplineOptions = [
   { label: 'Selecione', value: '' },
   { label: 'Gestao e Governanca de TI', value: 'governanca' },
   { label: 'Banco de Dados', value: 'banco' },
@@ -15,22 +16,37 @@ const disciplineOptions = [
   { label: 'Lingua Portuguesa', value: 'portugues' },
 ];
 
-function selectedDisciplineName(disciplineId: string): string {
-  return disciplineOptions.find((option) => option.value === disciplineId)?.label ?? '';
-}
-
-export function StudySessionForm() {
-  const [input, setInput] = useState<StudySessionInput>(defaultStudySessionInput);
+export function StudySessionForm({
+  initialInput,
+  onSaved,
+}: {
+  initialInput?: Partial<StudySessionInput>;
+  onSaved?: () => void;
+}) {
+  const [input, setInput] = useState<StudySessionInput>({ ...defaultStudySessionInput, ...initialInput });
   const [message, setMessage] = useState('');
+  const [disciplineOptions, setDisciplineOptions] = useState(fallbackDisciplineOptions);
   const [submitted, setSubmitted] = useState(false);
   const validation = validateStudySessionInput(input);
   const errors = submitted ? validation.errors : {};
+
+  useEffect(() => {
+    let active = true;
+    void db.disciplines.orderBy('name').toArray().then((disciplines) => {
+      if (!active || disciplines.length === 0) return;
+      setDisciplineOptions([
+        { label: 'Selecione', value: '' },
+        ...disciplines.map((discipline) => ({ label: discipline.name, value: discipline.id })),
+      ]);
+    });
+    return () => { active = false; };
+  }, []);
 
   function updateNumber(field: keyof StudySessionInput, value: string) {
     setInput((current) => ({ ...current, [field]: Number(value) }));
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     setSubmitted(true);
     const result = validateStudySessionInput(input);
 
@@ -39,8 +55,13 @@ export function StudySessionForm() {
       return;
     }
 
-    StudySessionService.createSession(input);
-    setMessage('Sessao registrada com sucesso.');
+    try {
+      await StudySessionService.createSession(input, Boolean(input.scheduleItemId));
+      setMessage('Sessao registrada com sucesso e salva neste navegador.');
+      onSaved?.();
+    } catch (reason) {
+      setMessage(reason instanceof Error ? reason.message : 'Nao foi possivel registrar a sessao.');
+    }
   }
 
   return (
@@ -61,7 +82,7 @@ export function StudySessionForm() {
             setInput((current) => ({
               ...current,
               disciplineId: event.target.value,
-              disciplineName: selectedDisciplineName(event.target.value),
+              disciplineName: disciplineOptions.find((option) => option.value === event.target.value)?.label ?? '',
             }))
           }
           options={disciplineOptions}
@@ -178,7 +199,7 @@ export function StudySessionForm() {
         <p className="text-sm text-app-muted" role="status">
           {message}
         </p>
-        <Button onClick={handleSubmit}>Registrar</Button>
+        <Button onClick={() => void handleSubmit()}>Registrar</Button>
       </div>
     </Card>
   );

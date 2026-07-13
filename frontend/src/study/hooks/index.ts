@@ -1,9 +1,11 @@
-import { useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 
-import { getStudySessionData, studyTimerReducer } from '@/study/services';
+import { getStudySessionData, StudySessionService, studyTimerReducer } from '@/study/services';
+import { useLocalData } from '@/core/providers/useLocalData';
 import type {
   StudySessionFilters,
   StudySessionInput,
+  StudySession,
   StudySessionViewStatus,
   StudyTimerState,
 } from '@/study/types';
@@ -18,7 +20,7 @@ export const defaultStudySessionFilters: StudySessionFilters = {
 
 export const defaultStudySessionInput: StudySessionInput = {
   correctAnswers: 0,
-  date: '2026-07-11',
+  date: new Date().toISOString().slice(0, 10),
   difficulty: 'moderate',
   disciplineId: '',
   disciplineName: '',
@@ -39,20 +41,39 @@ const initialTimerState: StudyTimerState = {
 
 export function useStudySessions(initialFilters = defaultStudySessionFilters) {
   const [filters, setFilters] = useState<StudySessionFilters>(initialFilters);
-  const [status, setStatus] = useState<StudySessionViewStatus>('success');
-  const data = useMemo(() => getStudySessionData(filters), [filters]);
+  const { revision, status: databaseStatus } = useLocalData();
+  const [allSessions, setAllSessions] = useState<StudySession[]>([]);
+  const [status, setStatus] = useState<StudySessionViewStatus>('loading');
+
+  useEffect(() => {
+    if (databaseStatus === 'loading') return;
+    if (databaseStatus === 'error') return;
+    let active = true;
+    void StudySessionService.getSessions()
+      .then((sessions) => { if (active) { setAllSessions(sessions); setStatus('success'); } })
+      .catch(() => active && setStatus('error'));
+    return () => { active = false; };
+  }, [databaseStatus, revision]);
+
+  const data = useMemo(() => getStudySessionData(allSessions, filters), [allSessions, filters]);
 
   return {
     ...data,
     filters,
     setFilters,
     setStatus,
-    status: status === 'success' && data.sessions.length === 0 ? 'empty' : status,
+    status: databaseStatus === 'error' ? 'error' : status === 'success' && allSessions.length === 0 ? 'empty' : status,
   };
 }
 
 export function useStudyTimer() {
   const [timer, dispatchTimer] = useReducer(studyTimerReducer, initialTimerState);
+
+  useEffect(() => {
+    if (timer.status !== 'running') return;
+    const interval = window.setInterval(() => dispatchTimer({ type: 'tick' }), 1000);
+    return () => window.clearInterval(interval);
+  }, [timer.status]);
 
   return {
     dispatchTimer,
