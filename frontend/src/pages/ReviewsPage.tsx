@@ -1,42 +1,8 @@
-import { Badge } from '@/components/ui/Badge';
-import { priorityTone, statusTone } from '@/components/ui/badgeUtils';
-import type { Column } from '@/components/ui/DataTable';
-import { DataTable } from '@/components/ui/DataTable';
-import { FilterBar } from '@/components/ui/FilterBar';
-import { reviews } from '@/mocks/data';
-import type { Review } from '@/types';
-import { formatDate } from '@/utils/format';
+import { useMemo, useState } from 'react';
+import { Check, Play, Plus, X } from 'lucide-react';
+import { Badge, Button, Card, Content, DataTable, EmptyState, ErrorState, Input, LoadingState, Section, Select } from '@/design-system';
+import { useReviews, ReviewService, type ReviewInput, type ReviewRecord } from '@/reviews';
 
-const columns: Column<Review>[] = [
-  { key: 'subject', header: 'Assunto', render: (row) => row.subject },
-  { key: 'discipline', header: 'Disciplina', render: (row) => row.discipline },
-  { key: 'dueDate', header: 'Data prevista', render: (row) => formatDate(row.dueDate) },
-  {
-    key: 'status',
-    header: 'Status',
-    render: (row) => <Badge tone={statusTone(row.status)}>{row.status}</Badge>,
-  },
-  { key: 'origin', header: 'Origem', render: (row) => row.origin },
-  {
-    key: 'priority',
-    header: 'Prioridade',
-    render: (row) => <Badge tone={priorityTone(row.priority)}>{row.priority}</Badge>,
-  },
-];
-
-export function ReviewsPage() {
-  return (
-    <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-5">
-        {['24 horas', '7 dias', '15 dias', '30 dias', '60 dias'].map((period) => (
-          <div className="rounded-lg border border-app-border bg-white p-4" key={period}>
-            <p className="text-sm text-app-muted">Janela</p>
-            <p className="mt-1 font-semibold text-app-text">{period}</p>
-          </div>
-        ))}
-      </div>
-      <FilterBar filters={['Disciplina', 'Status', 'Origem', 'Prioridade']} />
-      <DataTable columns={columns} rows={reviews} />
-    </div>
-  );
-}
+const initial:ReviewInput={sourceType:'manual',disciplineId:'',disciplineName:'',subject:'',scheduledAt:new Date().toISOString().slice(0,10),estimatedMinutes:20,priority:'medium',notes:''};
+const tone=(status:ReviewRecord['status'])=>status==='completed'?'green' as const:status==='cancelled'?'slate' as const:status==='inProgress'?'blue' as const:'amber' as const;
+export function ReviewsPage(){const {reviews,status,reload}=useReviews();const [form,setForm]=useState(initial);const [query,setQuery]=useState('');const visible=useMemo(()=>reviews.filter((item)=>`${item.disciplineName} ${item.subject}`.toLowerCase().includes(query.toLowerCase())),[reviews,query]);async function create(){try{await ReviewService.create(form);setForm(initial);reload();}catch{return;}}async function action(record:ReviewRecord,kind:'start'|'complete'|'cancel'){if(kind==='start')await ReviewService.start(record);if(kind==='cancel')await ReviewService.cancel(record);if(kind==='complete')await ReviewService.complete(record,'good');reload();}const columns=[{key:'date',header:'Data',render:(row:ReviewRecord)=>row.scheduledAt},{key:'subject',header:'Assunto',render:(row:ReviewRecord)=>`${row.disciplineName}: ${row.subject}`},{key:'source',header:'Origem',render:(row:ReviewRecord)=>row.sourceType==='error'?'Banco de Erros':'Manual'},{key:'status',header:'Status',render:(row:ReviewRecord)=><Badge tone={tone(row.status)}>{row.status}</Badge>},{key:'actions',header:'Acoes',render:(row:ReviewRecord)=><div className="flex gap-1">{row.status==='pending'?<Button icon={<Play className="h-4 w-4"/>} onClick={()=>void action(row,'start')} size="sm">Iniciar</Button>:null}{row.status==='inProgress'?<Button icon={<Check className="h-4 w-4"/>} onClick={()=>void action(row,'complete')} size="sm">Concluir</Button>:null}{row.status==='pending'||row.status==='inProgress'?<Button icon={<X className="h-4 w-4"/>} onClick={()=>void action(row,'cancel')} size="sm" variant="ghost">Cancelar</Button>:null}</div>}];if(status==='loading')return <LoadingState label="Carregando revisoes locais"/>;if(status==='error')return <ErrorState description="Tente novamente." title="Nao foi possivel carregar revisoes"/>;return <Content className="space-y-6"><Section className="flex items-center justify-between rounded-md border border-app-border bg-white p-6"><div><h1 className="text-2xl font-semibold">Revisoes</h1><p className="mt-1 text-sm text-app-muted">Agende e conclua reforcos com dados locais.</p></div><Badge tone="blue">{reviews.filter((item)=>item.status==='pending').length} pendentes</Badge></Section><Card><div className="grid gap-3 md:grid-cols-4"><Input label="Disciplina" name="review-discipline" onChange={(e)=>setForm({...form,disciplineName:e.target.value,disciplineId:e.target.value})} value={form.disciplineName}/><Input label="Assunto" name="review-subject" onChange={(e)=>setForm({...form,subject:e.target.value})} value={form.subject}/><Input label="Data" name="review-date" onChange={(e)=>setForm({...form,scheduledAt:e.target.value})} type="date" value={form.scheduledAt}/><Input label="Duracao" min={1} name="review-duration" onChange={(e)=>setForm({...form,estimatedMinutes:Number(e.target.value)})} type="number" value={form.estimatedMinutes}/><Select label="Prioridade" name="review-priority" onChange={(e)=>setForm({...form,priority:e.target.value as ReviewInput['priority']})} options={[{value:'high',label:'Alta'},{value:'medium',label:'Media'},{value:'low',label:'Baixa'}]} value={form.priority}/><Button icon={<Plus className="h-4 w-4"/>} onClick={()=>void create()}>Criar revisao</Button></div></Card><Input label="Pesquisar revisoes" name="review-search" onChange={(e)=>setQuery(e.target.value)} value={query}/>{visible.length?<DataTable columns={columns} rows={visible}/>:<EmptyState title="Nenhuma revisao" description="Crie uma revisao manual ou a partir de um erro."/>}</Content>}
