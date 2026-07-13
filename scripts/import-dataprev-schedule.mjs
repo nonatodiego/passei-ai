@@ -2,15 +2,28 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(new URL('../frontend/package.json', import.meta.url));
 const XLSX = require('xlsx');
-const source = resolve(process.argv[2] ?? 'docs/data/Sistema_de_Aprovacao_DATAPREV.xlsx');
-const destination = resolve('frontend/src/data/dataprev-schedule.json');
+const repositoryRoot = resolve(fileURLToPath(new URL('../', import.meta.url)));
+const source = resolve(repositoryRoot, process.argv[2] ?? 'docs/data/Sistema_de_Aprovacao_DATAPREV.xlsx');
+const destination = resolve(repositoryRoot, 'frontend/src/data/dataprev-schedule.json');
 
 if (!existsSync(source)) throw new Error(`Planilha DATAPREV nao encontrada: ${source}`);
 
-const normalize = (value) => String(value ?? '').replace(/\s+/g, ' ').trim();
+// The workbook stores a few UTF-8 strings as Latin-1 byte sequences. Repair only
+// strings that clearly carry this mojibake signature, preserving already valid text.
+const repairEncoding = (value) => {
+  const text = String(value ?? '');
+  if (!/[ÃÂ]/.test(text)) return text;
+  try {
+    return Buffer.from(text, 'latin1').toString('utf8');
+  } catch {
+    return text;
+  }
+};
+const normalize = (value) => repairEncoding(value).replace(/\s+/g, ' ').trim();
 const normalizedHeader = (value) => normalize(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const parseDate = (value) => {
   if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString().slice(0, 10);
