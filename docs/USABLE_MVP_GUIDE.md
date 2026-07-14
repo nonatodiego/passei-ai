@@ -4,10 +4,11 @@
 
 1. Abra a aplicação e aguarde a importação local do cronograma DATAPREV.
 2. Consulte o Cronograma e registre uma sessão ao iniciar uma atividade.
-3. Registre blocos de questões resolvidos externamente em Questões.
-4. Registre erros relevantes no Banco de Erros e agende revisões.
-5. Consulte Hoje e Evolução para indicadores e recomendações calculados localmente.
-6. Ajuste as metas semanais em Metas.
+3. Em Estudos, use **Editar** no Histórico para corrigir uma sessão existente sem criar duplicatas.
+4. Registre blocos de questões resolvidos externamente em Questões.
+5. Registre erros relevantes no Banco de Erros e agende revisões.
+6. Consulte Hoje e Evolução para indicadores e recomendações calculados localmente.
+7. Ajuste as metas semanais em Metas.
 
 ## Dados locais
 

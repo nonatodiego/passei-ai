@@ -8,6 +8,8 @@ Formato inspirado em Keep a Changelog.
 
 ### Added
 
+- Edição de sessões de estudo persistidas, preservando ID, criação, vínculo de cronograma e recalculando indicadores derivados.
+- Jornada automatizada de revalidação para edição, agregações de Hoje/Evolução e backup/restauração.
 - MVP local-first utilizavel com cronograma DATAPREV, sessoes, blocos de questoes, Banco de Erros, revisoes, Decision Engine, Evolucao e backup local.
 - Decision Engine deterministico e explicavel, com recomendacoes e plano diario derivados de fatos persistidos.
 - Evolucao com KPIs, series e saude do plano calculados no IndexedDB.

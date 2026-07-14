@@ -6,6 +6,7 @@ import { QuestionBlockService } from '@/questions/services/questionBlockService'
 import { ReviewService } from '@/reviews/services';
 import { StudySessionService } from '@/study/services';
 import { getLocalDecisionEngineResult } from '@/study-engine/services/DecisionEngineService';
+import { TodayService } from '@/today/services';
 import { db } from './database';
 import { exportBackup, importBackup, resetDatabase } from './backup';
 
@@ -25,5 +26,22 @@ describe('persistent MVP journey', () => {
     expect((await getLocalDecisionEngineResult()).dataSufficiency.isSufficient).toBe(true);
     const backup = await exportBackup(); await resetDatabase(); expect(await db.studySessions.count()).toBe(0); await importBackup(backup);
     expect(await db.studySessions.count()).toBe(1); expect(await db.questionBlocks.count()).toBe(1); expect(await db.errorRecords.count()).toBe(1); expect(await db.reviews.count()).toBe(1);
+  });
+
+  it('updates one linked session without duplication and preserves it in backup', async () => {
+    const now = new Date().toISOString(); const today = now.slice(0, 10);
+    await db.scheduleItems.put({ id: 'schedule-edit', plannedDate: today, disciplineName: 'Direito', title: 'Lei de Acesso', activityType: 'PDF', status: 'planned', outsideExamWindow: false, createdAt: now, updatedAt: now });
+    const created = await StudySessionService.createSession({ date: today, disciplineId: 'direito', disciplineName: 'Direito', subject: 'Lei de Acesso', materialType: 'pdf', durationMinutes: 60, difficulty: 'moderate', questionsAnswered: 5, correctAnswers: 3, wrongAnswers: 2, notes: '', source: 'Cronograma', scheduleItemId: 'schedule-edit', status: 'completed' }, true);
+    const updated = await StudySessionService.updateSession(created.id, { ...created, disciplineId: 'ti', disciplineName: 'Tecnologia da Informacao', subject: 'Governanca', durationMinutes: 90, questionsAnswered: 10, correctAnswers: 7, wrongAnswers: 3, notes: 'Sessao revisada' });
+    expect(updated).toMatchObject({ id: created.id, createdAt: created.createdAt, scheduleItemId: 'schedule-edit', durationMinutes: 90, disciplineName: 'Tecnologia da Informacao', subject: 'Governanca', notes: 'Sessao revisada' });
+    expect(await db.studySessions.count()).toBe(1);
+    expect((await db.scheduleItems.get('schedule-edit'))?.status).toMatch(/conclu|completed/i);
+    expect((await getLocalStudyAnalytics('today')).totals).toMatchObject({ minutes: 90, questions: 10, correct: 7 });
+    expect((await TodayService.getToday()).quickSummary).toMatchObject({ studiedHours: 1.5, answeredQuestions: 10, accuracyRate: 70 });
+    const backup = await exportBackup(); const exported = backup.studySessions[0] as typeof updated;
+    expect(exported).toMatchObject({ id: created.id, createdAt: created.createdAt, durationMinutes: 90, scheduleItemId: 'schedule-edit' });
+    await resetDatabase(); await importBackup(backup);
+    expect(await db.studySessions.get(created.id)).toMatchObject({ id: created.id, createdAt: created.createdAt, durationMinutes: 90, scheduleItemId: 'schedule-edit' });
+    expect(await db.studySessions.count()).toBe(1);
   });
 });

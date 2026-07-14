@@ -8,7 +8,7 @@ Metricas de acompanhamento do Passei AI.
 | --- | ---: | --- |
 | Sprints funcionais concluidas | 7 | Inclui MVP Local-First aprovado visualmente |
 | Test files | 19 | Vitest |
-| Testes | 58 | Inclui jornada persistente e auditoria de dados de producao |
+| Testes | 60 | Inclui jornada persistente, auditoria de dados de produção e revalidação de edição de sessão |
 | Frontend build | Verde | Build local aprovado com aviso de chunk grande |
 | Lint | Verde | Executado fora do sandbox para contornar EPERM local |
 | Bundle JS principal | 1,283.96 kB | Acima da meta; registrado em TD-001 e TD-010 |

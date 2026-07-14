@@ -35,6 +35,7 @@ Nota de 0 a 10, calculada por revisão técnica ao final de cada sprint.
 | Decision Engine Architecture | 8.8 | Modelo de decisao documentado e sem regressao funcional; consolidacao de contratos e fronteiras automaticas seguem como evolucao |
 | Banco de Erros | 8.6 | Fluxos mockados, acessibilidade de overlays e testes DOM cobertos; bundle e testes visuais automatizados seguem como divida |
 | MVP Local-First | 8.7 | Fluxos persistentes, backup e auditoria de dados reais aprovados visualmente; bundle e cobertura de navegacao completa permanecem como evolucao |
+| Revalidação de edição de sessões | 8.8 | Edição persistente validada com indicadores derivados, backup/restauração e 60 testes verdes |
 
 ## Regras de corte
 
