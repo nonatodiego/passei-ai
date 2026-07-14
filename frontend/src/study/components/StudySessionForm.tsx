@@ -18,10 +18,14 @@ const fallbackDisciplineOptions = [
 
 export function StudySessionForm({
   initialInput,
+  onCancel,
   onSaved,
+  sessionId,
 }: {
   initialInput?: Partial<StudySessionInput>;
+  onCancel?: () => void;
   onSaved?: () => void;
+  sessionId?: string;
 }) {
   const [input, setInput] = useState<StudySessionInput>({ ...defaultStudySessionInput, ...initialInput });
   const [message, setMessage] = useState('');
@@ -56,8 +60,9 @@ export function StudySessionForm({
     }
 
     try {
-      await StudySessionService.createSession(input, Boolean(input.scheduleItemId));
-      setMessage('Sessao registrada com sucesso e salva neste navegador.');
+      if (sessionId) await StudySessionService.updateSession(sessionId, input);
+      else await StudySessionService.createSession(input, Boolean(input.scheduleItemId));
+      setMessage(sessionId ? 'Sessao atualizada com sucesso.' : 'Sessao registrada com sucesso e salva neste navegador.');
       onSaved?.();
     } catch (reason) {
       setMessage(reason instanceof Error ? reason.message : 'Nao foi possivel registrar a sessao.');
@@ -67,7 +72,7 @@ export function StudySessionForm({
   return (
     <Card className="p-0">
       <CardHeader className="border-b border-app-border p-5">
-        <CardTitle>Registrar sessao</CardTitle>
+        <CardTitle>{sessionId ? 'Editar sessao' : 'Registrar sessao'}</CardTitle>
         <CardDescription>Preencha apenas os fatos do bloco estudado</CardDescription>
       </CardHeader>
       <div className="space-y-5 px-4 pb-4">
@@ -199,7 +204,7 @@ export function StudySessionForm({
         <p className="text-sm text-app-muted" role="status">
           {message}
         </p>
-        <Button onClick={() => void handleSubmit()}>Registrar</Button>
+        <div className="flex gap-2">{sessionId && onCancel ? <Button onClick={onCancel} variant="secondary">Cancelar</Button> : null}<Button onClick={() => void handleSubmit()}>{sessionId ? 'Salvar alteracoes' : 'Registrar'}</Button></div>
       </div>
     </Card>
   );

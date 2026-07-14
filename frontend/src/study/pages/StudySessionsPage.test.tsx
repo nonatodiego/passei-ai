@@ -59,6 +59,17 @@ describe('StudySessionsPage', () => {
     expect(session.correctAnswers).toBe(8);
   });
 
+  it('updates an existing persisted study session', async () => {
+    const session = await StudySessionService.createSession({
+      ...defaultStudySessionInput, disciplineId: 'banco', disciplineName: 'Banco de Dados', subject: 'SQL',
+    });
+    const updated = await StudySessionService.updateSession(session.id, {
+      ...session, durationMinutes: 90, notes: 'Sessao corrigida',
+    });
+    expect(updated.durationMinutes).toBe(90);
+    expect(updated.notes).toBe('Sessao corrigida');
+  });
+
   it('validates invalid study session data', () => {
     const result = validateStudySessionInput({
       ...defaultStudySessionInput,

@@ -1,10 +1,11 @@
-import { Badge, DataTable, type Column } from '@/design-system';
+import { Pencil } from 'lucide-react';
+import { Badge, Button, DataTable, type Column } from '@/design-system';
 import { calculateAccuracyRate } from '@/study/services';
 import type { StudySession } from '@/study/types';
 
 import { materialTypeLabel, studyStatusLabel, studyStatusTone } from './studySessionLabels';
 
-const columns: Column<StudySession>[] = [
+function columns(onEdit?: (session: StudySession) => void): Column<StudySession>[] { return [
   { key: 'date', header: 'Data', render: (session) => session.date },
   { key: 'discipline', header: 'Disciplina', render: (session) => session.disciplineName },
   { key: 'subject', header: 'Assunto', render: (session) => session.subject },
@@ -23,12 +24,13 @@ const columns: Column<StudySession>[] = [
       <Badge tone={studyStatusTone[session.status]}>{studyStatusLabel[session.status]}</Badge>
     ),
   },
-];
+  ...(onEdit ? [{ key: 'actions', header: 'Acoes', render: (session: StudySession) => <Button aria-label={`Editar sessao ${session.subject}`} icon={<Pencil aria-hidden="true" className="h-4 w-4" />} onClick={() => onEdit(session)} size="sm" variant="ghost">Editar</Button> }] : []),
+]; }
 
-export function StudySessionHistory({ sessions }: { sessions: StudySession[] }) {
+export function StudySessionHistory({ onEdit, sessions }: { onEdit?: (session: StudySession) => void; sessions: StudySession[] }) {
   return (
     <DataTable
-      columns={columns}
+      columns={columns(onEdit)}
       emptyMessage="Nenhuma sessao encontrada."
       rows={sessions}
     />

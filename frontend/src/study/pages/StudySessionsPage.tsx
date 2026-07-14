@@ -43,6 +43,9 @@ export function StudySessionsView({
   summary,
   timer,
   studyPrefill,
+  editingSession,
+  onEditSession,
+  onCancelEdit,
 }: {
   allSessions: StudySession[];
   dispatchTimer: (action: StudyTimerAction) => void;
@@ -53,6 +56,9 @@ export function StudySessionsView({
   summary: StudySessionSummary;
   timer: StudyTimerState;
   studyPrefill?: Partial<import('@/study/types').StudySessionInput>;
+  editingSession?: StudySession;
+  onEditSession?: (session: StudySession) => void;
+  onCancelEdit?: () => void;
 }) {
   if (status === 'loading') {
     return (
@@ -135,13 +141,13 @@ export function StudySessionsView({
                 onChange={onFiltersChange}
                 sessions={allSessions}
               />
-              <StudySessionHistory sessions={sessions} />
+              <StudySessionHistory onEdit={onEditSession} sessions={sessions} />
             </div>
           </Card>
         </div>
         <div className="space-y-4 xl:sticky xl:top-6 xl:self-start">
           <StudySessionTimer dispatch={dispatchTimer} timer={timer} />
-          <StudySessionForm initialInput={studyPrefill} />
+          <StudySessionForm initialInput={editingSession ?? studyPrefill} key={editingSession?.id ?? studyPrefill?.scheduleItemId ?? 'new-session'} onCancel={onCancelEdit} onSaved={onCancelEdit} sessionId={editingSession?.id} />
         </div>
       </Section>
     </Content>
@@ -153,6 +159,7 @@ export function StudySessionsPage() {
   const { dispatchTimer, timer } = useStudyTimer();
   const [searchParams] = useSearchParams();
   const [studyPrefill, setStudyPrefill] = useState<Partial<import('@/study/types').StudySessionInput>>();
+  const [editingSession, setEditingSession] = useState<StudySession>();
   const scheduleItemId = searchParams.get('scheduleItemId');
 
   useEffect(() => {
@@ -183,6 +190,9 @@ export function StudySessionsPage() {
       summary={summary}
       timer={timer}
       studyPrefill={studyPrefill}
+      editingSession={editingSession}
+      onCancelEdit={() => setEditingSession(undefined)}
+      onEditSession={setEditingSession}
     />
   );
 }
