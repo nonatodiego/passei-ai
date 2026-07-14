@@ -242,3 +242,14 @@
 - [x] Implementar KPIs, filtros, lista, drawer e estados principais.
 - [x] Preparar fatos para Review, Recommendation, Analytics e Today.
 - [x] Executar validacao tecnica e aprovar Product Experience Gate.
+
+## MVP Local-First
+
+- [x] Persistencia local versionada no IndexedDB.
+- [x] Cronograma DATAPREV real e idempotente.
+- [x] Sessoes, blocos de questoes, erros e revisoes persistentes.
+- [x] Decision Engine explicavel e tela Hoje com dados reais.
+- [x] Evolucao com metricas e graficos reais.
+- [x] Backup, restauracao e limpeza protegida.
+- [x] Remover metricas mockadas das rotas de producao.
+- [x] Validacao visual final pelo Product Owner.

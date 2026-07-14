@@ -8,6 +8,19 @@ Formato inspirado em Keep a Changelog.
 
 ### Added
 
+- MVP local-first utilizavel com cronograma DATAPREV, sessoes, blocos de questoes, Banco de Erros, revisoes, Decision Engine, Evolucao e backup local.
+- Decision Engine deterministico e explicavel, com recomendacoes e plano diario derivados de fatos persistidos.
+- Evolucao com KPIs, series e saude do plano calculados no IndexedDB.
+- Exportacao, restauracao, protecao de armazenamento e limpeza confirmada de dados locais.
+- Teste de jornada persistente e auditoria automatizada contra imports de mocks em rotas de producao.
+
+### Changed
+
+- Metas, Questoes e Simulados deixaram de apresentar dados demonstrativos e usam estados vazios ou dados reais do IndexedDB.
+- Metas padrao passaram a ser configuracoes editaveis e idempotentes, com progresso semanal calculado por registros reais.
+
+### Added
+
 - Identidade visual oficial do Passei AI como asset de marca do frontend.
 
 - Fundação documental do Passei AI.

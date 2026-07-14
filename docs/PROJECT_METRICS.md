@@ -6,16 +6,16 @@ Metricas de acompanhamento do Passei AI.
 
 | Metrica | Valor | Observacao |
 | --- | ---: | --- |
-| Sprints funcionais concluidas | 6 | Foundation, Design System, Dashboard, Sessoes de Estudo, Banco de Questoes e Today Experience |
-| Test files | 11 | Vitest |
-| Testes | 41 | Inclui testes DOM da Feature 003 |
+| Sprints funcionais concluidas | 7 | Inclui MVP Local-First aprovado visualmente |
+| Test files | 19 | Vitest |
+| Testes | 58 | Inclui jornada persistente e auditoria de dados de producao |
 | Frontend build | Verde | Build local aprovado com aviso de chunk grande |
 | Lint | Verde | Executado fora do sandbox para contornar EPERM local |
-| Bundle JS principal | ~750 kB | Apos testes e correcoes da Feature 003; acima da meta, registrado em TD-010 |
-| Product Experience Gate | Aprovado | Dashboard aprovado visualmente pelo Product Owner |
+| Bundle JS principal | 1,283.96 kB | Acima da meta; registrado em TD-001 e TD-010 |
+| Product Experience Gate | Aprovado | MVP Local-First aprovado visualmente pelo Product Owner |
 | Documentos de engenharia | 9 | Criados e mantidos no fluxo de governanca |
 | Modulos oficiais frontend | 12 | Core, Shared, Study Engine e modulos de produto |
-| Decision Engine | Documentado | Sem implementacao de backend ou IA nesta fase |
+| Decision Engine | Funcional | Deterministico, explicavel e alimentado por fatos locais |
 
 ## Metricas-alvo
 

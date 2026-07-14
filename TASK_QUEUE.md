@@ -69,6 +69,7 @@ Fila de tarefas tecnicas e de produto do Passei AI.
 | TQ-016 | Produto | Feature 002.5 - Today Experience | PRD-0025 | Completed |
 | TQ-024 | Arquitetura | Decision Engine Architecture | Engineering Evolution | Completed |
 | TQ-017 | Produto | Feature 003 - Banco de Erros | PRD-003 | Completed |
+| TQ-025 | Produto | MVP Local-First utilizavel | MVP Local-First | Completed |
 
 ## Blocked
 

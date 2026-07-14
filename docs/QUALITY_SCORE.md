@@ -34,6 +34,7 @@ Nota de 0 a 10, calculada por revisão técnica ao final de cada sprint.
 | Today Experience | 8.5 | Centro diario aprovado visualmente, modular e tipado; bundle, testes DOM e decomposicao da pagina permanecem registrados |
 | Decision Engine Architecture | 8.8 | Modelo de decisao documentado e sem regressao funcional; consolidacao de contratos e fronteiras automaticas seguem como evolucao |
 | Banco de Erros | 8.6 | Fluxos mockados, acessibilidade de overlays e testes DOM cobertos; bundle e testes visuais automatizados seguem como divida |
+| MVP Local-First | 8.7 | Fluxos persistentes, backup e auditoria de dados reais aprovados visualmente; bundle e cobertura de navegacao completa permanecem como evolucao |
 
 ## Regras de corte
 
