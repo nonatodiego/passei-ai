@@ -31,7 +31,6 @@ import { completeScheduleItem, updateScheduleItem, type ScheduleItemFilters, typ
 import { useScheduleItems } from '@/schedule/hooks';
 import type { ScheduleItem } from '@/core/database/types';
 import { useSchedule } from '@/hooks/useSchedule';
-import { scheduleMockActivities } from '@/mocks/schedule';
 import type {
   ScheduleData,
   ScheduleFiltersState,
@@ -48,7 +47,7 @@ const initialFilters: ScheduleFiltersState = {
 };
 
 export function ScheduleView({
-  allActivities = scheduleMockActivities,
+  allActivities = [],
   data,
   filters,
   onFiltersChange,
@@ -172,7 +171,7 @@ export function LegacySchedulePage() {
 
   return (
     <ScheduleView
-      allActivities={scheduleMockActivities}
+      allActivities={[]}
       data={data}
       filters={filters}
       onFiltersChange={setFilters}

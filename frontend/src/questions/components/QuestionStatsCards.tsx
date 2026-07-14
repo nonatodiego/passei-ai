@@ -12,7 +12,7 @@ export function QuestionStatsCards({ stats }: { stats: QuestionStats }) {
         tone="blue"
         value={`${stats.correct + stats.incorrect}`}
       />
-      <KPICard icon={CheckCircle2} label="Taxa de acertos" progress={stats.accuracyRate} tone="green" value={`${stats.accuracyRate}%`} />
+      <KPICard icon={CheckCircle2} label="Taxa de acertos" progress={stats.correct + stats.incorrect ? stats.accuracyRate : 0} tone="green" value={stats.correct + stats.incorrect ? `${stats.accuracyRate}%` : 'Sem dados'} />
       <KPICard icon={Target} label="Corretas" tone="blue" value={`${stats.correct}`} />
       <KPICard icon={XCircle} label="Incorretas" tone="red" value={`${stats.incorrect}`} />
     </section>

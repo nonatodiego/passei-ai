@@ -27,9 +27,9 @@ export async function seedDataprevSchedule(): Promise<{ imported: number; seeded
 
     if ((await db.goals.count()) === 0) {
       await db.goals.bulkPut(
-        ['15 horas por semana', '300 questoes por semana', '1 simulado por semana', '7 revisoes por semana', '85% de acertos'].map((name, index) => ({
+        [{ name: 'Horas de estudo por semana', kind: 'hours', target: 15 }, { name: 'Questoes por semana', kind: 'questions', target: 300 }, { name: 'Revisoes por semana', kind: 'reviews', target: 7 }, { name: 'Simulados por semana', kind: 'mockExams', target: 1 }, { name: 'Taxa de acertos desejada', kind: 'accuracy', target: 85 }].map((goal, index) => ({
           id: `default-goal-${index}`,
-          name,
+          ...goal,
           createdAt: now(),
           updatedAt: now(),
         })),

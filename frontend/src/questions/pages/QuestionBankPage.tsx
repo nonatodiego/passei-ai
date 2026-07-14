@@ -9,6 +9,7 @@ import {
   QuestionViewer,
 } from '@/questions/components';
 import { useQuestionBank } from '@/questions/hooks';
+import { answerStoredQuestion } from '@/questions/services';
 import type {
   Question,
   QuestionAnswerResult,
@@ -69,7 +70,7 @@ export function QuestionBankView({
   if (status === 'error') {
     return (
       <ErrorState
-        description="As questoes mockadas nao puderam ser carregadas nesta visualizacao."
+        description="Os dados locais de questoes nao puderam ser carregados nesta visualizacao."
         title="Nao foi possivel carregar questoes"
       />
     );
@@ -84,10 +85,11 @@ export function QuestionBankView({
           questions={allQuestions}
         />
         <EmptyState
-          description="Ajuste os filtros ou a pesquisa para encontrar questoes."
+          description="Registre um bloco resolvido ou cadastre questoes reais para acompanhar seu desempenho."
           icon={HelpCircle}
           title="Nenhuma questao encontrada"
         />
+        <div className="mt-6"><QuestionBlockForm /></div>
       </Content>
     );
   }
@@ -111,9 +113,7 @@ export function QuestionBankView({
                 Banco de Questoes
               </h1>
               <p className="mt-2 text-sm leading-6 text-app-muted">
-                Resolva questoes mockadas, receba feedback imediato e gere sinais
-                para alimentar Study Engine, Banco de Erros e Analytics nas proximas
-                entregas.
+                Registre blocos resolvidos ou responda questoes cadastradas neste navegador.
               </p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function QuestionBankView({
             <span className="block font-semibold text-app-text">
               {stats.total} questoes disponiveis
             </span>
-            <span>{stats.accuracyRate}% de acertos nas respondidas</span>
+            <span>{stats.correct + stats.incorrect ? `${stats.accuracyRate}% de acertos nas respondidas` : 'Sem dados de acertos'}</span>
           </Card>
         </div>
       </Section>
@@ -199,7 +199,7 @@ export function QuestionBankPage() {
       answerResult={answerResult}
       filters={filters}
       onAddToErrorBank={() => undefined}
-      onAnswer={setAnswerResult}
+      onAnswer={(result) => { const question = filteredQuestions.find((item) => item.id === result.questionId); if (question) void answerStoredQuestion(question, result.selectedAlternativeId).then(setAnswerResult); }}
       onFiltersChange={(nextFilters) => {
         setFilters(nextFilters);
         setAnswerResult(undefined);

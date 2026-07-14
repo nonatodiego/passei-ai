@@ -1,38 +1,12 @@
-import type { Column } from '@/components/ui/DataTable';
-import { DataTable } from '@/components/ui/DataTable';
-import { FilterBar } from '@/components/ui/FilterBar';
-import { mockExams } from '@/mocks/data';
-import type { MockExam } from '@/types';
-import { formatDate } from '@/utils/format';
-
-const columns: Column<MockExam>[] = [
-  { key: 'date', header: 'Data', render: (row) => formatDate(row.date) },
-  { key: 'duration', header: 'Duração', render: (row) => `${row.durationMinutes} min` },
-  {
-    key: 'hits',
-    header: 'Acertos por disciplina',
-    render: (row) =>
-      Object.entries(row.hitsByDiscipline)
-        .map(([discipline, hits]) => `${discipline}: ${hits}`)
-        .join(' | '),
-  },
-  { key: 'score', header: 'Nota', render: (row) => row.score },
-  { key: 'percentage', header: 'Percentual', render: (row) => `${row.percentage}%` },
-  { key: 'trend', header: 'Evolução', render: (row) => row.trend },
-  { key: 'notes', header: 'Observações', render: (row) => row.notes },
-];
+import { useEffect, useState } from 'react';
+import { Content, EmptyState, ErrorState, LoadingState } from '@/design-system';
+import { db } from '@/core/database/database';
+import { useLocalData } from '@/core/providers/useLocalData';
 
 export function MockExamsPage() {
-  return (
-    <div className="space-y-4">
-      <div className="rounded-lg border border-app-border bg-white p-4">
-        <p className="text-sm font-medium text-app-muted">Formato DATAPREV</p>
-        <p className="mt-2 text-sm text-app-text">
-          70 questões, 115 pontos, com Conhecimentos Específicos valendo peso 2,5.
-        </p>
-      </div>
-      <FilterBar filters={['Data', 'Evolução', 'Percentual']} />
-      <DataTable columns={columns} rows={mockExams} />
-    </div>
-  );
+  const [count, setCount] = useState<number>(); const [error, setError] = useState(false); const { revision } = useLocalData();
+  useEffect(() => { let active = true; void db.mockExams.count().then((value) => active && setCount(value)).catch(() => active && setError(true)); return () => { active = false; }; }, [revision]);
+  if (error) return <Content><ErrorState title="Nao foi possivel carregar simulados" description="Tente novamente." /></Content>;
+  if (count === undefined) return <Content><LoadingState label="Carregando simulados" /></Content>;
+  return <Content><EmptyState title={count ? 'Simulados registrados' : 'Nenhum simulado registrado'} description={count ? `${count} simulados estao salvos neste navegador.` : 'Registre um simulado para acompanhar seus resultados reais.'} /></Content>;
 }

@@ -1,4 +1,5 @@
-import { questionMocks } from '@/questions/mocks';
+import { db } from '@/core/database/database';
+import { publishLocalDataChange } from '@/core/database/events';
 import type {
   AnalyticsQuestionEvent,
   ErrorBankQuestionCandidate,
@@ -116,16 +117,23 @@ export function createAnalyticsQuestionEvent(
   };
 }
 
-export interface QuestionServicePort {
-  getQuestions: () => Question[];
+export async function answerStoredQuestion(question: Question, selectedAlternativeId: string): Promise<QuestionAnswerResult> {
+  const result = answerQuestion(question, selectedAlternativeId);
+  const updated = { ...question, status: result.isCorrect ? 'correct' as const : 'incorrect' as const, updatedAt: new Date().toISOString() };
+  const now = new Date().toISOString();
+  await db.transaction('rw', db.questions, db.questionAttempts, async () => {
+    await db.questions.put(updated as never);
+    await db.questionAttempts.put({ id: globalThis.crypto?.randomUUID?.() ?? `attempt-${Date.now()}`, questionId: question.id, selectedAlternativeId, isCorrect: result.isCorrect, createdAt: now, updatedAt: now } as never);
+  });
+  publishLocalDataChange();
+  return result;
 }
 
-export const QuestionService: QuestionServicePort = {
-  getQuestions: () => questionMocks,
-};
+export async function getStoredQuestions(): Promise<Question[]> {
+  return (await db.questions.toArray()) as unknown as Question[];
+}
 
-export function getQuestionBankData(filters: QuestionFilters) {
-  const questions = QuestionService.getQuestions();
+export function getQuestionBankData(questions: Question[], filters: QuestionFilters) {
   const filteredQuestions = filterQuestions(questions, filters);
 
   return {

@@ -1,27 +1,19 @@
-import { ProgressBar } from '@/components/ui/ProgressBar';
-import { goals } from '@/mocks/data';
+import { useEffect, useState } from 'react';
+import { Button, Card, Content, EmptyState, Input, LoadingState, Toast } from '@/design-system';
+import { useLocalData } from '@/core/providers/useLocalData';
+import { db } from '@/core/database/database';
+import { publishLocalDataChange } from '@/core/database/events';
+
+type GoalKind = 'hours' | 'questions' | 'reviews' | 'mockExams' | 'accuracy';
+type Goal = { id: string; name: string; kind: GoalKind; target: number; createdAt: string; updatedAt: string };
+const defaults: Array<Pick<Goal, 'id' | 'name' | 'kind' | 'target'>> = [{ id: 'default-goal-0', name: 'Horas de estudo por semana', kind: 'hours', target: 15 }, { id: 'default-goal-1', name: 'Questoes por semana', kind: 'questions', target: 300 }, { id: 'default-goal-2', name: 'Revisoes por semana', kind: 'reviews', target: 7 }, { id: 'default-goal-3', name: 'Simulados por semana', kind: 'mockExams', target: 1 }, { id: 'default-goal-4', name: 'Taxa de acertos desejada', kind: 'accuracy', target: 85 }];
+const startOfWeek = () => { const value = new Date(); const day = value.getDay() || 7; value.setDate(value.getDate() - day + 1); return value.toISOString().slice(0, 10); };
 
 export function GoalsPage() {
-  return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {goals.map((goal) => {
-        const progress = Math.round((goal.current / goal.target) * 100);
-        return (
-          <article
-            className="rounded-lg border border-app-border bg-white p-5 shadow-panel"
-            key={goal.id}
-          >
-            <p className="font-semibold text-app-text">{goal.label}</p>
-            <p className="mt-2 text-2xl font-semibold text-app-primary">
-              {goal.current}
-              <span className="ml-1 text-sm text-app-muted">/ {goal.target} {goal.unit}</span>
-            </p>
-            <div className="mt-5">
-              <ProgressBar label="Progresso" value={progress} />
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  );
+  const [goals, setGoals] = useState<Goal[]>([]); const [progress, setProgress] = useState<Record<GoalKind, number>>({ hours: 0, questions: 0, reviews: 0, mockExams: 0, accuracy: 0 }); const [accuracyHasData, setAccuracyHasData] = useState(false); const [loading, setLoading] = useState(true); const [message, setMessage] = useState(''); const { revision } = useLocalData();
+  useEffect(() => { let active = true; void (async () => { const [stored, sessions, blocks, reviews, exams] = await Promise.all([db.goals.toArray(), db.studySessions.toArray(), db.questionBlocks.toArray(), db.reviews.toArray(), db.mockExams.toArray()]); const week = startOfWeek(); const now = new Date().toISOString().slice(0, 10); const normalized = (stored as Array<Partial<Goal>>).map((item, index) => ({ ...defaults[index], ...item, kind: item.kind ?? defaults[index]?.kind, target: Number(item.target ?? item.name?.match(/\d+/)?.[0] ?? defaults[index]?.target ?? 0) } as Goal)).filter((item) => item.kind); const sessionMinutes = (sessions as unknown as Array<{ date: string; durationMinutes: number }>).filter((item) => item.date >= week && item.date <= now).reduce((sum, item) => sum + item.durationMinutes, 0); const questionRows = (blocks as unknown as Array<{ date: string; totalQuestions: number; correctAnswers: number }>).filter((item) => item.date >= week && item.date <= now); const questions = questionRows.reduce((sum, item) => sum + item.totalQuestions, 0); if (active) { setGoals(normalized); setProgress({ hours: sessionMinutes / 60, questions, reviews: (reviews as unknown as Array<{ status: string; completedAt?: string; updatedAt: string }>).filter((item) => item.status === 'completed' && (item.completedAt ?? item.updatedAt).slice(0, 10) >= week).length, mockExams: (exams as unknown as Array<{ date: string }>).filter((item) => item.date >= week).length, accuracy: questions ? Math.round(questionRows.reduce((sum, item) => sum + item.correctAnswers, 0) / questions * 100) : 0 }); setAccuracyHasData(questions > 0); setLoading(false); } })().catch(() => active && setLoading(false)); return () => { active = false; }; }, [revision]);
+  async function save() { const now = new Date().toISOString(); await db.goals.bulkPut(goals.map((goal) => ({ ...goal, name: goal.name.replace(/^\d+\s+/, ''), updatedAt: now, createdAt: goal.createdAt || now })) as never); publishLocalDataChange(); setMessage('Metas salvas neste navegador.'); }
+  if (loading) return <Content><LoadingState label="Carregando metas locais" /></Content>;
+  if (!goals.length) return <Content><EmptyState title="Metas indisponiveis" description="As configuracoes de metas ainda nao foram inicializadas." /></Content>;
+  return <Content className="space-y-6"><section><h1 className="text-3xl font-bold text-app-text">Metas</h1><p className="mt-2 text-app-muted">Objetivos editaveis; o progresso usa somente registros desta semana.</p></section><section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{goals.map((goal) => { const value = progress[goal.kind]; const hasData = goal.kind !== 'accuracy' || accuracyHasData; const unit = goal.kind === 'hours' ? 'horas' : goal.kind === 'accuracy' ? '%' : ''; return <Card key={goal.id}><label className="block text-sm font-semibold text-app-text" htmlFor={goal.id}>{goal.name.replace(/^\d+\s+/, '')}</label><Input id={goal.id} min={0} name={goal.id} onChange={(event) => setGoals((current) => current.map((item) => item.id === goal.id ? { ...item, target: Number(event.target.value) } : item))} type="number" value={goal.target} /><p className="mt-4 text-xl font-bold text-app-text">{hasData ? `${Math.round(value * 10) / 10} de ${goal.target} ${unit}` : 'Sem dados'}</p><p className="mt-1 text-sm text-app-muted">{goal.kind === 'accuracy' ? 'Taxa calculada pelas questoes registradas.' : 'Progresso real desta semana.'}</p>{hasData ? <div className="mt-4 h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-app-primary" style={{ width: `${Math.min(100, goal.target ? value / goal.target * 100 : 0)}%` }} /></div> : null}</Card>; })}</section><Button onClick={() => void save()}>Salvar metas</Button>{message ? <Toast title={message} tone="success" /> : null}</Content>;
 }

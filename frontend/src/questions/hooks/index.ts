@@ -1,12 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useLocalData } from '@/core/providers/useLocalData';
 
-import { defaultQuestionFilters, getQuestionBankData } from '@/questions/services';
-import type { QuestionFilters, QuestionViewStatus } from '@/questions/types';
+import { defaultQuestionFilters, getQuestionBankData, getStoredQuestions } from '@/questions/services';
+import type { Question, QuestionFilters, QuestionViewStatus } from '@/questions/types';
 
 export function useQuestionBank(initialFilters = defaultQuestionFilters) {
   const [filters, setFilters] = useState<QuestionFilters>(initialFilters);
-  const [status, setStatus] = useState<QuestionViewStatus>('success');
-  const data = useMemo(() => getQuestionBankData(filters), [filters]);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [status, setStatus] = useState<QuestionViewStatus>('loading');
+  const { revision } = useLocalData();
+  useEffect(() => { let active = true; void getStoredQuestions().then((items) => { if (active) { setQuestions(items); setStatus('success'); } }).catch(() => active && setStatus('error')); return () => { active = false; }; }, [revision]);
+  const data = useMemo(() => getQuestionBankData(questions, filters), [filters, questions]);
 
   return {
     ...data,
