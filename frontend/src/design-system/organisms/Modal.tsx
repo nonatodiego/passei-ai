@@ -38,6 +38,15 @@ export function Modal({
     };
   }, [initialFocusId, isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); onClose(); }
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [isOpen, onClose]);
+
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.key === 'Escape') {
       event.preventDefault();
