@@ -47,11 +47,13 @@ O projeto frontend está em `frontend/` e contém:
 
 - layout principal com sidebar responsiva e header;
 - rotas para Dashboard, Cronograma, Estudos, Questões, Banco de Erros, Revisões, Simulados, Metas e Configurações;
-- Dashboard com KPIs, evolução e plano de hoje usando dados mockados;
-- tipos TypeScript para as entidades iniciais;
-- dados mockados centralizados;
+- MVP local-first com IndexedDB versionado;
+- cronograma DATAPREV real com 956 atividades;
+- sessões, blocos de questões, erros, revisões e metas persistentes;
+- Today Experience, Decision Engine explicável e Evolução calculados com dados persistidos;
+- backup, restauração, limpeza protegida e proteção de armazenamento local;
 - componentes reutilizáveis de tabela, cards, badges, progresso, filtros e gráficos;
-- serviço base preparado para futura API REST.
+- contratos preparados para futura API REST, sem backend nesta versão.
 
 ## Como executar
 
@@ -97,7 +99,8 @@ npm run test
 - [SPRINT TEMPLATE](docs/SPRINT_TEMPLATE.md)
 - [TASK QUEUE](TASK_QUEUE.md)
 - [LOCAL-FIRST ARCHITECTURE](docs/LOCAL_FIRST_ARCHITECTURE.md)
+- [USABLE MVP GUIDE](docs/USABLE_MVP_GUIDE.md)
 
 ## Status
 
-Projeto em fase **Foundation**. Esta entrega não implementa autenticação, backend ou persistência de dados.
+**Passei AI - Local-First MVP** aprovado visualmente. Os dados ficam vinculados ao navegador e à origem atual; não há autenticação, backend ou sincronização em nuvem nesta versão.

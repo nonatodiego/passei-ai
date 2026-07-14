@@ -1,4 +1,3 @@
-import { scheduleMockActivities } from '@/mocks/schedule';
 import type { EngineResult } from '@/study-engine/types';
 import type { ScheduleActivity, ScheduleData, ScheduleFiltersState } from '@/types/schedule';
 
@@ -17,7 +16,7 @@ function calculateStats(activities: ScheduleActivity[]) {
     completedActivities: activities.filter((activity) => activity.status === 'completed').length,
     overdueActivities: activities.filter((activity) => activity.status === 'overdue').length,
     plannedHours: Math.round((plannedMinutes / 60) * 10) / 10,
-    todayActivities: activities.filter((activity) => activity.date === '2026-07-11').length,
+    todayActivities: activities.filter((activity) => activity.date === new Date().toISOString().slice(0, 10)).length,
     weeklyActivities: activities.length,
   };
 }
@@ -61,12 +60,7 @@ export function createScheduleData(
     weight: session.weight,
   }));
 
-  const activityById = new Map(engineActivities.map((activity) => [activity.id, activity]));
-  const mergedActivities = [
-    ...engineActivities,
-    ...scheduleMockActivities.filter((activity) => !activityById.has(activity.id)),
-  ];
-  const filteredActivities = applyScheduleFilters(mergedActivities, filters);
+  const filteredActivities = applyScheduleFilters(engineActivities, filters);
 
   return {
     activities: filteredActivities,

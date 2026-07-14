@@ -6,7 +6,7 @@ Implementar o Banco de Questoes oficial do Passei AI.
 
 ## Responsabilidades
 
-- Exibir questoes mockadas.
+- Exibir somente questoes e tentativas persistidas no IndexedDB.
 - Permitir filtros por disciplina, assunto, dificuldade, status e texto.
 - Permitir visualizacao e resposta de questoes.
 - Exibir feedback imediato.
@@ -15,7 +15,7 @@ Implementar o Banco de Questoes oficial do Passei AI.
 
 ## Fluxo
 
-`mocks/` fornece questoes tipadas. `services/` filtra dados, calcula estatisticas e cria contratos de integracao. `hooks/` coordena estado local. `pages/` compoe a experiencia usando componentes do Design System.
+`services/` consulta e atualiza dados persistidos, calcula estatisticas e cria contratos de integracao. `hooks/` coordena estado local. `pages/` compoe a experiencia usando componentes do Design System. Mocks permanecem restritos a testes e fixtures.
 
 ## Integracoes
 
@@ -23,7 +23,7 @@ Implementar o Banco de Questoes oficial do Passei AI.
 - Banco de Erros: recebe candidato estruturado de questao incorreta.
 - Analytics: recebe evento tipado de resposta.
 
-As integracoes sao apenas contratos nesta feature. Nao ha backend, IA ou persistencia real.
+As integracoes permanecem contratos locais. Não há backend ou IA nesta versão; a persistência é feita no IndexedDB.
 
 ## Dependencias
 

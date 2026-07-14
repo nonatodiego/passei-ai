@@ -12,7 +12,7 @@ Hoje e o centro de comando diario do Passei AI. Ele mostra a proxima acao de est
 
 ## Fluxo e integracoes
 
-Mocks tipados alimentam `TodayService`; `useToday` fornece dados a pagina. Os contratos estao preparados para consumir recomendacoes do Study Engine no futuro. Nenhuma regra de prioridade pertence ao modulo.
+`TodayService` agrega fatos persistidos e o resultado do Decision Engine; `useToday` fornece os dados a pagina. Nenhuma regra de prioridade pertence ao modulo ou a interface.
 
 ## Dependencias
 

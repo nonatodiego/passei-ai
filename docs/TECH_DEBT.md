@@ -39,6 +39,8 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-018 | Backend | Definir contexto de usuario para persistencia e multiusuario | Contratos atuais ainda sao locais ao MVP | Media | Aberto |
 | TD-019 | Error Bank | Formulario manual, foco e acoes mockadas precisavam de testes DOM | Cobertura adicionada com Testing Library | Media | Resolvido |
 | TD-020 | Testes | Auditoria de mocks cobre rotas criticas, mas ainda nao cobre todos os arquivos legados nao roteados | Risco residual de reintroducao em codigo legado | Media | Aberto |
+| TD-021 | Local-first | IndexedDB permanece vinculado ao navegador e à origem; backup periódico depende de ação do usuário | Dados não sincronizam ou recuperam automaticamente entre dispositivos | Média | Aberto |
+| TD-022 | Plataforma | Backend, autenticação e sincronização em nuvem ainda não existem | Evolução para uso multiusuário requer nova arquitetura de serviços | Média | Backlog |
 
 ## Regras
 

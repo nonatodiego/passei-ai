@@ -44,7 +44,7 @@ describe('SchedulePage', () => {
     expect(html).toContain('Study Engine');
     expect(html).toContain('Agenda semanal');
     expect(html).toContain('Calendario');
-    expect(html).toContain('Gestao e Governanca de TI');
+    expect(html).toContain('Atividades planejadas na semana');
   });
 
   it('renders an empty state when filters remove all activities', () => {
