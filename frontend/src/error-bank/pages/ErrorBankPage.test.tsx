@@ -4,11 +4,15 @@ import 'fake-indexeddb/auto';
 
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { errorBankMocks } from '@/error-bank/mocks';
 import { db } from '@/core/database/database';
 import { ErrorBankPage } from '@/error-bank/pages/ErrorBankPage';
+import { ErrorRecordFormModal } from '@/error-bank/components/ErrorRecordFormModal';
+import { questionMocks } from '@/questions/mocks';
+import { answerQuestion } from '@/questions/services';
 import {
   ErrorBankService,
   calculateErrorStats,
@@ -39,6 +43,10 @@ async function openForm() {
   return user;
 }
 
+function renderErrorBankPage() {
+  return render(<MemoryRouter><ErrorBankPage /></MemoryRouter>);
+}
+
 async function fillRequiredFields(user: ReturnType<typeof userEvent.setup>) {
   await user.type(screen.getByLabelText('Disciplina'), 'Redes');
   await user.type(screen.getByLabelText('Assunto'), 'TCP');
@@ -51,8 +59,49 @@ async function fillRequiredFields(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('ErrorBankPage DOM', () => {
+  it('opens the official form with a question error context received by the route', async () => {
+    const question = questionMocks[0]!;
+    const wrongAlternative = question.alternatives.find(
+      (alternative) => alternative.id !== question.correctAlternativeId,
+    )!;
+    const answerResult = answerQuestion(question, wrongAlternative.id);
+
+    render(
+      <MemoryRouter initialEntries={[{ pathname: '/banco-de-erros', state: { errorBankQuestion: { answerResult, question } } }]}>
+        <ErrorBankPage />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('dialog', { name: 'Registrar erro manual' })).toBeVisible();
+    expect(screen.getByLabelText('Disciplina')).toHaveValue(question.discipline);
+    expect(screen.getByLabelText('Assunto')).toHaveValue(question.subject);
+    expect(screen.getByLabelText('Resposta selecionada (opcional)')).toHaveValue(wrongAlternative.text);
+  });
+
+  it('prefills the official form with question context without saving automatically', () => {
+    render(
+      <ErrorRecordFormModal
+        initialInput={{
+          context: 'Enunciado da questao',
+          discipline: 'Banco de Dados',
+          questionId: 'question-001',
+          selectedAnswer: 'Alternativa B',
+          subject: 'SQL',
+        }}
+        isOpen
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByLabelText('Disciplina')).toHaveValue('Banco de Dados');
+    expect(screen.getByLabelText('Assunto')).toHaveValue('SQL');
+    expect(screen.getByLabelText('Contexto ou enunciado')).toHaveValue('Enunciado da questao');
+    expect(screen.getByLabelText('Resposta selecionada (opcional)')).toHaveValue('Alternativa B');
+  });
+
   it('opens, validates, preserves values and focuses the first invalid field', async () => {
-    render(<ErrorBankPage />);
+    renderErrorBankPage();
     const user = await openForm();
     const discipline = screen.getByLabelText('Disciplina');
     await user.type(discipline, '   ');
@@ -64,7 +113,7 @@ describe('ErrorBankPage DOM', () => {
   });
 
   it('submits valid data, closes and clears the form after success', async () => {
-    render(<ErrorBankPage />);
+    renderErrorBankPage();
     const user = await openForm();
     await fillRequiredFields(user);
     await user.click(screen.getByRole('button', { name: 'Registrar erro' }));
@@ -75,7 +124,7 @@ describe('ErrorBankPage DOM', () => {
   });
 
   it('closes the form by cancel and Escape and returns focus to the trigger', async () => {
-    render(<ErrorBankPage />);
+    renderErrorBankPage();
     const user = await openForm();
     await user.click(screen.getByRole('button', { name: 'Cancelar' }));
     expect(screen.getByRole('button', { name: 'Novo erro' })).toHaveFocus();
@@ -85,7 +134,7 @@ describe('ErrorBankPage DOM', () => {
   });
 
   it('opens accessible details, supports actions and returns focus', async () => {
-    render(<ErrorBankPage />);
+    renderErrorBankPage();
     const user = userEvent.setup();
     const details = (await screen.findAllByRole('button', { name: 'Detalhes' }))[0]!;
     await user.click(details);
@@ -99,7 +148,7 @@ describe('ErrorBankPage DOM', () => {
   });
 
   it('marks an error as mastered and shows service failures', async () => {
-    render(<ErrorBankPage />);
+    renderErrorBankPage();
     const user = userEvent.setup();
     await user.click((await screen.findAllByRole('button', { name: 'Detalhes' }))[0]!);
     await user.click(screen.getByRole('button', { name: 'Marcar dominado' }));

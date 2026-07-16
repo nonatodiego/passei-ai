@@ -15,15 +15,17 @@ const priorityOptions = [
 ];
 
 export function ErrorRecordFormModal({
+  initialInput,
   isOpen,
   onClose,
   onSubmit,
 }: {
+  initialInput?: Partial<ErrorRecordInput>;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (input: ErrorRecordInput) => void;
 }) {
-  const [input, setInput] = useState<ErrorRecordInput>(emptyErrorRecordInput);
+  const [input, setInput] = useState<ErrorRecordInput>(() => ({ ...emptyErrorRecordInput, ...initialInput }));
   const [errors, setErrors] = useState<ErrorRecordValidationErrors>({});
 
   function update(field: keyof ErrorRecordInput, value: string) {

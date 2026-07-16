@@ -14,7 +14,7 @@ export function QuestionViewer({
   question,
 }: {
   answerResult?: QuestionAnswerResult;
-  onAddToErrorBank: (question: Question) => void;
+  onAddToErrorBank: (question: Question, answerResult: QuestionAnswerResult) => void;
   onAnswer: (result: QuestionAnswerResult) => void;
   onNextQuestion?: () => void;
   question: Question;
@@ -120,7 +120,7 @@ export function QuestionViewer({
               <>
                 <Button
                   className="w-full"
-                  onClick={() => onAddToErrorBank(question)}
+                  onClick={() => onAddToErrorBank(question, answerResult)}
                   variant="secondary"
                 >
                   Adicionar ao Banco de Erros

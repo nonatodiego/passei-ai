@@ -1,5 +1,6 @@
 import { HelpCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   QuestionFilters,
@@ -45,7 +46,7 @@ export function QuestionBankView({
   allQuestions: Question[];
   answerResult?: QuestionAnswerResult;
   filters: QuestionFiltersState;
-  onAddToErrorBank: (question: Question) => void;
+  onAddToErrorBank: (question: Question, answerResult: QuestionAnswerResult) => void;
   onAnswer: (result: QuestionAnswerResult) => void;
   onFiltersChange: (filters: QuestionFiltersState) => void;
   onNextQuestion: () => void;
@@ -163,6 +164,7 @@ export function QuestionBankView({
 }
 
 export function QuestionBankPage() {
+  const navigate = useNavigate();
   const { allQuestions, filteredQuestions, filters, setFilters, stats, status } =
     useQuestionBank();
   const [selectedQuestionId, setSelectedQuestionId] = useState(
@@ -198,7 +200,7 @@ export function QuestionBankPage() {
       allQuestions={allQuestions}
       answerResult={answerResult}
       filters={filters}
-      onAddToErrorBank={() => undefined}
+      onAddToErrorBank={(question, answerResult) => navigate('/banco-de-erros', { state: { errorBankQuestion: { answerResult, question } } })}
       onAnswer={(result) => { const question = filteredQuestions.find((item) => item.id === result.questionId); if (question) void answerStoredQuestion(question, result.selectedAlternativeId).then(setAnswerResult); }}
       onFiltersChange={(nextFilters) => {
         setFilters(nextFilters);

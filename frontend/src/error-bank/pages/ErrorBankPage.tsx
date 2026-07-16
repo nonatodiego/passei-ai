@@ -1,5 +1,6 @@
 import { AlertTriangle, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import {
   Badge,
@@ -18,6 +19,7 @@ import { ErrorRecordFormModal } from '@/error-bank/components/ErrorRecordFormMod
 import { useErrorBank } from '@/error-bank/hooks';
 import { defaultErrorFilters } from '@/error-bank/services';
 import type { ErrorAction, ErrorRecord, ErrorRecordInput } from '@/error-bank/types';
+import type { Question, QuestionAnswerResult } from '@/questions/types';
 
 const feedbackByAction: Record<ErrorAction, string> = {
   archive: 'Erro arquivado.',
@@ -27,12 +29,46 @@ const feedbackByAction: Record<ErrorAction, string> = {
   review: 'Erro marcado como revisado.',
 };
 
+type ErrorBankNavigationState = {
+  errorBankQuestion?: {
+    answerResult: QuestionAnswerResult;
+    question: Question;
+  };
+};
+
+function questionErrorPrefill(question: Question, answerResult: QuestionAnswerResult): Partial<ErrorRecordInput> {
+  const selectedAnswer = question.alternatives.find((alternative) => alternative.id === answerResult.selectedAlternativeId)?.text ?? answerResult.selectedAlternativeId;
+
+  return {
+    category: 'Questao',
+    context: question.statement,
+    correctiveAction: 'Revisar a explicacao e resolver novas questoes deste assunto.',
+    correctConcept: question.explanation,
+    discipline: question.discipline,
+    priority: question.difficulty === 'hard' ? 'high' : 'medium',
+    questionId: question.id,
+    reason: 'Resposta incorreta na questao.',
+    selectedAnswer,
+    source: `${question.bank} ${question.year}`,
+    subject: question.subject,
+    tags: question.tags.join(', '),
+  };
+}
+
 export function ErrorBankPage() {
+  const location = useLocation();
   const { addRecord, filtered, filters, records, runAction, setFilters, stats, status } =
     useErrorBank();
   const [selected, setSelected] = useState<ErrorRecord>();
   const [isFormOpen, setFormOpen] = useState(false);
+  const [dismissedContextKey, setDismissedContextKey] = useState<string>();
   const [feedback, setFeedback] = useState<{ message: string; tone: 'success' | 'danger' }>();
+  const errorBankQuestion = (location.state as ErrorBankNavigationState | null)?.errorBankQuestion;
+  const hasQuestionPrefill = Boolean(errorBankQuestion) && dismissedContextKey !== location.key;
+  const formPrefill = hasQuestionPrefill && errorBankQuestion
+    ? questionErrorPrefill(errorBankQuestion.question, errorBankQuestion.answerResult)
+    : undefined;
+  const isErrorFormOpen = isFormOpen || hasQuestionPrefill;
 
   useEffect(() => {
     if (!feedback) return;
@@ -42,6 +78,11 @@ export function ErrorBankPage() {
 
   function handleCreate(input: ErrorRecordInput) {
     void addRecord(input).then(({ wasDuplicate }) => setFeedback({ message: wasDuplicate ? 'Ocorrencia adicionada ao erro semelhante.' : 'Erro registrado com sucesso.', tone: 'success' })).catch(() => setFeedback({ message: 'Nao foi possivel registrar o erro.', tone: 'danger' }));
+  }
+
+  function closeForm() {
+    setFormOpen(false);
+    if (errorBankQuestion) setDismissedContextKey(location.key);
   }
 
   async function handleAction(action: ErrorAction) {
@@ -99,7 +140,7 @@ export function ErrorBankPage() {
           {filtered.map((record) => <Card key={record.id} className="p-5"><div className="flex flex-col justify-between gap-4 sm:flex-row"><div><div className="flex flex-wrap gap-2"><Badge tone={record.priority === 'high' ? 'red' : record.priority === 'medium' ? 'amber' : 'blue'}>{record.priority}</Badge><Badge tone={record.status === 'mastered' ? 'green' : 'blue'}>{record.status}</Badge></div><h2 className="mt-3 font-bold">{record.discipline}: {record.subject}</h2><p className="mt-1 text-sm text-app-muted">{record.category} · recorrencia {record.recurrence} · revisao {record.nextReview || 'a definir'}</p><p className="mt-3 text-sm">{record.correctiveAction}</p></div><Button variant="secondary" onClick={() => setSelected(record)}>Detalhes</Button></div></Card>)}
         </section>
       )}
-      <ErrorRecordFormModal isOpen={isFormOpen} onClose={() => setFormOpen(false)} onSubmit={handleCreate} />
+      <ErrorRecordFormModal initialInput={formPrefill} isOpen={isErrorFormOpen} key={hasQuestionPrefill ? location.key : 'manual'} onClose={closeForm} onSubmit={handleCreate} />
       <ErrorDetailsDrawer errorRecord={selected} onAction={handleAction} onClose={() => setSelected(undefined)} />
     </Content>
   );
