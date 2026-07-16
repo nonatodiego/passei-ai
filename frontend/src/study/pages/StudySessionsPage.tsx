@@ -29,6 +29,7 @@ import {
   EmptyState,
   ErrorState,
   LoadingState,
+  Modal,
   Section,
   Toast,
 } from '@/design-system';
@@ -46,6 +47,7 @@ export function StudySessionsView({
   editingSession,
   onEditSession,
   onCancelEdit,
+  hideCreateForm = false,
 }: {
   allSessions: StudySession[];
   dispatchTimer: (action: StudyTimerAction) => void;
@@ -59,6 +61,7 @@ export function StudySessionsView({
   editingSession?: StudySession;
   onEditSession?: (session: StudySession) => void;
   onCancelEdit?: () => void;
+  hideCreateForm?: boolean;
 }) {
   if (status === 'loading') {
     return (
@@ -95,7 +98,7 @@ export function StudySessionsView({
             icon={BookOpen}
             title="Nenhuma sessao de estudo"
           />
-          <StudySessionForm initialInput={studyPrefill} />
+          {!hideCreateForm ? <StudySessionForm initialInput={studyPrefill} /> : null}
         </Section>
       </Content>
     );
@@ -147,7 +150,7 @@ export function StudySessionsView({
         </div>
         <div className="space-y-4 xl:sticky xl:top-6 xl:self-start">
           <StudySessionTimer dispatch={dispatchTimer} timer={timer} />
-          <StudySessionForm initialInput={editingSession ?? studyPrefill} key={editingSession?.id ?? studyPrefill?.scheduleItemId ?? 'new-session'} onCancel={onCancelEdit} onSaved={onCancelEdit} sessionId={editingSession?.id} />
+          {!hideCreateForm || editingSession ? <StudySessionForm initialInput={editingSession ?? studyPrefill} key={editingSession?.id ?? studyPrefill?.scheduleItemId ?? 'new-session'} onCancel={onCancelEdit} onSaved={onCancelEdit} sessionId={editingSession?.id} /> : null}
         </div>
       </Section>
     </Content>
@@ -157,10 +160,12 @@ export function StudySessionsView({
 export function StudySessionsPage() {
   const { allSessions, filters, sessions, setFilters, status, summary } = useStudySessions();
   const { dispatchTimer, timer } = useStudyTimer();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [studyPrefill, setStudyPrefill] = useState<Partial<import('@/study/types').StudySessionInput>>();
   const [editingSession, setEditingSession] = useState<StudySession>();
+  const [successMessage, setSuccessMessage] = useState('');
   const scheduleItemId = searchParams.get('scheduleItemId');
+  const isCreateRequested = searchParams.get('create') === '1';
 
   useEffect(() => {
     if (!scheduleItemId) return;
@@ -179,20 +184,53 @@ export function StudySessionsPage() {
     return () => { active = false; };
   }, [scheduleItemId]);
 
+  const isCreateModalOpen = isCreateRequested || Boolean(scheduleItemId && studyPrefill);
+
+  function closeCreateModal() {
+    setStudyPrefill(undefined);
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('create');
+    nextParams.delete('scheduleItemId');
+    setSearchParams(nextParams, { replace: true });
+  }
+
+  function handleCreatedSession() {
+    closeCreateModal();
+    setSuccessMessage('Sessao registrada com sucesso.');
+  }
+
   return (
-    <StudySessionsView
-      allSessions={allSessions}
-      dispatchTimer={dispatchTimer}
-      filters={filters}
-      onFiltersChange={setFilters}
-      sessions={sessions}
-      status={status}
-      summary={summary}
-      timer={timer}
-      studyPrefill={studyPrefill}
-      editingSession={editingSession}
-      onCancelEdit={() => setEditingSession(undefined)}
-      onEditSession={setEditingSession}
-    />
+    <>
+      <StudySessionsView
+        allSessions={allSessions}
+        dispatchTimer={dispatchTimer}
+        editingSession={editingSession}
+        filters={filters}
+        hideCreateForm={isCreateModalOpen}
+        onCancelEdit={() => setEditingSession(undefined)}
+        onEditSession={setEditingSession}
+        onFiltersChange={setFilters}
+        sessions={sessions}
+        status={status}
+        studyPrefill={studyPrefill}
+        summary={summary}
+        timer={timer}
+      />
+      <Modal
+        description="Registre os fatos do seu estudo para atualizar seus indicadores locais."
+        initialFocusId="discipline"
+        isOpen={isCreateModalOpen}
+        onClose={closeCreateModal}
+        title="Nova sessao de estudo"
+      >
+        <StudySessionForm
+          initialInput={studyPrefill}
+          key={studyPrefill?.scheduleItemId ?? 'new-session-modal'}
+          onCancel={closeCreateModal}
+          onSaved={handleCreatedSession}
+        />
+      </Modal>
+      {successMessage ? <Toast title={successMessage} tone="success" /> : null}
+    </>
   );
 }

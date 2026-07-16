@@ -37,7 +37,7 @@ describe('StudySessionsPage', () => {
     );
 
     expect(html).toContain('Sessoes de Estudo');
-    expect(html).toContain('Registrar sessao');
+    expect(html).toContain('Nova sessao de estudo');
     expect(html).toContain('Historico');
     expect(html).toContain('Timer de estudo');
   });

@@ -16,13 +16,47 @@ export interface ScheduleItemFilters {
 }
 
 export interface ScheduleItemUpdate {
+  actualMinutes?: number;
+  activityType?: string;
+  disciplineName?: string;
   notes?: string;
   plannedDate?: string;
+  priority?: string;
   status?: string;
+  title?: string;
+}
+
+export interface ScheduleItemInput {
+  actualMinutes?: number;
+  activityType: string;
+  disciplineName: string;
+  notes?: string;
+  plannedDate: string;
+  priority?: string;
+  status: string;
+  title: string;
+}
+
+export interface ScheduleItemValidationResult {
+  errors: Partial<Record<keyof ScheduleItemInput, string>>;
+  isValid: boolean;
 }
 
 const isoToday = () => new Date().toISOString().slice(0, 10);
 const normalized = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const createId = () => globalThis.crypto?.randomUUID?.() ?? `schedule-item-${Date.now()}`;
+
+export function validateScheduleItemInput(input: ScheduleItemInput): ScheduleItemValidationResult {
+  const errors: ScheduleItemValidationResult['errors'] = {};
+
+  if (!input.plannedDate) errors.plannedDate = 'A data planejada e obrigatoria.';
+  if (!input.disciplineName.trim()) errors.disciplineName = 'A disciplina e obrigatoria.';
+  if (!input.title.trim()) errors.title = 'O conteudo e obrigatorio.';
+  if (!input.activityType.trim()) errors.activityType = 'O tipo de atividade e obrigatorio.';
+  if ((input.actualMinutes ?? 0) < 0) errors.actualMinutes = 'A duracao nao pode ser negativa.';
+
+  return { errors, isValid: Object.keys(errors).length === 0 };
+}
 
 export async function getActiveContestProfile(): Promise<ContestProfile | undefined> {
   return db.contestProfiles.get('dataprev-2026');
@@ -64,10 +98,43 @@ export async function getScheduleItems(filters: ScheduleItemFilters = {}): Promi
 export async function updateScheduleItem(id: string, update: ScheduleItemUpdate): Promise<ScheduleItem> {
   const item = await db.scheduleItems.get(id);
   if (!item) throw new Error('Atividade do cronograma nao encontrada.');
-  const next = { ...item, ...update, updatedAt: new Date().toISOString() };
+  const examDate = (await getActiveContestProfile())?.examDate ?? '2026-10-11';
+  const plannedDate = update.plannedDate ?? item.plannedDate;
+  const next = {
+    ...item,
+    ...update,
+    outsideExamWindow: plannedDate > examDate,
+    updatedAt: new Date().toISOString(),
+  };
   await db.scheduleItems.put(next);
   publishLocalDataChange();
   return next;
+}
+
+export async function createScheduleItem(input: ScheduleItemInput): Promise<ScheduleItem> {
+  const validation = validateScheduleItemInput(input);
+  if (!validation.isValid) throw new Error('Dados da atividade invalidos.');
+
+  const profile = await getActiveContestProfile();
+  const timestamp = new Date().toISOString();
+  const item: ScheduleItem = {
+    actualMinutes: input.actualMinutes ?? 0,
+    activityType: input.activityType.trim(),
+    createdAt: timestamp,
+    disciplineName: input.disciplineName.trim(),
+    id: createId(),
+    notes: input.notes?.trim() ?? '',
+    outsideExamWindow: input.plannedDate > (profile?.examDate ?? '2026-10-11'),
+    plannedDate: input.plannedDate,
+    priority: input.priority?.trim() || 'Normal',
+    status: input.status.trim() || 'Não iniciado',
+    title: input.title.trim(),
+    updatedAt: timestamp,
+  };
+
+  await db.scheduleItems.put(item);
+  publishLocalDataChange();
+  return item;
 }
 
 export async function completeScheduleItem(id: string): Promise<ScheduleItem> {
