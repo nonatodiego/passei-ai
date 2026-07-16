@@ -1,14 +1,22 @@
 import { useMemo, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
-import { routes } from '@/constants/routes';
+import { routes, type AppRoute } from '@/constants/routes';
 import { PageContainer } from '@/design-system/layout/PageContainer';
+
+const primaryActionRoutes: Partial<Record<AppRoute['path'], string>> = {
+  '/': '/estudos?create=1',
+  '/cronograma': '/cronograma?create=1',
+  '/estudos': '/estudos?create=1',
+  '/evolucao': '/estudos?create=1',
+};
 
 export function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const currentRoute = useMemo(
     () =>
@@ -17,6 +25,8 @@ export function AppLayout() {
     [location.pathname],
   );
 
+  const primaryActionRoute = primaryActionRoutes[currentRoute.path];
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-app-text lg:flex">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
@@ -24,6 +34,7 @@ export function AppLayout() {
         <Header
           currentRoute={currentRoute}
           onMenuClick={() => setIsSidebarOpen(true)}
+          onPrimaryAction={primaryActionRoute ? () => navigate(primaryActionRoute) : undefined}
         />
         <PageContainer>
           <Outlet />

@@ -3,7 +3,7 @@ import 'fake-indexeddb/auto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { db } from './database';
-import { getScheduleItems, updateContestExamDate } from './scheduleRepository';
+import { getScheduleItems, updateContestExamDate, updateScheduleItem } from './scheduleRepository';
 import { seedDataprevSchedule } from './seed';
 
 describe('local DATAPREV schedule', () => {
@@ -42,4 +42,14 @@ describe('local DATAPREV schedule', () => {
     expect(await getScheduleItems({ window: 'outsideExam' })).toHaveLength(0);
     expect(await getScheduleItems({ window: 'beforeExam' })).toHaveLength(956);
   }, 15_000);
+
+  it('recalculates the exam window when an activity date is edited', async () => {
+    await seedDataprevSchedule();
+    const item = (await db.scheduleItems.toArray())[0]!;
+
+    const updated = await updateScheduleItem(item.id, { plannedDate: '2026-11-01' });
+
+    expect(updated.outsideExamWindow).toBe(true);
+    expect((await db.scheduleItems.get(item.id))?.outsideExamWindow).toBe(true);
+  });
 });

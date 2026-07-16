@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Card, CardDescription, CardHeader, CardTitle, Input, Select } from '@/design-system';
 import { db } from '@/core/database/database';
 import { StudySessionService, validateStudySessionInput } from '@/study/services';
-import type { StudySessionInput } from '@/study/types';
+import type { StudySession, StudySessionInput } from '@/study/types';
 
 import { defaultStudySessionInput } from '../hooks';
 import { difficultyLabel, materialTypeLabel, studyStatusLabel } from './studySessionLabels';
@@ -24,12 +24,13 @@ export function StudySessionForm({
 }: {
   initialInput?: Partial<StudySessionInput>;
   onCancel?: () => void;
-  onSaved?: () => void;
+  onSaved?: (session: StudySession) => void;
   sessionId?: string;
 }) {
   const [input, setInput] = useState<StudySessionInput>({ ...defaultStudySessionInput, ...initialInput });
   const [message, setMessage] = useState('');
   const [disciplineOptions, setDisciplineOptions] = useState(fallbackDisciplineOptions);
+  const [isSaving, setIsSaving] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const validation = validateStudySessionInput(input);
   const errors = submitted ? validation.errors : {};
@@ -56,23 +57,40 @@ export function StudySessionForm({
 
     if (!result.isValid) {
       setMessage('Revise os campos obrigatorios.');
+      const firstInvalidField = Object.keys(result.errors)[0];
+      const inputIdByField: Partial<Record<keyof StudySessionInput, string>> = {
+        correctAnswers: 'correct',
+        disciplineId: 'discipline',
+        durationMinutes: 'duration',
+        questionsAnswered: 'questions',
+        subject: 'subject',
+        wrongAnswers: 'wrong',
+      };
+      const inputId = firstInvalidField
+        ? inputIdByField[firstInvalidField as keyof StudySessionInput]
+        : undefined;
+      window.requestAnimationFrame(() => document.getElementById(inputId ?? '')?.focus());
       return;
     }
 
+    setIsSaving(true);
     try {
-      if (sessionId) await StudySessionService.updateSession(sessionId, input);
-      else await StudySessionService.createSession(input, Boolean(input.scheduleItemId));
+      const session = sessionId
+        ? await StudySessionService.updateSession(sessionId, input)
+        : await StudySessionService.createSession(input, Boolean(input.scheduleItemId));
       setMessage(sessionId ? 'Sessao atualizada com sucesso.' : 'Sessao registrada com sucesso e salva neste navegador.');
-      onSaved?.();
+      onSaved?.(session);
     } catch (reason) {
       setMessage(reason instanceof Error ? reason.message : 'Nao foi possivel registrar a sessao.');
+    } finally {
+      setIsSaving(false);
     }
   }
 
   return (
     <Card className="p-0">
       <CardHeader className="border-b border-app-border p-5">
-        <CardTitle>{sessionId ? 'Editar sessao' : 'Registrar sessao'}</CardTitle>
+        <CardTitle>{sessionId ? 'Editar sessao' : 'Nova sessao de estudo'}</CardTitle>
         <CardDescription>Preencha apenas os fatos do bloco estudado</CardDescription>
       </CardHeader>
       <div className="space-y-5 px-4 pb-4">
@@ -120,6 +138,13 @@ export function StudySessionForm({
           onChange={(event) => setInput((current) => ({ ...current, date: event.target.value }))}
           type="date"
           value={input.date}
+        />
+        <Input
+          label="Hora inicial"
+          name="start-time"
+          onChange={(event) => setInput((current) => ({ ...current, startTime: event.target.value }))}
+          type="time"
+          value={input.startTime ?? ''}
         />
         <Input
           error={errors.durationMinutes}
@@ -204,7 +229,7 @@ export function StudySessionForm({
         <p className="text-sm text-app-muted" role="status">
           {message}
         </p>
-        <div className="flex gap-2">{sessionId && onCancel ? <Button onClick={onCancel} variant="secondary">Cancelar</Button> : null}<Button onClick={() => void handleSubmit()}>{sessionId ? 'Salvar alteracoes' : 'Registrar'}</Button></div>
+        <div className="flex gap-2">{onCancel ? <Button disabled={isSaving} onClick={onCancel} variant="secondary">Cancelar</Button> : null}<Button isLoading={isSaving} onClick={() => void handleSubmit()}>{sessionId ? 'Salvar alteracoes' : 'Salvar sessao'}</Button></div>
       </div>
     </Card>
   );

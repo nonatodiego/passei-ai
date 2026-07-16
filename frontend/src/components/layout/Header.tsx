@@ -7,9 +7,11 @@ import { formatToday } from '@/utils/format';
 export function Header({
   currentRoute,
   onMenuClick,
+  onPrimaryAction,
 }: {
   currentRoute: AppRoute;
   onMenuClick: () => void;
+  onPrimaryAction?: () => void;
 }) {
   return (
     <header className="sticky top-0 z-20 bg-app-background/95 px-4 py-6 backdrop-blur md:px-10">
@@ -39,7 +41,11 @@ export function Header({
             <Bell aria-hidden="true" className="h-5 w-5" />
             <span className="absolute right-2 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-app-background bg-red-500" />
           </button>
-          <Button icon={<Plus className="h-4 w-4" />}>{currentRoute.actionLabel}</Button>
+          {onPrimaryAction ? (
+            <Button icon={<Plus aria-hidden="true" className="h-4 w-4" />} onClick={onPrimaryAction}>
+              {currentRoute.actionLabel}
+            </Button>
+          ) : null}
         </div>
       </div>
     </header>
