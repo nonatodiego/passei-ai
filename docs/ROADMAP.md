@@ -253,3 +253,15 @@
 - [x] Backup, restauracao e limpeza protegida.
 - [x] Remover metricas mockadas das rotas de producao.
 - [x] Validacao visual final pelo Product Owner.
+
+## Product Hardening
+
+- [x] Auditar fluxos persistentes e contratos locais.
+- [x] Adicionar auditoria central de integridade sem alterar dados.
+- [x] Fortalecer backup, restauracao e rollback de importacao invalida.
+- [x] Centralizar datas locais e cobrir viradas de dia, semana e mes.
+- [x] Corrigir seguranca de submissao e feedback de formularios.
+- [x] Melhorar foco de Modal, Drawer e navegacao mobile.
+- [x] Validar nove rotas em nove breakpoints, de 320 px a 1920 px.
+- [x] Reduzir o bundle inicial para menos de 500 kB.
+- [x] Ampliar a suite para 101 testes em 30 arquivos.

@@ -70,6 +70,7 @@ Fila de tarefas tecnicas e de produto do Passei AI.
 | TQ-024 | Arquitetura | Decision Engine Architecture | Engineering Evolution | Completed |
 | TQ-017 | Produto | Feature 003 - Banco de Erros | PRD-003 | Completed |
 | TQ-025 | Produto | MVP Local-First utilizavel | MVP Local-First | Completed |
+| TQ-026 | Engenharia | Product Hardening - dados, UX, testes e performance | Hardening Sprint | Completed |
 
 ## Blocked
 

@@ -7,11 +7,14 @@ Metricas de acompanhamento do Passei AI.
 | Metrica | Valor | Observacao |
 | --- | ---: | --- |
 | Sprints funcionais concluidas | 7 | Inclui MVP Local-First aprovado visualmente |
-| Test files | 19 | Vitest |
-| Testes | 60 | Inclui jornada persistente, auditoria de dados de produção e revalidação de edição de sessão |
-| Frontend build | Verde | Build local aprovado com aviso de chunk grande |
+| Test files | 30 | Vitest e Testing Library |
+| Testes | 101 | Inclui jornadas persistentes, integridade, backup, datas, formularios, navegacao e Decision Engine |
+| Frontend build | Verde | Todos os chunks permanecem abaixo de 500 kB |
 | Lint | Verde | Executado fora do sandbox para contornar EPERM local |
-| Bundle JS principal | 1,283.96 kB | Acima da meta; registrado em TD-001 e TD-010 |
+| Bundle JS principal | 191.14 kB | 60.63 kB gzip; reducao de aproximadamente 85% |
+| Maior chunk de rota | 400.11 kB | Cronograma importado, 32.29 kB gzip; Dashboard 379.60 kB |
+| Matriz responsiva | 81 combinacoes | 9 rotas em 9 larguras, sem overflow global |
+| Auditoria npm | 1 alta | `xlsx` somente em script de importacao local, sem fix disponivel |
 | Product Experience Gate | Aprovado | MVP Local-First aprovado visualmente pelo Product Owner |
 | Documentos de engenharia | 9 | Criados e mantidos no fluxo de governanca |
 | Modulos oficiais frontend | 12 | Core, Shared, Study Engine e modulos de produto |
