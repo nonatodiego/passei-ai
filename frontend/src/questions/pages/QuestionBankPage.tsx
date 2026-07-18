@@ -31,6 +31,7 @@ import {
 
 export function QuestionBankView({
   allQuestions,
+  actionError,
   answerResult,
   filters,
   onAddToErrorBank,
@@ -43,6 +44,7 @@ export function QuestionBankView({
   stats,
   status,
 }: {
+  actionError?: string;
   allQuestions: Question[];
   answerResult?: QuestionAnswerResult;
   filters: QuestionFiltersState;
@@ -97,9 +99,7 @@ export function QuestionBankView({
 
   return (
     <Content className="space-y-8">
-      <Toast title="Banco de Questoes pronto" tone="success">
-        Dados estruturados para Study Engine, Banco de Erros e Analytics futuros.
-      </Toast>
+      {actionError ? <Toast title={actionError} tone="danger" /> : null}
       <Section className="rounded-md border border-app-border bg-white p-6 shadow-panel">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-3xl space-y-3">
@@ -171,6 +171,7 @@ export function QuestionBankPage() {
     filteredQuestions[0]?.id,
   );
   const [answerResult, setAnswerResult] = useState<QuestionAnswerResult>();
+  const [actionError, setActionError] = useState('');
 
   const selectedQuestion = useMemo(
     () =>
@@ -198,10 +199,11 @@ export function QuestionBankPage() {
   return (
     <QuestionBankView
       allQuestions={allQuestions}
+      actionError={actionError}
       answerResult={answerResult}
       filters={filters}
       onAddToErrorBank={(question, answerResult) => navigate('/banco-de-erros', { state: { errorBankQuestion: { answerResult, question } } })}
-      onAnswer={(result) => { const question = filteredQuestions.find((item) => item.id === result.questionId); if (question) void answerStoredQuestion(question, result.selectedAlternativeId).then(setAnswerResult); }}
+      onAnswer={(result) => { const question = filteredQuestions.find((item) => item.id === result.questionId); if (question) void answerStoredQuestion(question, result.selectedAlternativeId).then((savedResult) => { setAnswerResult(savedResult); setActionError(''); }).catch(() => setActionError('Nao foi possivel salvar a resposta. Tente novamente.')); }}
       onFiltersChange={(nextFilters) => {
         setFilters(nextFilters);
         setAnswerResult(undefined);

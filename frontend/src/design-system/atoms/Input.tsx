@@ -12,8 +12,8 @@ export function Input({ className, error, id, label, ...props }: InputProps) {
   const errorId = error && inputId ? `${inputId}-error` : undefined;
 
   return (
-    <label className="block space-y-2">
-      {label ? <span className="text-sm font-medium text-app-muted">{label}</span> : null}
+    <div className="block space-y-2">
+      {label ? <label className="block text-sm font-medium text-app-muted" htmlFor={inputId}>{label}</label> : null}
       <input
         aria-describedby={errorId}
         aria-invalid={Boolean(error)}
@@ -30,6 +30,6 @@ export function Input({ className, error, id, label, ...props }: InputProps) {
           {error}
         </span>
       ) : null}
-    </label>
+    </div>
   );
 }

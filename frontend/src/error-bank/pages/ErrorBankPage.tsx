@@ -76,8 +76,14 @@ export function ErrorBankPage() {
     return () => window.clearTimeout(timeout);
   }, [feedback]);
 
-  function handleCreate(input: ErrorRecordInput) {
-    void addRecord(input).then(({ wasDuplicate }) => setFeedback({ message: wasDuplicate ? 'Ocorrencia adicionada ao erro semelhante.' : 'Erro registrado com sucesso.', tone: 'success' })).catch(() => setFeedback({ message: 'Nao foi possivel registrar o erro.', tone: 'danger' }));
+  async function handleCreate(input: ErrorRecordInput) {
+    try {
+      const { wasDuplicate } = await addRecord(input);
+      setFeedback({ message: wasDuplicate ? 'Ocorrencia adicionada ao erro semelhante.' : 'Erro registrado com sucesso.', tone: 'success' });
+    } catch {
+      setFeedback({ message: 'Nao foi possivel registrar o erro.', tone: 'danger' });
+      throw new Error('Nao foi possivel registrar o erro. Os dados foram preservados.');
+    }
   }
 
   function closeForm() {
@@ -85,13 +91,13 @@ export function ErrorBankPage() {
     if (errorBankQuestion) setDismissedContextKey(location.key);
   }
 
-  async function handleAction(action: ErrorAction) {
+  async function handleAction(action: ErrorAction, date?: string) {
     if (!selected) return;
     try {
       const updated = await runAction(
         selected.id,
         action,
-        action === 'reschedule' ? '2026-07-20' : undefined,
+        date,
       );
       if (!updated) throw new Error('Registro nao encontrado');
       setSelected(updated);
@@ -141,7 +147,7 @@ export function ErrorBankPage() {
         </section>
       )}
       <ErrorRecordFormModal initialInput={formPrefill} isOpen={isErrorFormOpen} key={hasQuestionPrefill ? location.key : 'manual'} onClose={closeForm} onSubmit={handleCreate} />
-      <ErrorDetailsDrawer errorRecord={selected} onAction={handleAction} onClose={() => setSelected(undefined)} />
+      <ErrorDetailsDrawer errorRecord={selected} key={`${selected?.id ?? 'closed'}-${selected?.nextReview ?? ''}`} onAction={handleAction} onClose={() => setSelected(undefined)} />
     </Content>
   );
 }

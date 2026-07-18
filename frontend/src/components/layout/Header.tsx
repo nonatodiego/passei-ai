@@ -1,4 +1,4 @@
-import { Bell, Menu, Plus } from 'lucide-react';
+import { Menu, Plus } from 'lucide-react';
 
 import { Button } from '@/design-system';
 import type { AppRoute } from '@/constants/routes';
@@ -33,14 +33,6 @@ export function Header({
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <button
-            aria-label="Notificações"
-            className="relative rounded-md p-2 text-app-text transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-app-focus"
-            type="button"
-          >
-            <Bell aria-hidden="true" className="h-5 w-5" />
-            <span className="absolute right-2 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-app-background bg-red-500" />
-          </button>
           {onPrimaryAction ? (
             <Button icon={<Plus aria-hidden="true" className="h-4 w-4" />} onClick={onPrimaryAction}>
               {currentRoute.actionLabel}
