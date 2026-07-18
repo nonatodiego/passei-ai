@@ -1,6 +1,7 @@
 import { db } from './database';
 import { publishLocalDataChange } from './events';
 import type { ContestProfile, ScheduleItem } from './types';
+import { toLocalDateKey } from '@/shared/utils/date';
 
 export type ScheduleWindow = 'all' | 'today' | 'overdue' | 'upcoming' | 'completed' | 'beforeExam' | 'outsideExam';
 
@@ -42,7 +43,6 @@ export interface ScheduleItemValidationResult {
   isValid: boolean;
 }
 
-const isoToday = () => new Date().toISOString().slice(0, 10);
 const normalized = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const createId = () => globalThis.crypto?.randomUUID?.() ?? `schedule-item-${Date.now()}`;
 
@@ -64,7 +64,7 @@ export async function getActiveContestProfile(): Promise<ContestProfile | undefi
 
 export async function getScheduleItems(filters: ScheduleItemFilters = {}): Promise<ScheduleItem[]> {
   const examDate = (await getActiveContestProfile())?.examDate ?? '2026-10-11';
-  const today = isoToday();
+  const today = toLocalDateKey();
   const query = normalized(filters.query ?? '');
   const items = await db.scheduleItems.orderBy('plannedDate').toArray();
 

@@ -1,5 +1,6 @@
 import type { EngineResult } from '@/study-engine/types';
 import type { ScheduleActivity, ScheduleData, ScheduleFiltersState } from '@/types/schedule';
+import { toLocalDateKey } from '@/shared/utils/date';
 
 const defaultFilters: ScheduleFiltersState = {
   discipline: 'all',
@@ -16,7 +17,7 @@ function calculateStats(activities: ScheduleActivity[]) {
     completedActivities: activities.filter((activity) => activity.status === 'completed').length,
     overdueActivities: activities.filter((activity) => activity.status === 'overdue').length,
     plannedHours: Math.round((plannedMinutes / 60) * 10) / 10,
-    todayActivities: activities.filter((activity) => activity.date === new Date().toISOString().slice(0, 10)).length,
+    todayActivities: activities.filter((activity) => activity.date === toLocalDateKey()).length,
     weeklyActivities: activities.length,
   };
 }

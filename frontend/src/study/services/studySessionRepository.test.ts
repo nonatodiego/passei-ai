@@ -50,4 +50,13 @@ describe('persistent study sessions', () => {
     expect(copy.id).not.toBe(saved.id);
     expect(copy.scheduleItemId).toBeUndefined();
   });
+
+  it('rolls back the session when its linked activity does not exist', async () => {
+    await expect(StudySessionService.createSession({
+      ...input,
+      scheduleItemId: 'missing-schedule-item',
+    }, true)).rejects.toThrow('Atividade vinculada nao encontrada.');
+
+    expect(await db.studySessions.count()).toBe(0);
+  });
 });

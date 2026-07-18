@@ -2,6 +2,7 @@ import { useEffect, useMemo, useReducer, useState } from 'react';
 
 import { getStudySessionData, StudySessionService, studyTimerReducer } from '@/study/services';
 import { useLocalData } from '@/core/providers/useLocalData';
+import { toLocalDateKey } from '@/shared/utils/date';
 import type {
   StudySessionFilters,
   StudySessionInput,
@@ -20,7 +21,7 @@ export const defaultStudySessionFilters: StudySessionFilters = {
 
 export const defaultStudySessionInput: StudySessionInput = {
   correctAnswers: 0,
-  date: new Date().toISOString().slice(0, 10),
+  date: toLocalDateKey(),
   difficulty: 'moderate',
   disciplineId: '',
   disciplineName: '',
