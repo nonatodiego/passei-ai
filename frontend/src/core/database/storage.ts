@@ -11,6 +11,7 @@ export interface StorageInfo {
 
 export function getAppEnvironment(hostname = window.location.hostname): AppEnvironment {
   if (hostname === 'localhost' || hostname === '127.0.0.1') return 'local';
+  if (hostname === 'passei-ai.vercel.app') return 'production';
   if (hostname.endsWith('.vercel.app')) return 'preview';
   return 'production';
 }

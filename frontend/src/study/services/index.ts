@@ -1,6 +1,6 @@
 import { db } from '@/core/database/database';
 import { publishLocalDataChange } from '@/core/database/events';
-import { completeScheduleItem } from '@/core/database/scheduleRepository';
+import { toLocalDateKey } from '@/shared/utils/date';
 import type { StudySession, StudySessionFilters, StudySessionInput } from '@/study/types';
 
 import {
@@ -31,13 +31,29 @@ export const StudySessionService: StudySessionServicePort = {
 
     const session: StudySession = {
       ...input,
+      disciplineName: input.disciplineName.trim(),
+      notes: input.notes.trim(),
+      source: input.source.trim(),
+      subject: input.subject.trim(),
       createdAt: now(),
       id: createId(),
       updatedAt: now(),
     };
-    await db.studySessions.put(session);
     if (shouldCompleteScheduleItem && session.scheduleItemId) {
-      await completeScheduleItem(session.scheduleItemId);
+      await db.transaction('rw', db.studySessions, db.scheduleItems, async () => {
+        const scheduleItem = await db.scheduleItems.get(session.scheduleItemId!);
+        if (!scheduleItem) throw new Error('Atividade vinculada nao encontrada.');
+        const completedAt = now();
+        await db.studySessions.put(session);
+        await db.scheduleItems.put({
+          ...scheduleItem,
+          completedAt,
+          status: 'Concluída',
+          updatedAt: completedAt,
+        });
+      });
+    } else {
+      await db.studySessions.put(session);
     }
     publishLocalDataChange();
     return session;
@@ -51,7 +67,7 @@ export const StudySessionService: StudySessionServicePort = {
     if (!session) throw new Error('Sessao de estudo nao encontrada.');
     return StudySessionService.createSession({
       ...session,
-      date: new Date().toISOString().slice(0, 10),
+      date: toLocalDateKey(),
       scheduleItemId: undefined,
       startTime: undefined,
     });
@@ -63,7 +79,16 @@ export const StudySessionService: StudySessionServicePort = {
     if (!existing) throw new Error('Sessao de estudo nao encontrada.');
     const validation = validateStudySessionInput(input);
     if (!validation.isValid) throw new Error('Dados da sessao invalidos.');
-    const session = { ...existing, ...input, id, updatedAt: now() };
+    const session = {
+      ...existing,
+      ...input,
+      disciplineName: input.disciplineName.trim(),
+      id,
+      notes: input.notes.trim(),
+      source: input.source.trim(),
+      subject: input.subject.trim(),
+      updatedAt: now(),
+    };
     await db.studySessions.put(session);
     publishLocalDataChange();
     return session;

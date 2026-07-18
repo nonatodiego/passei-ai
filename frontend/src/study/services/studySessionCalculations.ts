@@ -8,6 +8,7 @@ import type {
   StudyTimerAction,
   StudyTimerState,
 } from '@/study/types';
+import { getLocalWeekRange, isValidLocalDateKey, toLocalDateKey } from '@/shared/utils/date';
 
 export function calculateAccuracyRate(correctAnswers: number, questionsAnswered: number): number {
   if (questionsAnswered <= 0) {
@@ -41,8 +42,12 @@ export function calculateStudySessionSummary(sessions: StudySession[]): StudySes
 export function filterStudySessions(
   sessions: StudySession[],
   filters: StudySessionFilters,
+  referenceDate = new Date(),
 ): StudySession[] {
   const query = filters.query.trim().toLowerCase();
+  const today = toLocalDateKey(referenceDate);
+  const weekStart = getLocalWeekRange(referenceDate).start;
+  const monthStart = `${today.slice(0, 7)}-01`;
 
   return sessions.filter((session) => {
     const matchesDiscipline =
@@ -53,8 +58,8 @@ export function filterStudySessions(
     const matchesQuery = query.length === 0 || session.subject.toLowerCase().includes(query);
     const matchesPeriod =
       filters.period === 'all' ||
-      (filters.period === 'week' && session.date >= '2026-07-07') ||
-      (filters.period === 'month' && session.date >= '2026-07-01');
+      (filters.period === 'week' && session.date >= weekStart && session.date <= today) ||
+      (filters.period === 'month' && session.date >= monthStart && session.date <= today);
 
     return matchesDiscipline && matchesMaterial && matchesStatus && matchesQuery && matchesPeriod;
   });
@@ -73,20 +78,24 @@ export function validateStudySessionInput(
     errors.subject = 'Assunto obrigatorio.';
   }
 
-  if (input.durationMinutes <= 0) {
+  if (!isValidLocalDateKey(input.date)) {
+    errors.date = 'Informe uma data valida.';
+  }
+
+  if (!Number.isFinite(input.durationMinutes) || input.durationMinutes <= 0) {
     errors.durationMinutes = 'Duracao deve ser maior que zero.';
   }
 
-  if (input.questionsAnswered < 0) {
-    errors.questionsAnswered = 'Questoes nao podem ser negativas.';
+  if (!Number.isInteger(input.questionsAnswered) || input.questionsAnswered < 0) {
+    errors.questionsAnswered = 'Questoes devem ser inteiras e nao negativas.';
   }
 
-  if (input.correctAnswers < 0) {
-    errors.correctAnswers = 'Acertos nao podem ser negativos.';
+  if (!Number.isInteger(input.correctAnswers) || input.correctAnswers < 0) {
+    errors.correctAnswers = 'Acertos devem ser inteiros e nao negativos.';
   }
 
-  if (input.wrongAnswers < 0) {
-    errors.wrongAnswers = 'Erros nao podem ser negativos.';
+  if (!Number.isInteger(input.wrongAnswers) || input.wrongAnswers < 0) {
+    errors.wrongAnswers = 'Erros devem ser inteiros e nao negativos.';
   }
 
   if (input.correctAnswers + input.wrongAnswers > input.questionsAnswered) {

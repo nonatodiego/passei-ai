@@ -25,8 +25,8 @@ export function Select({
   const errorId = error && selectId ? `${selectId}-error` : undefined;
 
   return (
-    <label className="block space-y-2">
-      {label ? <span className="text-sm font-medium text-app-muted">{label}</span> : null}
+    <div className="block space-y-2">
+      {label ? <label className="block text-sm font-medium text-app-muted" htmlFor={selectId}>{label}</label> : null}
       <select
         aria-describedby={errorId}
         aria-invalid={Boolean(error)}
@@ -49,6 +49,6 @@ export function Select({
           {error}
         </span>
       ) : null}
-    </label>
+    </div>
   );
 }

@@ -1,11 +1,117 @@
 import { db } from './database';
 import { publishLocalDataChange } from './events';
+import { auditBackupPayload } from './integrity';
 import { DATABASE_SCHEMA_VERSION } from './schema';
 import type { BackupPayload } from './types';
-export async function exportBackup(): Promise<BackupPayload> { const [appSettings,contestProfiles,disciplines,scheduleItems,studySessions,questionBlocks,questions,questionAttempts,errorRecords,reviews,mockExams,goals]=await Promise.all([db.appSettings.toArray(),db.contestProfiles.toArray(),db.disciplines.toArray(),db.scheduleItems.toArray(),db.studySessions.toArray(),db.questionBlocks.toArray(),db.questions.toArray(),db.questionAttempts.toArray(),db.errorRecords.toArray(),db.reviews.toArray(),db.mockExams.toArray(),db.goals.toArray()]); return {metadata:{app:'Passei AI',schemaVersion:DATABASE_SCHEMA_VERSION,exportedAt:new Date().toISOString()},appSettings,contestProfiles,disciplines,scheduleItems,studySessions,questionBlocks,questions,questionAttempts,errorRecords,reviews,mockExams,goals}; }
-export function validateBackup(payload: unknown): payload is BackupPayload { return Boolean(payload&&typeof payload==='object'&&'metadata'in payload&&(payload as BackupPayload).metadata.app==='Passei AI'&&Array.isArray((payload as BackupPayload).scheduleItems)); }
-export async function importBackup(payload: BackupPayload){ if(!validateBackup(payload)) throw new Error('Backup invalido.'); await db.transaction('rw',db.tables,async()=>{for(const table of db.tables) await table.clear(); await db.appSettings.bulkPut(payload.appSettings); await db.contestProfiles.bulkPut(payload.contestProfiles); await db.disciplines.bulkPut(payload.disciplines); await db.scheduleItems.bulkPut(payload.scheduleItems); await db.studySessions.bulkPut(payload.studySessions); await db.questionBlocks.bulkPut(payload.questionBlocks); await db.questions.bulkPut(payload.questions); await db.questionAttempts.bulkPut(payload.questionAttempts); await db.errorRecords.bulkPut(payload.errorRecords); await db.reviews.bulkPut(payload.reviews); await db.mockExams.bulkPut(payload.mockExams); await db.goals.bulkPut(payload.goals);}); publishLocalDataChange(); }
-export async function resetDatabase(){ await db.transaction('rw',db.tables,async()=>{for(const table of db.tables) await table.clear();}); publishLocalDataChange(); }
-export async function getBackupSummary() { const [appSettings, contestProfiles, disciplines, scheduleItems, studySessions, questionBlocks, questions, questionAttempts, errorRecords, reviews, mockExams, goals] = await Promise.all([db.appSettings.count(), db.contestProfiles.count(), db.disciplines.count(), db.scheduleItems.count(), db.studySessions.count(), db.questionBlocks.count(), db.questions.count(), db.questionAttempts.count(), db.errorRecords.count(), db.reviews.count(), db.mockExams.count(), db.goals.count()]); return { appSettings, contestProfiles, disciplines, scheduleItems, studySessions, questionBlocks, questions, questionAttempts, errorRecords, reviews, mockExams, goals }; }
-export async function getLastBackupAt() { return (await db.appSettings.where('key').equals('lastBackupAt').first())?.value; }
-export async function markBackupExported(at = new Date().toISOString()) { const current = await db.appSettings.where('key').equals('lastBackupAt').first(); await db.appSettings.put({ id: current?.id ?? 'last-backup-at', key: 'lastBackupAt', value: at, createdAt: current?.createdAt ?? at, updatedAt: at }); publishLocalDataChange(); }
+
+const backupArrayKeys = [
+  'appSettings',
+  'contestProfiles',
+  'disciplines',
+  'scheduleItems',
+  'studySessions',
+  'questionBlocks',
+  'questions',
+  'questionAttempts',
+  'errorRecords',
+  'reviews',
+  'mockExams',
+  'goals',
+] as const;
+
+export async function exportBackup(): Promise<BackupPayload> {
+  const [appSettings, contestProfiles, disciplines, scheduleItems, studySessions, questionBlocks, questions, questionAttempts, errorRecords, reviews, mockExams, goals] = await Promise.all([
+    db.appSettings.toArray(), db.contestProfiles.toArray(), db.disciplines.toArray(), db.scheduleItems.toArray(), db.studySessions.toArray(), db.questionBlocks.toArray(), db.questions.toArray(), db.questionAttempts.toArray(), db.errorRecords.toArray(), db.reviews.toArray(), db.mockExams.toArray(), db.goals.toArray(),
+  ]);
+  return {
+    metadata: {
+      app: 'Passei AI',
+      exportedAt: new Date().toISOString(),
+      schemaVersion: DATABASE_SCHEMA_VERSION,
+    },
+    appSettings,
+    contestProfiles,
+    disciplines,
+    scheduleItems,
+    studySessions,
+    questionBlocks,
+    questions,
+    questionAttempts,
+    errorRecords,
+    reviews,
+    mockExams,
+    goals,
+  };
+}
+
+export function validateBackup(payload: unknown): payload is BackupPayload {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
+  const candidate = payload as Record<string, unknown>;
+  const metadata = candidate.metadata;
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) return false;
+  const metadataRecord = metadata as Record<string, unknown>;
+  if (
+    metadataRecord.app !== 'Passei AI' ||
+    metadataRecord.schemaVersion !== DATABASE_SCHEMA_VERSION ||
+    typeof metadataRecord.exportedAt !== 'string' ||
+    Number.isNaN(Date.parse(metadataRecord.exportedAt))
+  ) {
+    return false;
+  }
+  return backupArrayKeys.every((key) => Array.isArray(candidate[key]));
+}
+
+export async function importBackup(payload: BackupPayload): Promise<void> {
+  if (!validateBackup(payload)) throw new Error('Backup invalido ou incompativel.');
+  const integrity = auditBackupPayload(payload);
+  if (integrity.summary.errors > 0) {
+    throw new Error(`Backup contem ${integrity.summary.errors} problema(s) de integridade.`);
+  }
+
+  await db.transaction('rw', db.tables, async () => {
+    for (const table of db.tables) await table.clear();
+    await db.appSettings.bulkPut(payload.appSettings);
+    await db.contestProfiles.bulkPut(payload.contestProfiles);
+    await db.disciplines.bulkPut(payload.disciplines);
+    await db.scheduleItems.bulkPut(payload.scheduleItems);
+    await db.studySessions.bulkPut(payload.studySessions);
+    await db.questionBlocks.bulkPut(payload.questionBlocks);
+    await db.questions.bulkPut(payload.questions);
+    await db.questionAttempts.bulkPut(payload.questionAttempts);
+    await db.errorRecords.bulkPut(payload.errorRecords);
+    await db.reviews.bulkPut(payload.reviews);
+    await db.mockExams.bulkPut(payload.mockExams);
+    await db.goals.bulkPut(payload.goals);
+  });
+  publishLocalDataChange();
+}
+
+export async function resetDatabase(): Promise<void> {
+  await db.transaction('rw', db.tables, async () => {
+    for (const table of db.tables) await table.clear();
+  });
+  publishLocalDataChange();
+}
+
+export async function getBackupSummary() {
+  const [appSettings, contestProfiles, disciplines, scheduleItems, studySessions, questionBlocks, questions, questionAttempts, errorRecords, reviews, mockExams, goals] = await Promise.all([
+    db.appSettings.count(), db.contestProfiles.count(), db.disciplines.count(), db.scheduleItems.count(), db.studySessions.count(), db.questionBlocks.count(), db.questions.count(), db.questionAttempts.count(), db.errorRecords.count(), db.reviews.count(), db.mockExams.count(), db.goals.count(),
+  ]);
+  return { appSettings, contestProfiles, disciplines, scheduleItems, studySessions, questionBlocks, questions, questionAttempts, errorRecords, reviews, mockExams, goals };
+}
+
+export async function getLastBackupAt() {
+  return (await db.appSettings.where('key').equals('lastBackupAt').first())?.value;
+}
+
+export async function markBackupExported(at = new Date().toISOString()) {
+  const current = await db.appSettings.where('key').equals('lastBackupAt').first();
+  await db.appSettings.put({
+    id: current?.id ?? 'last-backup-at',
+    key: 'lastBackupAt',
+    value: at,
+    createdAt: current?.createdAt ?? at,
+    updatedAt: at,
+  });
+  publishLocalDataChange();
+}

@@ -52,6 +52,8 @@ O projeto frontend está em `frontend/` e contém:
 - sessões, blocos de questões, erros, revisões e metas persistentes;
 - Today Experience, Decision Engine explicável e Evolução calculados com dados persistidos;
 - backup, restauração, limpeza protegida e proteção de armazenamento local;
+- auditoria de integridade somente leitura e restauracao atomica de backups validados;
+- rotas carregadas sob demanda, mantendo o bundle inicial abaixo de 500 kB;
 - componentes reutilizáveis de tabela, cards, badges, progresso, filtros e gráficos;
 - contratos preparados para futura API REST, sem backend nesta versão.
 

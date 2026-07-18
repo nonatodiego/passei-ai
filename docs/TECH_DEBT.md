@@ -18,7 +18,7 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 
 | ID | Área | Dívida | Impacto | Prioridade | Status |
 | --- | --- | --- | --- | --- | --- |
-| TD-001 | Frontend | Bundle inicial acima de 500 kB por Recharts | Pode afetar carregamento futuro | Média | Aberto |
+| TD-001 | Frontend | Bundle inicial acima de 500 kB por Recharts | Rotas e Recharts passaram a carregar sob demanda; entrada em 191.14 kB | Média | Resolvido |
 | TD-002 | Design System | Componentes legados em `components/ui` ainda existem como wrappers | Pode confundir imports | Média | Aberto |
 | TD-003 | Dashboard | Mocks misturam ícones de UI com dados | Acopla apresentação e dado | Média | Aberto |
 | TD-004 | Acessibilidade | Gráficos ainda não possuem alternativa textual/tabular completa | Leitura por tecnologia assistiva limitada | Alta | Aberto |
@@ -28,8 +28,8 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-007 | Arquitetura modular | Fronteiras entre modulos ainda nao sao validadas automaticamente | Imports cruzados indevidos podem surgir conforme o produto cresce | Media | Aberto |
 | TD-008 | Dev environment | `npm.cmd run lint` e `npm.cmd run test` podem falhar no sandbox com EPERM em `C:\Users\Pichau` | Contornado com execucao fora do sandbox; manter observacao para futuras sessoes | Baixa | Mitigado |
 | TD-009 | Questions | Testes atuais validam renderizacao estatica e regras puras; fluxos completos no navegador ainda dependem de ambiente DOM | Pode reduzir confianca em interacoes futuras | Media | Aberto |
-| TD-010 | Performance | Bundle principal acima de 500 kB | Pode afetar carregamento inicial | Media | Aberto |
-| TD-011 | Navigation testing | Ausencia de testes DOM para Sidebar, links ativos e navegacao | Regressao de rotas pode passar sem cobertura de integracao | Media | Aberto |
+| TD-010 | Performance | Bundle principal acima de 500 kB | Entrada reduzida para 191.14 kB; chunks de rota permanecem abaixo de 500 kB | Media | Resolvido |
+| TD-011 | Navigation testing | Ausencia de testes DOM para Sidebar, links ativos e navegacao | Sidebar, foco mobile e destinos principais possuem cobertura; links ativos ainda podem ser ampliados | Media | Mitigado |
 | TD-012 | Today | TodayPage deve ser decomposta antes de novas interacoes | Crescimento da pagina pode reduzir legibilidade e testabilidade | Media | Aberto |
 | TD-013 | Visual QA | Testes visuais automatizados por breakpoint ainda nao existem | Regressao responsiva depende de revisao manual | Media | Aberto |
 | TD-014 | Today UX | Status das atividades pode ganhar maior clareza visual | Pode reduzir leitura rapida do plano em evolucoes futuras | Baixa | Aberto |
@@ -41,6 +41,9 @@ Manter visibilidade sobre decisões provisórias, riscos técnicos e melhorias q
 | TD-020 | Testes | Auditoria de mocks cobre rotas criticas, mas ainda nao cobre todos os arquivos legados nao roteados | Risco residual de reintroducao em codigo legado | Media | Aberto |
 | TD-021 | Local-first | IndexedDB permanece vinculado ao navegador e à origem; backup periódico depende de ação do usuário | Dados não sincronizam ou recuperam automaticamente entre dispositivos | Média | Aberto |
 | TD-022 | Plataforma | Backend, autenticação e sincronização em nuvem ainda não existem | Evolução para uso multiusuário requer nova arquitetura de serviços | Média | Backlog |
+| TD-023 | Dependencias | `xlsx@0.18.5` possui dois advisories altos e nao oferece correcao no npm | Uso restrito ao script local de importacao; nunca entra no bundle ou recebe upload da aplicacao | Media | Aberto |
+| TD-024 | E2E | Playwright nao faz parte da suite versionada | Jornada DOM e matriz manual cobrem a release, mas regressao ponta a ponta ainda depende de QA | Media | Aberto |
+| TD-025 | Codigo legado | Visualizacao antiga de Cronograma ainda coexiste no modulo global | Nao esta roteada, mas mantem imports e textos mockados de legado | Baixa | Aberto |
 
 ## Regras
 

@@ -8,6 +8,10 @@ Formato inspirado em Keep a Changelog.
 
 ### Added
 
+- Auditoria central e somente leitura para IDs, referencias, datas, numeros, duplicidades e consistencia de registros locais.
+- Helpers de data local compartilhados, com testes de meia-noite, semana e mudanca de mes.
+- Cobertura de hardening para backup, integridade, revisoes, metas, Sidebar, formularios e persistencia.
+
 - Edição de sessões de estudo persistidas, preservando ID, criação, vínculo de cronograma e recalculando indicadores derivados.
 - Jornada automatizada de revalidação para edição, agregações de Hoje/Evolução e backup/restauração.
 - MVP local-first utilizavel com cronograma DATAPREV, sessoes, blocos de questoes, Banco de Erros, revisoes, Decision Engine, Evolucao e backup local.
@@ -17,6 +21,13 @@ Formato inspirado em Keep a Changelog.
 - Teste de jornada persistente e auditoria automatizada contra imports de mocks em rotas de producao.
 
 ### Changed
+
+- Rotas passaram a usar carregamento sob demanda; o bundle JS inicial caiu de aproximadamente 1.29 MB para 191.14 kB.
+- Importacao de backup agora valida estrutura, versao e integridade antes da substituicao atomica dos dados.
+- Formularios e acoes assincronas passaram a preservar valores, impedir submissao duplicada e exibir falhas locais.
+- Sidebar passou a exibir somente fatos persistidos do plano e ganhou foco e fechamento por teclado no mobile.
+- Datas de Hoje, Estudos, Cronograma, Revisoes, Analytics e Decision Engine foram alinhadas ao fuso local.
+- Navegacao em 320 px deixou de criar rolagem horizontal global.
 
 - Metas, Questoes e Simulados deixaram de apresentar dados demonstrativos e usam estados vazios ou dados reais do IndexedDB.
 - Metas padrao passaram a ser configuracoes editaveis e idempotentes, com progresso semanal calculado por registros reais.

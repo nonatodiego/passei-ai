@@ -6,6 +6,7 @@ import type {
   ErrorRecordInput,
   ErrorRecordValidationErrors,
 } from '@/error-bank/types';
+import { toLocalDateKey } from '@/shared/utils/date';
 
 const priorityOptions = [
   { label: 'Selecione', value: '' },
@@ -23,17 +24,20 @@ export function ErrorRecordFormModal({
   initialInput?: Partial<ErrorRecordInput>;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (input: ErrorRecordInput) => void;
+  onSubmit: (input: ErrorRecordInput) => Promise<void> | void;
 }) {
   const [input, setInput] = useState<ErrorRecordInput>(() => ({ ...emptyErrorRecordInput, ...initialInput }));
   const [errors, setErrors] = useState<ErrorRecordValidationErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   function update(field: keyof ErrorRecordInput, value: string) {
     setInput((current) => ({ ...current, [field]: value }));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
     const nextErrors = validateErrorRecord(input);
     setErrors(nextErrors);
     const firstInvalid = Object.keys(nextErrors)[0] as keyof ErrorRecordInput | undefined;
@@ -43,10 +47,18 @@ export function ErrorRecordFormModal({
       );
       return;
     }
-    onSubmit(input);
-    setInput(emptyErrorRecordInput);
-    setErrors({});
-    onClose();
+    setIsSubmitting(true);
+    setSubmitError('');
+    try {
+      await onSubmit(input);
+      setInput(emptyErrorRecordInput);
+      setErrors({});
+      onClose();
+    } catch (reason) {
+      setSubmitError(reason instanceof Error ? reason.message : 'Nao foi possivel registrar o erro.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -54,7 +66,7 @@ export function ErrorRecordFormModal({
       description="Organize o que aconteceu e defina uma acao simples para evitar a recorrencia."
       initialFocusId="error-discipline"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => { if (!isSubmitting) onClose(); }}
       title="Registrar erro manual"
     >
       <form className="space-y-6" noValidate onSubmit={handleSubmit}>
@@ -82,15 +94,16 @@ export function ErrorRecordFormModal({
         <fieldset className="grid gap-4 md:grid-cols-2">
           <legend className="mb-3 text-sm font-semibold text-app-text">Organizacao</legend>
           <Input id="error-tags" label="Tags (separadas por virgula)" onChange={(event) => update('tags', event.target.value)} value={input.tags} />
-          <Input error={errors.nextReview} id="error-nextReview" label="Proxima revisao (opcional)" min={new Date().toISOString().slice(0, 10)} onChange={(event) => update('nextReview', event.target.value)} type="date" value={input.nextReview} />
+          <Input error={errors.nextReview} id="error-nextReview" label="Proxima revisao (opcional)" min={toLocalDateKey()} onChange={(event) => update('nextReview', event.target.value)} type="date" value={input.nextReview} />
           <Input id="error-source" label="Origem (opcional)" onChange={(event) => update('source', event.target.value)} value={input.source} />
           <Input id="error-notes" label="Notas (opcional)" onChange={(event) => update('notes', event.target.value)} value={input.notes} />
           <Input className="md:col-span-2" id="error-complementaryNotes" label="Observacoes complementares" onChange={(event) => update('complementaryNotes', event.target.value)} value={input.complementaryNotes} />
         </fieldset>
 
+        {submitError ? <p className="text-sm text-app-danger" role="alert">{submitError}</p> : null}
         <div className="flex flex-col-reverse gap-3 border-t border-app-border pt-5 sm:flex-row sm:justify-end">
-          <Button onClick={onClose} type="button" variant="ghost">Cancelar</Button>
-          <Button type="submit">Registrar erro</Button>
+          <Button disabled={isSubmitting} onClick={onClose} type="button" variant="ghost">Cancelar</Button>
+          <Button isLoading={isSubmitting} type="submit">Registrar erro</Button>
         </div>
       </form>
     </Modal>

@@ -1,5 +1,5 @@
-import importedSchedule from '@/data/dataprev-schedule.json';
 import { db } from './database';
+import { publishLocalDataChange } from './events';
 import type { ContestProfile, ScheduleItem } from './types';
 
 const now = () => new Date().toISOString();
@@ -7,6 +7,8 @@ const profile: ContestProfile = { id:'dataprev-2026', name:'DATAPREV 2026', role
 export async function seedDataprevSchedule(): Promise<{ imported: number; seeded: boolean }> {
   const scheduleCount = await db.scheduleItems.count();
   if (scheduleCount > 0) return { imported: scheduleCount, seeded: false };
+
+  const { default: importedSchedule } = await import('@/data/dataprev-schedule.json');
 
   await db.transaction('rw', db.contestProfiles, db.disciplines, db.scheduleItems, db.goals, async () => {
     const existingProfile = await db.contestProfiles.get(profile.id);
@@ -37,5 +39,6 @@ export async function seedDataprevSchedule(): Promise<{ imported: number; seeded
     }
   });
 
+  publishLocalDataChange();
   return { imported: (importedSchedule as ScheduleItem[]).length, seeded: true };
 }

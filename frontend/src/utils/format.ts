@@ -1,9 +1,7 @@
+import { differenceInLocalDays, formatLocalDatePtBr, toLocalDateKey } from '@/shared/utils/date';
+
 export function formatDate(value: string): string {
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).format(new Date(`${value}T00:00:00`));
+  return formatLocalDatePtBr(value);
 }
 
 export function formatToday(): string {
@@ -19,13 +17,7 @@ export function formatHours(hours: number): string {
 }
 
 export function getDaysUntil(date: string): number {
-  const today = new Date();
-  const target = new Date(`${date}T00:00:00`);
-  today.setHours(0, 0, 0, 0);
-  return Math.max(
-    0,
-    Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)),
-  );
+  return Math.max(0, differenceInLocalDays(toLocalDateKey(), date));
 }
 
 export function percentage(value: number): string {

@@ -1,8 +1,10 @@
-import { ChevronDown, X } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { Database, X } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 import logoHorizontal from '@/assets/brand/passei-ai-horizontal.jpg';
 import { routes } from '@/constants/routes';
+import { useSidebarPlanSummary } from './useSidebarPlanSummary';
 
 export function Sidebar({
   isOpen,
@@ -11,6 +13,27 @@ export function Sidebar({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const plan = useSidebarPlanSummary();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    triggerRef.current = document.activeElement as HTMLElement;
+    const frame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      onClose();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('keydown', handleEscape);
+      triggerRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
+
   return (
     <>
       <div
@@ -20,8 +43,8 @@ export function Sidebar({
         onClick={onClose}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[264px] flex-col border-r border-app-border bg-white transition-transform lg:static lg:z-auto lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-40 flex w-[264px] flex-col border-r border-app-border bg-white transition-transform lg:static lg:z-auto lg:translate-x-0 lg:visible ${
+          isOpen ? 'visible translate-x-0' : 'invisible -translate-x-full'
         }`}
       >
         <div className="flex h-28 items-center justify-between px-5">
@@ -34,6 +57,7 @@ export function Sidebar({
             aria-label="Fechar menu"
             className="rounded-md p-2 text-app-muted hover:bg-slate-100 lg:hidden"
             onClick={onClose}
+            ref={closeButtonRef}
             type="button"
           >
             <X className="h-5 w-5" />
@@ -68,31 +92,27 @@ export function Sidebar({
         <div className="space-y-6 px-5 pb-6">
           <div className="rounded-md border border-app-border bg-white p-4 shadow-panel">
             <p className="text-sm text-app-muted">Plano atual</p>
-            <p className="mt-2 text-sm font-bold text-app-text">DATAPREV 2026</p>
+            <p className="mt-2 text-sm font-bold text-app-text">{plan?.name ?? 'Carregando plano'}</p>
             <p className="mt-5 text-sm text-app-muted">Prova em</p>
-            <p className="mt-1 text-2xl font-bold text-app-primary">92 dias</p>
+            <p className="mt-1 text-2xl font-bold text-app-primary">{plan ? `${plan.daysUntilExam} dias` : '-'}</p>
             <div className="mt-4 h-2 rounded-full bg-slate-100">
-              <div className="h-2 w-[74%] rounded-full bg-app-primary" />
+              <div className="h-2 rounded-full bg-app-primary" style={{ width: `${plan?.progress ?? 0}%` }} />
             </div>
-            <p className="mt-4 text-sm text-app-muted">Índice de preparação</p>
-            <p className="mt-1 text-2xl font-bold text-app-primary">74%</p>
+            <p className="mt-4 text-sm text-app-muted">Progresso do cronograma</p>
+            <p className="mt-1 text-sm font-semibold text-app-text">{plan ? `${plan.completedActivities} de ${plan.totalActivities} concluidas` : 'Carregando dados reais'}</p>
           </div>
           <div className="border-t border-app-border pt-5">
-            <button
-              className="flex w-full items-center gap-3 rounded-md p-1 text-left transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-app-focus"
-              type="button"
-            >
+            <div className="flex w-full items-center gap-3 rounded-md p-1 text-left">
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-200 text-sm font-semibold text-app-muted">
-                D
+                <Database aria-hidden="true" className="h-5 w-5" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold text-app-text">
-                  Diego Nonato
+                  Dados locais
                 </span>
-                <span className="block text-xs text-app-muted">Plano Premium</span>
+                <span className="block text-xs text-app-muted">Neste navegador</span>
               </span>
-              <ChevronDown aria-hidden="true" className="h-4 w-4 text-app-muted" />
-            </button>
+            </div>
           </div>
         </div>
       </aside>

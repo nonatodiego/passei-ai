@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { CalendarDays, Check, Pencil, Play, Plus } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { toLocalDateKey } from '@/shared/utils/date';
 
 import {
   ScheduleCalendar,
@@ -199,7 +200,7 @@ const defaultScheduleItemInput = (): ScheduleItemInput => ({
   activityType: 'Videoaula',
   disciplineName: '',
   notes: '',
-  plannedDate: new Date().toISOString().slice(0, 10),
+  plannedDate: toLocalDateKey(),
   priority: 'Normal',
   status: 'Não iniciado',
   title: '',
@@ -314,7 +315,7 @@ export function SchedulePage() {
   const [filters, setFilters] = useState<ScheduleItemFilters>(defaultRealFilters);
   const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<ScheduleItem>();
-  const [successMessage, setSuccessMessage] = useState('');
+  const [feedback, setFeedback] = useState<{ message: string; tone: 'danger' | 'success' }>();
   const { error, isLoading, items } = useScheduleItems(filters);
   const disciplines = useMemo(() => Array.from(new Set(items.map((item) => item.disciplineName))).sort(), [items]);
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
@@ -336,11 +337,16 @@ export function SchedulePage() {
 
   function handleActivitySaved(message: string) {
     closeActivityModal();
-    setSuccessMessage(message);
+    setFeedback({ message, tone: 'success' });
   }
 
   async function markCompleted(id: string) {
-    await completeScheduleItem(id);
+    try {
+      await completeScheduleItem(id);
+      setFeedback({ message: 'Atividade concluida com sucesso.', tone: 'success' });
+    } catch {
+      setFeedback({ message: 'Nao foi possivel concluir a atividade. Tente novamente.', tone: 'danger' });
+    }
   }
 
   const columns = [
@@ -374,7 +380,7 @@ export function SchedulePage() {
       </Section>
       {items.length === 0 ? <EmptyState description="Nao ha atividades para este filtro. Ajuste a pesquisa ou a janela do cronograma." icon={CalendarDays} title="Nenhuma atividade encontrada" /> : <Section className="space-y-4"><DataTable columns={columns} rows={visibleItems} /><div className="flex items-center justify-between text-sm text-app-muted"><span>Mostrando {(page - 1) * pageSize + 1}-{Math.min(page * pageSize, items.length)} de {items.length}</span><div className="flex gap-2"><Button disabled={page === 1} onClick={() => setPage((current) => current - 1)} size="sm" variant="secondary">Anterior</Button><Button disabled={page === totalPages} onClick={() => setPage((current) => current + 1)} size="sm" variant="secondary">Proxima</Button></div></div></Section>}
       <ScheduleActivityModal isOpen={isCreating || Boolean(editing)} item={editing} key={editing?.id ?? (isCreating ? 'schedule-creator' : 'schedule-editor')} onClose={closeActivityModal} onSaved={handleActivitySaved} />
-      {successMessage ? <Toast title={successMessage} tone="success" /> : null}
+      {feedback ? <Toast title={feedback.message} tone={feedback.tone} /> : null}
     </Content>
   );
 }

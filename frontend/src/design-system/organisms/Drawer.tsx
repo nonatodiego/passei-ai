@@ -52,21 +52,18 @@ export function Drawer({
     }
   }
 
+  if (!isOpen) return null;
+
   return (
     <>
       <div
-        className={`fixed inset-0 z-drawer bg-slate-950/35 transition-opacity ${
-          isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
-        }`}
+        className="fixed inset-0 z-drawer bg-slate-950/35"
         onClick={onClose}
       />
       <aside
         aria-labelledby={titleId}
-        aria-hidden={!isOpen}
         aria-modal="true"
-        className={`fixed inset-y-0 right-0 z-drawer flex w-full max-w-md flex-col border-l border-app-border bg-white shadow-floating transition-transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className="fixed inset-y-0 right-0 z-drawer flex w-full max-w-md flex-col border-l border-app-border bg-white shadow-floating"
         onKeyDown={handleKeyDown}
         ref={drawerRef}
         role="dialog"
