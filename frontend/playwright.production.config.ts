@@ -6,7 +6,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   forbidOnly: true,
   fullyParallel: true,
-  outputDir: 'test-results/production',
+  outputDir: '../.playwright/test-results/production',
   projects: [
     {
       name: 'production-desktop',
@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'playwright-report/production' }],
+    ['html', { open: 'never', outputFolder: '../.playwright/report/production' }],
   ],
   retries: 1,
   testDir: './e2e/production',
