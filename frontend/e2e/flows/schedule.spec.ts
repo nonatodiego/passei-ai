@@ -20,9 +20,11 @@ test('cria, edita, conclui e persiste uma atividade sem duplicacao', async ({ pa
   await dialog.getByLabel('Duracao estimada (minutos)').fill('45');
   await dialog.getByRole('button', { name: 'Salvar atividade' }).click();
   await expect(page.getByText('Atividade criada com sucesso.')).toBeVisible();
+  await expect(page.getByText('Mostrando 1-30 de 36')).toBeVisible();
 
   const search = page.getByLabel('Pesquisa');
   await search.fill('Criptografia aplicada');
+  await expect(search).toHaveValue('Criptografia aplicada');
   await expect(page.getByText('E2E - Criptografia aplicada')).toBeVisible();
   await expect(page.getByText('Fora da janela atual da prova')).toBeVisible();
   await page.getByLabel('Visao').selectOption('outsideExam');
