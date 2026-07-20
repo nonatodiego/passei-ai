@@ -12,9 +12,32 @@ export const routes = [
   { heading: 'Configuracoes', path: '/configuracoes' },
 ] as const;
 
+const routeContentMarkers: Record<string, string[]> = {
+  '/': ['Plano do dia', 'Registre seus primeiros dados', 'Dia concluido'],
+  '/banco-de-erros': ['Transforme erros em aprendizado'],
+  '/configuracoes': ['Gerencie os dados salvos neste navegador'],
+  '/cronograma': ['Suas alteracoes ficam guardadas neste navegador'],
+  '/estudos': ['Sessoes de Estudo', 'Comece a registrar seus estudos'],
+  '/evolucao': ['Indicadores calculados a partir dos seus dados locais'],
+  '/metas': ['Objetivos editaveis; o progresso usa somente registros desta semana', 'Metas indisponiveis'],
+  '/questoes': ['Registrar bloco de questoes'],
+  '/revisoes': ['Agende e conclua reforcos com dados locais'],
+};
+
 export async function openRoute(page: Page, path: string, heading: string): Promise<void> {
   await page.goto(path);
+  await page.waitForLoadState('networkidle');
   await expectRouteReady(page, heading);
+  const markers = routeContentMarkers[path.split('?')[0]];
+  if (markers) {
+    const main = page.getByRole('main');
+    await expect
+      .poll(async () => {
+        const content = normalize(await main.textContent());
+        return markers.some((marker) => content.includes(normalize(marker)));
+      }, { timeout: 15_000 })
+      .toBe(true);
+  }
 }
 
 export async function expectRouteReady(page: Page, heading: string): Promise<void> {
@@ -95,6 +118,10 @@ export async function stabilizeVisualPage(page: Page): Promise<void> {
       return now - state.stableSince >= 300;
     });
   }
+
+  const main = page.getByRole('main');
+  await expect(main.locator('.animate-pulse')).toHaveCount(0, { timeout: 15_000 });
+  await expect(main.getByRole('heading').first()).toBeVisible({ timeout: 15_000 });
 }
 
 export async function fillStudySession(

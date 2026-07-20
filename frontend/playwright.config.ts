@@ -26,12 +26,12 @@ export default defineConfig({
     toHaveScreenshot: {
       animations: 'allow',
       caret: 'hide',
-      maxDiffPixelRatio: 0.035,
+      maxDiffPixelRatio: 0.005,
     },
   },
   forbidOnly: isCi,
   fullyParallel: false,
-  outputDir: 'test-results',
+  outputDir: '../.playwright/test-results',
   projects: [
     {
       name: 'chromium',
@@ -62,7 +62,7 @@ export default defineConfig({
   ],
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'playwright-report' }],
+    ['html', { open: 'never', outputFolder: '../.playwright/report' }],
   ],
   retries: isCi ? 1 : 0,
   snapshotPathTemplate: '{testDir}/visual/__screenshots__/{projectName}/{arg}{ext}',
