@@ -29,7 +29,7 @@ Fila de tarefas tecnicas e de produto do Passei AI.
 
 | ID | Tipo | Titulo | Origem | Estado |
 | --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| TQ-027 | Engenharia | Qualidade automatizada - E2E, regressao visual e acessibilidade | Quality Sprint | Visual Review |
 
 ## Ready
 

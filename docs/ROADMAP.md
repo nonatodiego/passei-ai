@@ -265,3 +265,15 @@
 - [x] Validar nove rotas em nove breakpoints, de 320 px a 1920 px.
 - [x] Reduzir o bundle inicial para menos de 500 kB.
 - [x] Ampliar a suite para 101 testes em 30 arquivos.
+
+## Automated Quality
+
+- [x] Versionar Playwright com Chromium, Firefox e WebKit.
+- [x] Cobrir jornadas criticas com IndexedDB isolado.
+- [x] Validar nove rotas em desktop e mobile.
+- [x] Criar 53 baselines em cinco breakpoints.
+- [x] Automatizar axe-core e navegacao por teclado.
+- [x] Proteger smoke de producao contra mutacoes.
+- [x] Monitorar o orcamento dos chunks do Vite.
+- [x] Executar o gate completo no GitHub Actions.
+- [ ] Aprovar Product Experience Gate da Sprint de qualidade.
