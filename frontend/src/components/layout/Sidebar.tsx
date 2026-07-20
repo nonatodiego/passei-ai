@@ -63,7 +63,7 @@ export function Sidebar({
             <X className="h-5 w-5" />
           </button>
         </div>
-        <nav className="flex-1 space-y-2 px-5 py-2">
+        <nav aria-label="Navegacao principal" className="flex-1 space-y-2 px-5 py-2">
           {routes
             .filter((route) => route.path !== '/simulados')
             .map((route) => {

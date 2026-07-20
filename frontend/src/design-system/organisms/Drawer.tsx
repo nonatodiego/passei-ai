@@ -15,7 +15,7 @@ export function Drawer({
   title: string;
 }) {
   const titleId = useId();
-  const drawerRef = useRef<HTMLElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
@@ -29,7 +29,7 @@ export function Drawer({
     };
   }, [isOpen]);
 
-  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Escape') {
       event.preventDefault();
       onClose();
@@ -60,7 +60,7 @@ export function Drawer({
         className="fixed inset-0 z-drawer bg-slate-950/35"
         onClick={onClose}
       />
-      <aside
+      <div
         aria-labelledby={titleId}
         aria-modal="true"
         className="fixed inset-y-0 right-0 z-drawer flex w-full max-w-md flex-col border-l border-app-border bg-white shadow-floating"
@@ -75,7 +75,7 @@ export function Drawer({
           </Button>
         </header>
         <div className="flex-1 overflow-y-auto p-5">{children}</div>
-      </aside>
+      </div>
     </>
   );
 }
