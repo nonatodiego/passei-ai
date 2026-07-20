@@ -14,6 +14,25 @@ A regressao visual protege as nove rotas principais e estados interativos seleci
 
 Todos os breakpoints cobrem Hoje, Cronograma, Estudos, Questoes, Banco de Erros, Revisoes, Metas, Evolucao e Configuracoes. Desktop 1440 e mobile 390 tambem cobrem formulario de cronograma, formulario de estudo, estado vazio de Questoes e drawer do Banco de Erros.
 
+## Skips intencionais
+
+Os 12 skips abaixo evitam repetir estados interativos ja protegidos nos viewports canonicos 1440 e 390. As nove rotas em estado inicial continuam cobertas em todos os cinco viewports.
+
+| Projeto | Cenario ignorado | Justificativa |
+| --- | --- | --- |
+| `visual-1024` | Cronograma com formulario aberto | Redundante com 1440 e 390 |
+| `visual-1024` | Estudos com formulario aberto | Redundante com 1440 e 390 |
+| `visual-1024` | Questoes em estado vazio | Redundante com 1440 e 390 |
+| `visual-1024` | Banco de Erros com drawer aberto | Redundante com 1440 e 390 |
+| `visual-768` | Cronograma com formulario aberto | Redundante com 1440 e 390 |
+| `visual-768` | Estudos com formulario aberto | Redundante com 1440 e 390 |
+| `visual-768` | Questoes em estado vazio | Redundante com 1440 e 390 |
+| `visual-768` | Banco de Erros com drawer aberto | Redundante com 1440 e 390 |
+| `visual-320` | Cronograma com formulario aberto | Redundante com 1440 e 390 |
+| `visual-320` | Estudos com formulario aberto | Redundante com 1440 e 390 |
+| `visual-320` | Questoes em estado vazio | Redundante com 1440 e 390 |
+| `visual-320` | Banco de Erros com drawer aberto | Redundante com 1440 e 390 |
+
 ## Comparar
 
 ```bash

@@ -3,6 +3,8 @@ import { BASELINE_SEED, EMPTY_USER_SEED } from '../fixtures/seed';
 import { openRoute, routes, stabilizeVisualPage } from '../helpers/app';
 
 const stateProjects = new Set(['visual-1440', 'visual-390']);
+const redundantStateReason =
+  'Estado interativo coberto nos viewports canonicos 1440 e 390; nos demais, a captura seria redundante.';
 
 test.setTimeout(45_000);
 
@@ -25,7 +27,7 @@ for (const route of routes) {
 }
 
 test('cronograma - formulario aberto', async ({ page }, testInfo) => {
-  test.skip(!stateProjects.has(testInfo.project.name));
+  test.skip(!stateProjects.has(testInfo.project.name), redundantStateReason);
   await openRoute(page, '/cronograma', 'Cronograma');
   await page.getByRole('main').getByRole('button', { name: 'Nova atividade' }).click();
   await stabilizeVisualPage(page);
@@ -33,14 +35,14 @@ test('cronograma - formulario aberto', async ({ page }, testInfo) => {
 });
 
 test('estudos - formulario aberto', async ({ page }, testInfo) => {
-  test.skip(!stateProjects.has(testInfo.project.name));
+  test.skip(!stateProjects.has(testInfo.project.name), redundantStateReason);
   await openRoute(page, '/estudos?create=1', 'Estudos');
   await stabilizeVisualPage(page);
   await expectVisualSnapshot(page, 'estudos-form.png');
 });
 
 test('questoes - estado vazio', async ({ page, seedApp }, testInfo) => {
-  test.skip(!stateProjects.has(testInfo.project.name));
+  test.skip(!stateProjects.has(testInfo.project.name), redundantStateReason);
   await seedApp(EMPTY_USER_SEED);
   await openRoute(page, '/questoes', 'Questoes');
   await stabilizeVisualPage(page);
@@ -48,7 +50,7 @@ test('questoes - estado vazio', async ({ page, seedApp }, testInfo) => {
 });
 
 test('banco de erros - drawer aberto', async ({ page }, testInfo) => {
-  test.skip(!stateProjects.has(testInfo.project.name));
+  test.skip(!stateProjects.has(testInfo.project.name), redundantStateReason);
   await openRoute(page, '/banco-de-erros', 'Banco de Erros');
   await page.getByRole('button', { name: 'Detalhes' }).click();
   await stabilizeVisualPage(page);
