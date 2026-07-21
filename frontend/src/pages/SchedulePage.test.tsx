@@ -128,7 +128,9 @@ describe('SchedulePage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Salvar atividade' }));
     expect(await screen.findByText('A disciplina e obrigatoria.')).toBeVisible();
-    expect(screen.getByRole('textbox', { name: /^Disciplina/ })).toHaveFocus();
+    await waitFor(() =>
+      expect(screen.getByRole('textbox', { name: /^Disciplina/ })).toHaveFocus(),
+    );
     expect(await db.scheduleItems.count()).toBe(0);
 
     await user.click(screen.getByRole('button', { name: 'Cancelar' }));
