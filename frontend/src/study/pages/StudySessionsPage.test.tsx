@@ -28,6 +28,7 @@ describe('StudySessionsPage', () => {
         allSessions={studySessionMocks}
         dispatchTimer={vi.fn()}
         filters={defaultStudySessionFilters}
+        onDeleteSession={vi.fn()}
         onFiltersChange={vi.fn()}
         sessions={studySessionMocks}
         status="success"
@@ -40,6 +41,7 @@ describe('StudySessionsPage', () => {
     expect(html).toContain('Nova sessao de estudo');
     expect(html).toContain('Historico');
     expect(html).toContain('Timer de estudo');
+    expect(html).toContain('Excluir');
   });
 
   it('creates a valid persisted study session', async () => {
