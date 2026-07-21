@@ -37,6 +37,7 @@ Nota de 0 a 10, calculada por revisão técnica ao final de cada sprint.
 | MVP Local-First | 8.7 | Fluxos persistentes, backup e auditoria de dados reais aprovados visualmente; bundle e cobertura de navegacao completa permanecem como evolucao |
 | Revalidação de edição de sessões | 8.8 | Edição persistente validada com indicadores derivados, backup/restauração e 60 testes verdes |
 | Product Hardening | 9.2 | Integridade e backup fortalecidos, 101 testes, matriz responsiva completa e bundle inicial reduzido para 191.14 kB; E2E versionado e advisory do XLSX permanecem registrados |
+| Automated Quality | 9.6 | 123 testes E2E ativos, tres rodadas integrais estaveis, tres engines, 53 baselines, axe sem violacoes bloqueantes e CI em dois ambientes |
 
 ## Regras de corte
 

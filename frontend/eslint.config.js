@@ -6,11 +6,11 @@ import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', 'playwright-report', 'test-results', 'blob-report'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.cjs'],
+    files: ['**/*.cjs', 'scripts/**/*.mjs'],
     languageOptions: {
       globals: globals.node,
     },
@@ -31,6 +31,18 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+    },
+  },
+  {
+    files: ['e2e/**/*.ts', 'playwright*.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
   prettier,

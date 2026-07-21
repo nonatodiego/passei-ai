@@ -7,3 +7,7 @@ dist/
 frontend/.dev-server/
 .dev-server/
 .dev-server-questions/
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+.playwright/

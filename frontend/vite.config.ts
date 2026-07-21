@@ -8,4 +8,13 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  server: {
+    watch: {
+      ignored: [
+        '**/e2e/visual/__screenshots__/**',
+        '**/playwright-report/**',
+        '**/test-results/**',
+      ],
+    },
+  },
 });

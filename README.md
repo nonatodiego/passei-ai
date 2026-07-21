@@ -28,6 +28,8 @@ Organizar a preparação, analisar o desempenho, identificar pontos fracos, plan
 - ESLint
 - Prettier
 - Vitest
+- Playwright
+- axe-core
 
 ### Backend futuro
 
@@ -72,6 +74,8 @@ cd frontend
 npm run lint
 npm run build
 npm run test
+npm run test:bundle
+npm run test:e2e
 ```
 
 ## Documentação principal
@@ -102,6 +106,8 @@ npm run test
 - [TASK QUEUE](TASK_QUEUE.md)
 - [LOCAL-FIRST ARCHITECTURE](docs/LOCAL_FIRST_ARCHITECTURE.md)
 - [USABLE MVP GUIDE](docs/USABLE_MVP_GUIDE.md)
+- [E2E TESTING](docs/E2E_TESTING.md)
+- [VISUAL REGRESSION](docs/VISUAL_REGRESSION.md)
 
 ## Status
 

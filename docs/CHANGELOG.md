@@ -8,6 +8,12 @@ Formato inspirado em Keep a Changelog.
 
 ### Added
 
+- Suite Playwright com 123 testes ativos, Chromium, Firefox, WebKit e mobile Chromium.
+- Jornadas E2E isoladas por browser context e IndexedDB com fixtures tipadas.
+- Auditoria axe-core, navegacao por teclado e smoke de producao somente leitura.
+- Regressao visual com 53 baselines em cinco breakpoints.
+- Orcamento automatizado do bundle e gate de browsers no GitHub Actions.
+- Guias `E2E_TESTING.md` e `VISUAL_REGRESSION.md`.
 - Auditoria central e somente leitura para IDs, referencias, datas, numeros, duplicidades e consistencia de registros locais.
 - Helpers de data local compartilhados, com testes de meia-noite, semana e mudanca de mes.
 - Cobertura de hardening para backup, integridade, revisoes, metas, Sidebar, formularios e persistencia.
@@ -22,6 +28,12 @@ Formato inspirado em Keep a Changelog.
 
 ### Changed
 
+- Banco de Erros atualiza a interface apos persistir criacao e recorrencia.
+- Sidebar e seletor de backup receberam nomes acessiveis; historico de erros usa chaves unicas.
+- Drawer usa elemento compativel com `role="dialog"`; axe nao encontra violacoes em nenhum impacto auditado.
+- Graficos de Evolucao renderizam o estado final sem animacao nao deterministica.
+- Vitest e Playwright possuem descobertas separadas; jornada persistente usa chave de data local na virada UTC.
+- CI separa o gate frontend em Ubuntu do gate canonico de browsers e snapshots em Windows.
 - Rotas passaram a usar carregamento sob demanda; o bundle JS inicial caiu de aproximadamente 1.29 MB para 191.14 kB.
 - Importacao de backup agora valida estrutura, versao e integridade antes da substituicao atomica dos dados.
 - Formularios e acoes assincronas passaram a preservar valores, impedir submissao duplicada e exibir falhas locais.
