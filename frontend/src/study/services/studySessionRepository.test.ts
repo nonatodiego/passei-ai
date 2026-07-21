@@ -51,6 +51,14 @@ describe('persistent study sessions', () => {
     expect(copy.scheduleItemId).toBeUndefined();
   });
 
+  it('deletes a persisted session', async () => {
+    const saved = await StudySessionService.createSession(input);
+
+    await StudySessionService.deleteSession(saved.id);
+
+    expect(await db.studySessions.get(saved.id)).toBeUndefined();
+  });
+
   it('rolls back the session when its linked activity does not exist', async () => {
     await expect(StudySessionService.createSession({
       ...input,
