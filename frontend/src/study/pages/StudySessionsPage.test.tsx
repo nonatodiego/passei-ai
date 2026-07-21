@@ -42,6 +42,10 @@ describe('StudySessionsPage', () => {
     expect(html).toContain('Historico');
     expect(html).toContain('Timer de estudo');
     expect(html).toContain('Excluir');
+    expect(html).toContain(
+      `<p class="mt-5 text-3xl font-bold leading-none text-app-text">${summary.mostStudiedDiscipline}</p>`,
+    );
+    expect(html).toContain('<p class="mt-3 text-sm text-app-muted">Disciplina</p>');
   });
 
   it('creates a valid persisted study session', async () => {

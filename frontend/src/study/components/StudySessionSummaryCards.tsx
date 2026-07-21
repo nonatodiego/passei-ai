@@ -34,11 +34,11 @@ export function StudySessionSummaryCards({ summary }: { summary: StudySessionSum
         value={`${summary.accuracyRate}%`}
       />
       <KPICard
-        helper={summary.mostStudiedDiscipline}
+        helper="Disciplina"
         icon={BarChart3}
         label="Mais estudada"
         tone="amber"
-        value="Disciplina"
+        value={summary.mostStudiedDiscipline}
       />
       <KPICard
         icon={Timer}
